@@ -2,8 +2,8 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { register, login, me } from "./routes/auth";
-import { summary as adminSummary } from "./routes/admin";
+import { register, login, me, profileGet, profileUpdate } from "./routes/auth";
+import { summary as adminSummary, listFarmers, addFarmer, removeFarmer } from "./routes/admin";
 import { start as otpStart, verify as otpVerify } from "./routes/otp";
 import {
   start as googleStart,
@@ -30,6 +30,8 @@ export function createServer() {
   app.post("/api/auth/register", register);
   app.post("/api/auth/login", login);
   app.get("/api/auth/me", me);
+  app.get("/api/profile", profileGet);
+  app.put("/api/profile", profileUpdate);
 
   // OTP Email
   app.post("/api/auth/otp/start", otpStart);
@@ -41,6 +43,9 @@ export function createServer() {
 
   // Admin
   app.get("/api/admin/summary", adminSummary);
+  app.get("/api/admin/farmers", listFarmers);
+  app.post("/api/admin/farmers", addFarmer);
+  app.delete("/api/admin/farmers/:id", removeFarmer);
 
   // Seed admin (non-blocking)
   import("./seed").then((m) => m.ensureAdmin?.()).catch(() => {});
