@@ -17,7 +17,7 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/80 via-background to-background">
+      <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
         <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-emerald-400/10 blur-3xl" />
         <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
