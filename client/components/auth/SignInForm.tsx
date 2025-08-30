@@ -9,6 +9,7 @@ export function SignInForm() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const { setToken } = useAuth();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
