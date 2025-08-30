@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { useI18n } from "@/context/i18n";
 import { SignInForm } from "@/components/auth/SignInForm";
 import { Assistant } from "@/components/chat/Assistant";
+import { Scene3D } from "@/components/3d/Scene3D";
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();
@@ -35,9 +36,10 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-b from-black via-background to-background">
-        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-emerald-400/10 blur-3xl" />
+      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-950 via-background to-background">
+        <Scene3D />
+        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-primary/20 blur-3xl" />
+        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-emerald-400/20 blur-3xl" />
         <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
