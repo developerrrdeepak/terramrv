@@ -26,6 +26,14 @@ export function createServer() {
   app.post("/api/auth/login", login);
   app.get("/api/auth/me", me);
 
+  // OTP Email
+  app.post("/api/auth/otp/start", (await import("./routes/otp")).start);
+  app.post("/api/auth/otp/verify", (await import("./routes/otp")).verify);
+
+  // Google OAuth
+  app.get("/api/auth/social/google/start", (await import("./routes/google")).start);
+  app.get("/api/auth/social/google/callback", (await import("./routes/google")).callback);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
 
