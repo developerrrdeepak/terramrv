@@ -1,5 +1,4 @@
 import { Assistant } from "./Assistant";
-import { Assistant } from "./Assistant";
 import { useState } from "react";
 
 export function FloatingAssistant() {
