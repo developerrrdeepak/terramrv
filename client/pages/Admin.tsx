@@ -109,12 +109,25 @@ export default function Admin() {
                     {f.email} · {f.role}
                   </div>
                 </div>
-                <button
-                  className="text-sm text-red-600 hover:underline"
-                  onClick={() => remove(f.id)}
-                >
-                  Remove
-                </button>
+                <div className="flex items-center gap-2">
+                  <RoleSelect
+                    id={f.id}
+                    current={f.role || "farmer"}
+                    onChange={async (role) => {
+                      await api(`/api/admin/users/${f.id}/role`, {
+                        method: "POST",
+                        body: JSON.stringify({ role }),
+                      });
+                      load();
+                    }}
+                  />
+                  <button
+                    className="text-sm text-red-600 hover:underline"
+                    onClick={() => remove(f.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
             {farmers.length === 0 && (
@@ -124,6 +137,55 @@ export default function Admin() {
             )}
           </div>
         </div>
+      </div>
+
+      <Registrations />
+    </div>
+  );
+}
+
+function RoleSelect({ id, current, onChange }: { id: string; current: string; onChange: (r: string) => void }) {
+  return (
+    <select className="h-9 rounded-md border bg-background px-2 text-sm" value={current} onChange={(e) => onChange(e.target.value)}>
+      <option value="farmer">farmer</option>
+      <option value="field-officer">field-officer</option>
+      <option value="verifier">verifier</option>
+      <option value="admin">admin</option>
+    </select>
+  );
+}
+
+function Registrations() {
+  const [pending, setPending] = useState<any[]>([]);
+  const load = async () => {
+    const r = await api<{ users: any[] }>("/api/admin/registrations?status=pending");
+    setPending(r.users);
+  };
+  useEffect(() => {
+    load();
+  }, []);
+  const approve = async (id: string) => {
+    await api(`/api/admin/registrations/${id}/approve`, { method: "POST" });
+    load();
+  };
+  return (
+    <div className="mt-8 rounded-lg border bg-card p-6 shadow-sm">
+      <div className="mb-3 text-sm font-medium">Pending Registrations</div>
+      <div className="grid gap-2">
+        {pending.map((u) => (
+          <div key={u.id} className="flex items-center justify-between rounded-md border p-3">
+            <div>
+              <div className="text-sm font-medium">{u.name || u.email}</div>
+              <div className="text-xs text-muted-foreground">{u.email}</div>
+            </div>
+            <button className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground" onClick={() => approve(u.id)}>
+              Approve
+            </button>
+          </div>
+        ))}
+        {pending.length === 0 && (
+          <div className="text-sm text-muted-foreground">No pending requests</div>
+        )}
       </div>
     </div>
   );
