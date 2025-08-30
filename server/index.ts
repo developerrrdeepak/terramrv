@@ -20,6 +20,7 @@ import {
 import { listLogs, addLog, deleteLog } from "./routes/logs";
 import { getCredits, requestPayout } from "./routes/credits";
 import { farmerReport, adminRegionReport } from "./routes/reports";
+import { submitSupport } from "./routes/support";
 
 export function createServer() {
   const app = express();
