@@ -2,8 +2,10 @@ import { useMemo } from "react";
 import { CarbonEstimator } from "@/components/estimator/CarbonEstimator";
 import { ArrowRight, ShieldCheck, Satellite, Trees, BookOpen, FileSpreadsheet, Users, BarChart3, Cpu, Database } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useI18n } from "@/context/i18n";
 
 export default function Index() {
+  const { t, lang } = useI18n();
   const milestones = [
     { label: "Profile", value: 20 },
     { label: "Data", value: 55 },
@@ -20,21 +22,27 @@ export default function Index() {
         <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-              <ShieldCheck className="h-4 w-4" /> Transparent MRV for smallholders
+              <ShieldCheck className="h-4 w-4" /> {t("hero_badge")}
             </div>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Scalable MRV for agroforestry and rice-based carbon projects
+              {t("hero_title_line1")} <span className="text-primary">{t("hero_title_line2")}</span> {t("hero_title_line3")}
             </h1>
             <p className="mt-4 max-w-xl text-base text-muted-foreground">
-              Calculate, verify, and report carbon credits with minimized uncertainty and end-to-end transparency. Built for farmers, NGOs, researchers, and carbon credit organizations.
+              {t("hero_subtitle")}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <a href="#calculator" className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95">
-                Estimate credits <ArrowRight className="h-4 w-4" />
+                {t("cta_estimate")} <ArrowRight className="h-4 w-4" />
               </a>
               <a href="#features" className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted">
-                Explore features
+                {t("cta_explore")}
               </a>
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <StatCard value="1,46,000+" label={t("stats_farmers")} />
+              <StatCard value="₹50+" label={t("stats_income")} />
+              <StatCard value="15+" label={t("stats_languages")} />
+              <StatCard value="24/7" label={t("stats_support")} />
             </div>
             <div className="mt-8 rounded-lg border bg-card p-4 shadow-sm">
               <div className="mb-2 flex items-center justify-between text-sm">
@@ -64,6 +72,18 @@ export default function Index() {
                 <p className="mt-1 text-muted-foreground">Supports standardized protocols and verification readiness for third-party auditors.</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4 py-10">
+        <div className="rounded-xl border bg-card/70 p-5 shadow-sm">
+          <div className="text-sm font-medium">{t("choose_language")}</div>
+          <div className="mt-3 max-w-sm">
+            <select aria-label={t("choose_language")} value={lang} onChange={(e) => (window as any).setLang?.(e.target.value) } className="h-10 w-full rounded-md border bg-background px-3">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+            </select>
           </div>
         </div>
       </section>
@@ -157,6 +177,15 @@ export default function Index() {
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+function StatCard({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-lg border bg-card p-4 text-center shadow-sm">
+      <div className="text-2xl font-bold text-emerald-700">{value}</div>
+      <div className="mt-1 text-xs text-muted-foreground">{label}</div>
     </div>
   );
 }
