@@ -55,6 +55,32 @@ export default function Profile() {
             onChange={(e) => setName(e.target.value)}
           />
         </label>
+        <div className="grid grid-cols-2 gap-4">
+          <label className="grid gap-1 text-sm">
+            <span>Latitude</span>
+            <input className="h-10 rounded-md border bg-background px-3" value={lat} onChange={(e) => setLat(e.target.value)} />
+          </label>
+          <label className="grid gap-1 text-sm">
+            <span>Longitude</span>
+            <input className="h-10 rounded-md border bg-background px-3" value={lng} onChange={(e) => setLng(e.target.value)} />
+          </label>
+        </div>
+        <label className="grid gap-1 text-sm">
+          <span>Land size (ha)</span>
+          <input className="h-10 rounded-md border bg-background px-3" value={landSize} onChange={(e) => setLandSize(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-sm">
+          <span>Crop types (comma separated)</span>
+          <input className="h-10 rounded-md border bg-background px-3" value={crops} onChange={(e) => setCrops(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-sm">
+          <span>Soil type</span>
+          <input className="h-10 rounded-md border bg-background px-3" value={soilType} onChange={(e) => setSoilType(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-sm">
+          <span>Farming practices</span>
+          <input className="h-10 rounded-md border bg-background px-3" value={practices} onChange={(e) => setPractices(e.target.value)} />
+        </label>
         <button
           className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
           onClick={save}
