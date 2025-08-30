@@ -21,9 +21,9 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // Auth
-  app.post("/api/auth/register", (await import("./routes/auth")).register);
-  app.post("/api/auth/login", (await import("./routes/auth")).login);
-  app.get("/api/auth/me", (await import("./routes/auth")).me);
+  app.post("/api/auth/register", register);
+  app.post("/api/auth/login", login);
+  app.get("/api/auth/me", me);
 
   return app;
 }
