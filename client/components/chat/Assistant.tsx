@@ -106,14 +106,21 @@ export function Assistant() {
           ))
         )}
       </div>
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder="Type your question..."
-          className="h-10 flex-1 rounded-md border bg-background px-3 text-sm"
+          className="h-10 min-w-[200px] flex-1 rounded-md border bg-background px-3 text-sm"
         />
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm">
+          <input type="file" accept="image/*" className="hidden" onChange={(e) => onPickImage(e.target.files?.[0] || null)} />
+          Image
+        </label>
+        <button onClick={toggleRecord} className="rounded-md border px-3 py-2 text-sm">
+          {recording ? "Stop" : "Mic"}
+        </button>
         <button
           onClick={send}
           className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-60"
@@ -122,6 +129,9 @@ export function Assistant() {
           {usingLLM ? "Thinking…" : "Send"}
         </button>
       </div>
+      {imageB64 && (
+        <div className="mt-2 text-xs text-muted-foreground">Image attached</div>
+      )}
     </div>
   );
 }
