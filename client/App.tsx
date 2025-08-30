@@ -27,38 +27,40 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <I18nProvider>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
-              <Header />
-              <div className="flex min-h-screen flex-col">
-                <main className="flex-1">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/credits" element={<Credits />} />
-                    <Route path="/reports" element={<Reports />} />
-                    <Route path="/learn" element={<LearningHub />} />
-                    <Route path="/support" element={<Support />} />
-                    <Route path="/map" element={<MapPage />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-                <Footer />
+    <ThemeProvider defaultTheme="system" storageKey="terramrv-theme">
+      <I18nProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
+                <Header />
+                <div className="flex min-h-screen flex-col">
+                  <main className="flex-1">
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/admin" element={<Admin />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/credits" element={<Credits />} />
+                      <Route path="/reports" element={<Reports />} />
+                      <Route path="/learn" element={<LearningHub />} />
+                      <Route path="/support" element={<Support />} />
+                      <Route path="/map" element={<MapPage />} />
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
               </div>
-            </div>
-            <FloatingAssistant />
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </I18nProvider>
+              <FloatingAssistant />
+            </BrowserRouter>
+          </TooltipProvider>
+        </AuthProvider>
+      </I18nProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
