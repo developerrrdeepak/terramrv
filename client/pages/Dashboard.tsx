@@ -35,9 +35,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-8 rounded-lg border bg-card p-6 shadow-sm">
-        <div className="mb-4 flex items-center gap-2 text-sm font-medium"><BarChart3 className="h-4 w-4" /> Carbon Estimator</div>
-        <CarbonEstimator />
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
+        <div className="rounded-lg border bg-card p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2 text-sm font-medium"><BarChart3 className="h-4 w-4" /> Carbon Estimator</div>
+          <CarbonEstimator />
+        </div>
+        <Assistant />
       </div>
     </div>
   );
