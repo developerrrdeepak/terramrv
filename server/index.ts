@@ -4,6 +4,8 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { register, login, me } from "./routes/auth";
 import { summary as adminSummary } from "./routes/admin";
+import { start as otpStart, verify as otpVerify } from "./routes/otp";
+import { start as googleStart, callback as googleCallback } from "./routes/google";
 
 export function createServer() {
   const app = express();
