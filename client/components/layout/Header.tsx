@@ -2,6 +2,7 @@ import { Menu, Leaf } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/context/i18n";
+import { useAuth } from "@/context/auth";
 
 const NAV = [
   { href: "#features", label: "Features" },
@@ -15,6 +16,7 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(true);
   const { lang, setLang, t } = useI18n();
+  const { user, signOut } = useAuth();
   return (
     <aside className="sticky top-0 z-40 h-screen w-full border-r bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:block">
       <div className="flex h-14 items-center justify-between px-4 md:hidden">
@@ -49,9 +51,14 @@ export function Header() {
           <a href="#calculator" className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95">
             {t("cta_estimate")}
           </a>
-          <a href="/dashboard" className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">
-            Dashboard
-          </a>
+          {user ? (
+            <>
+              <a href="/dashboard" className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">Dashboard</a>
+              <button onClick={signOut} className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">Logout</button>
+            </>
+          ) : (
+            <a href="#signin" className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">{t("signin_farmer")}</a>
+          )}
         </div>
       </div>
     </aside>
