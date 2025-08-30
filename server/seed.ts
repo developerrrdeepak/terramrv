@@ -10,5 +10,11 @@ export async function ensureAdmin() {
   const existing = await users.findOne({ email });
   if (existing) return;
   const hash = await bcrypt.hash(password, 10);
-  await users.insertOne({ email, password: hash, name: "Admin", role: "admin", createdAt: new Date() });
+  await users.insertOne({
+    email,
+    password: hash,
+    name: "Admin",
+    role: "admin",
+    createdAt: new Date(),
+  });
 }

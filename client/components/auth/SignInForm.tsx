@@ -20,10 +20,16 @@ export function SignInForm() {
       if (mode === "otp") {
         if (!code) {
           // start flow
-          await api("/api/auth/otp/start", { method: "POST", body: JSON.stringify({ email }) });
+          await api("/api/auth/otp/start", {
+            method: "POST",
+            body: JSON.stringify({ email }),
+          });
           setMessage("Code sent to your email.");
         } else {
-          const data = await api<{ token: string; user: { id: string; email: string; name: string } }>("/api/auth/otp/verify", {
+          const data = await api<{
+            token: string;
+            user: { id: string; email: string; name: string };
+          }>("/api/auth/otp/verify", {
             method: "POST",
             body: JSON.stringify({ email, code }),
           });
@@ -32,10 +38,14 @@ export function SignInForm() {
           setMessage(`Welcome ${data.user.name}`);
         }
       } else {
-        const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
+        const endpoint =
+          mode === "login" ? "/api/auth/login" : "/api/auth/register";
         const body: any = { email, password };
         if (mode === "register") body.name = name;
-        const data = await api<{ token: string; user: { id: string; email: string; name: string } }>(endpoint, {
+        const data = await api<{
+          token: string;
+          user: { id: string; email: string; name: string };
+        }>(endpoint, {
           method: "POST",
           body: JSON.stringify(body),
         });
@@ -66,51 +76,119 @@ export function SignInForm() {
       <div className="rounded-lg border bg-card p-6 shadow-sm">
         <div className="text-sm">You are signed in.</div>
         <div className="mt-3 flex gap-2">
-          <a href="/dashboard" className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground">Go to Dashboard</a>
-          <button onClick={signOut} className="rounded-md border px-3 py-2 text-sm hover:bg-muted">Sign out</button>
+          <a
+            href="/dashboard"
+            className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
+          >
+            Go to Dashboard
+          </a>
+          <button
+            onClick={signOut}
+            className="rounded-md border px-3 py-2 text-sm hover:bg-muted"
+          >
+            Sign out
+          </button>
         </div>
       </div>
     );
 
   return (
-    <form onSubmit={onSubmit} className="rounded-lg border bg-card p-6 shadow-sm">
+    <form
+      onSubmit={onSubmit}
+      className="rounded-lg border bg-card p-6 shadow-sm"
+    >
       <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
-        <button type="button" className={`rounded-md border px-3 py-1 ${mode === "login" ? "bg-muted" : ""}`} onClick={() => setMode("login")}>Login</button>
-        <button type="button" className={`rounded-md border px-3 py-1 ${mode === "register" ? "bg-muted" : ""}`} onClick={() => setMode("register")}>Register</button>
-        <button type="button" className={`rounded-md border px-3 py-1 ${mode === "otp" ? "bg-muted" : ""}`} onClick={() => setMode("otp")}>Email OTP</button>
-        <button type="button" className="rounded-md border px-3 py-1" onClick={google}>Google</button>
+        <button
+          type="button"
+          className={`rounded-md border px-3 py-1 ${mode === "login" ? "bg-muted" : ""}`}
+          onClick={() => setMode("login")}
+        >
+          Login
+        </button>
+        <button
+          type="button"
+          className={`rounded-md border px-3 py-1 ${mode === "register" ? "bg-muted" : ""}`}
+          onClick={() => setMode("register")}
+        >
+          Register
+        </button>
+        <button
+          type="button"
+          className={`rounded-md border px-3 py-1 ${mode === "otp" ? "bg-muted" : ""}`}
+          onClick={() => setMode("otp")}
+        >
+          Email OTP
+        </button>
+        <button
+          type="button"
+          className="rounded-md border px-3 py-1"
+          onClick={google}
+        >
+          Google
+        </button>
       </div>
 
       {mode === "register" && (
         <label className="mb-3 grid gap-1 text-sm">
           <span>Name</span>
-          <input className="h-10 rounded-md border bg-background px-3" value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            className="h-10 rounded-md border bg-background px-3"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
       )}
 
       <label className="mb-3 grid gap-1 text-sm">
         <span>Email</span>
-        <input type="email" className="h-10 rounded-md border bg-background px-3" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input
+          type="email"
+          className="h-10 rounded-md border bg-background px-3"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </label>
 
       {mode !== "otp" && (
         <label className="mb-4 grid gap-1 text-sm">
           <span>Password</span>
-          <input type="password" className="h-10 rounded-md border bg-background px-3" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input
+            type="password"
+            className="h-10 rounded-md border bg-background px-3"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </label>
       )}
 
       {mode === "otp" && (
         <label className="mb-4 grid gap-1 text-sm">
           <span>Code (leave blank, click submit to receive)</span>
-          <input className="h-10 rounded-md border bg-background px-3" value={code} onChange={(e) => setCode(e.target.value)} />
+          <input
+            className="h-10 rounded-md border bg-background px-3"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
         </label>
       )}
 
-      <button disabled={loading} className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60">
-        {loading ? "Please wait…" : mode === "register" ? "Create account" : mode === "otp" ? (code ? "Verify" : "Send code") : "Sign in"}
+      <button
+        disabled={loading}
+        className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+      >
+        {loading
+          ? "Please wait…"
+          : mode === "register"
+            ? "Create account"
+            : mode === "otp"
+              ? code
+                ? "Verify"
+                : "Send code"
+              : "Sign in"}
       </button>
-      {message && <div className="mt-3 text-xs text-muted-foreground">{message}</div>}
+      {message && (
+        <div className="mt-3 text-xs text-muted-foreground">{message}</div>
+      )}
     </form>
   );
 }

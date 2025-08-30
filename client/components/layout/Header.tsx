@@ -24,7 +24,11 @@ export function Header() {
           <Leaf className="h-6 w-6" />
           <span className="font-semibold">{t("brand")}</span>
         </a>
-        <button aria-label="Toggle menu" className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border" onClick={() => setOpen((s) => !s)}>
+        <button
+          aria-label="Toggle menu"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border"
+          onClick={() => setOpen((s) => !s)}
+        >
           <Menu className="h-5 w-5" />
         </button>
       </div>
@@ -38,26 +42,53 @@ export function Header() {
         </div>
         <nav className="grid gap-1">
           {NAV.map((item) => (
-            <a key={item.href} href={item.href} className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+            <a
+              key={item.href}
+              href={item.href}
+              className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+            >
               {item.label}
             </a>
           ))}
         </nav>
         <div className="mt-6 grid gap-2">
-          <select aria-label="Language" value={lang} onChange={(e) => setLang(e.target.value as any)} className="h-9 rounded-md border bg-background px-2 text-sm">
+          <select
+            aria-label="Language"
+            value={lang}
+            onChange={(e) => setLang(e.target.value as any)}
+            className="h-9 rounded-md border bg-background px-2 text-sm"
+          >
             <option value="en">English</option>
             <option value="hi">हिन्दी</option>
           </select>
-          <a href="#calculator" className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95">
+          <a
+            href="#calculator"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95"
+          >
             {t("cta_estimate")}
           </a>
           {user ? (
             <>
-              <a href="/dashboard" className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">Dashboard</a>
-              <button onClick={signOut} className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">Logout</button>
+              <a
+                href="/dashboard"
+                className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted"
+              >
+                Dashboard
+              </a>
+              <button
+                onClick={signOut}
+                className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted"
+              >
+                Logout
+              </button>
             </>
           ) : (
-            <a href="#signin" className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted">{t("signin_farmer")}</a>
+            <a
+              href="#signin"
+              className="inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted"
+            >
+              {t("signin_farmer")}
+            </a>
           )}
         </div>
       </div>

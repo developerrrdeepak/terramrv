@@ -5,7 +5,10 @@ import { handleDemo } from "./routes/demo";
 import { register, login, me } from "./routes/auth";
 import { summary as adminSummary } from "./routes/admin";
 import { start as otpStart, verify as otpVerify } from "./routes/otp";
-import { start as googleStart, callback as googleCallback } from "./routes/google";
+import {
+  start as googleStart,
+  callback as googleCallback,
+} from "./routes/google";
 
 export function createServer() {
   const app = express();
@@ -40,7 +43,7 @@ export function createServer() {
   app.get("/api/admin/summary", adminSummary);
 
   // Seed admin (non-blocking)
-  import("./seed").then(m => m.ensureAdmin?.()).catch(() => {});
+  import("./seed").then((m) => m.ensureAdmin?.()).catch(() => {});
 
   return app;
 }

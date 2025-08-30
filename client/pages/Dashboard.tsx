@@ -10,7 +10,9 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState("");
   useEffect(() => {
     const h = new Date().getHours();
-    setGreeting(h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening");
+    setGreeting(
+      h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening",
+    );
   }, []);
 
   if (!user) {
@@ -26,7 +28,9 @@ export default function Dashboard() {
       <div className="mb-6 flex items-center justify-between">
         <div>
           <div className="text-sm text-muted-foreground">{greeting}</div>
-          <h2 className="text-2xl font-semibold">Welcome, {user?.name || user?.email}</h2>
+          <h2 className="text-2xl font-semibold">
+            Welcome, {user?.name || user?.email}
+          </h2>
         </div>
       </div>
 
@@ -40,14 +44,18 @@ export default function Dashboard() {
           <div className="mt-2 text-3xl font-bold">3</div>
         </div>
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="text-sm text-muted-foreground">Verification Status</div>
+          <div className="text-sm text-muted-foreground">
+            Verification Status
+          </div>
           <div className="mt-2 text-3xl font-bold text-emerald-500">Ready</div>
         </div>
       </div>
 
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2 text-sm font-medium"><BarChart3 className="h-4 w-4" /> Carbon Estimator</div>
+          <div className="mb-4 flex items-center gap-2 text-sm font-medium">
+            <BarChart3 className="h-4 w-4" /> Carbon Estimator
+          </div>
           <CarbonEstimator />
         </div>
         <Assistant />

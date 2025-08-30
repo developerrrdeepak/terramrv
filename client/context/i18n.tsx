@@ -14,7 +14,10 @@ const STORAGE_KEY = "terramrv_lang";
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
-    const saved = typeof window !== "undefined" ? (localStorage.getItem(STORAGE_KEY) as Lang | null) : null;
+    const saved =
+      typeof window !== "undefined"
+        ? (localStorage.getItem(STORAGE_KEY) as Lang | null)
+        : null;
     return saved && translations[saved] ? saved : "en";
   });
 
@@ -29,7 +32,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, [lang]);
 
   const t = useMemo(() => {
-    return (key: string) => translations[lang][key] ?? translations.en[key] ?? key;
+    return (key: string) =>
+      translations[lang][key] ?? translations.en[key] ?? key;
   }, [lang]);
 
   const value = useMemo(() => ({ lang, setLang, t }), [lang, t]);

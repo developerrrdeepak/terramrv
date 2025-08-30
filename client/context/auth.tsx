@@ -49,7 +49,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
   };
 
-  const value = useMemo(() => ({ user, loading, signOut, setToken, refresh }), [user, loading]);
+  const value = useMemo(
+    () => ({ user, loading, signOut, setToken, refresh }),
+    [user, loading],
+  );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

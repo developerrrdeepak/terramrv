@@ -5,7 +5,8 @@ export const translations = {
     hero_title_line1: "A new path to",
     hero_title_line2: "Carbon Income",
     hero_title_line3: "for farmers",
-    hero_subtitle: "Calculate, verify, and report carbon credits with minimized uncertainty and end-to-end transparency.",
+    hero_subtitle:
+      "Calculate, verify, and report carbon credits with minimized uncertainty and end-to-end transparency.",
     cta_estimate: "Estimate credits",
     cta_explore: "Explore features",
     stats_farmers: "Farmers onboarded",
@@ -21,7 +22,8 @@ export const translations = {
     hero_title_line1: "किसानों के लिए",
     hero_title_line2: "Carbon Income",
     hero_title_line3: "का नया रास्ता",
-    hero_subtitle: "कार्बन क्रेडिट की गणना, सत्यापन और रिपोर्टिंग—कम अनिश्चितता और पूरी पारदर्शिता के साथ।",
+    hero_subtitle:
+      "कार्बन क्रेडिट की गणना, सत्यापन और रिपोर्टिंग—कम अनिश्चितता और पूरी पारदर्शिता के साथ।",
     cta_estimate: "क्रेडिट अनुमान लगाएं",
     cta_explore: "फ़ीचर्स देखें",
     stats_farmers: "किसान जुड़े",
