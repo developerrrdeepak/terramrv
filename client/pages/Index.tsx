@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { CarbonEstimator } from "@/components/estimator/CarbonEstimator";
-import { ArrowRight, ShieldCheck, Satellite, Trees, BookOpen, FileSpreadsheet, Users, BarChart3, Cpu, Database } from "lucide-react";
+import { ArrowRight, ShieldCheck, Satellite, TreePine, BookOpen, FileSpreadsheet, Users, BarChart3, Cpu, Database } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useI18n } from "@/context/i18n";
 
