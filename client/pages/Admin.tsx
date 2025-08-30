@@ -17,7 +17,11 @@ export default function Admin() {
     return (
       <div className="container mx-auto px-4 py-8 text-sm text-muted-foreground">
         Admin access required. Please login as admin.
-        <div className="mt-3"><a href="#signin" className="rounded-md border px-3 py-2">Sign in</a></div>
+        <div className="mt-3">
+          <a href="#signin" className="rounded-md border px-3 py-2">
+            Sign in
+          </a>
+        </div>
       </div>
     );
   }
