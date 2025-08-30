@@ -26,7 +26,7 @@ export default function Profile() {
     try {
       const res = await api<{ user: any }>("/api/profile", {
         method: "PUT",
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, lat, lng, landSize, crops, soilType, practices }),
       });
       setMessage("Profile saved");
       setName(res.user.name || name);
