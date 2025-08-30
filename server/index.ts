@@ -47,6 +47,11 @@ export function createServer() {
   app.get("/api/auth/social/google/start", googleStart);
   app.get("/api/auth/social/google/callback", googleCallback);
 
+  // Activity logs (farmer)
+  app.get("/api/logs", listLogs);
+  app.post("/api/logs", addLog);
+  app.delete("/api/logs/:id", deleteLog);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
