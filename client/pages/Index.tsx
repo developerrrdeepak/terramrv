@@ -36,7 +36,7 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-950 via-background to-background">
+      <section className="relative overflow-hidden bg-gradient-to-br from-teal-900 via-teal-800 to-emerald-900">
         <Scene3D />
         <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-primary/20 blur-3xl" />
         <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-emerald-400/20 blur-3xl" />
