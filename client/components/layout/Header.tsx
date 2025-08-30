@@ -3,6 +3,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/context/i18n";
 import { useAuth } from "@/context/auth";
+import { ThemeTabs } from "@/components/ui/theme-tabs";
 
 const NAV = [
   { href: "#features", label: "Features" },
@@ -61,6 +62,8 @@ export function Header() {
             <option value="en">English</option>
             <option value="hi">हिन्दी</option>
           </select>
+
+          <ThemeTabs />
           <a
             href="#calculator"
             className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95"
