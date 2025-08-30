@@ -8,6 +8,9 @@ import {
   listFarmers,
   addFarmer,
   removeFarmer,
+  listRegistrations,
+  approveRegistration,
+  setUserRole,
 } from "./routes/admin";
 import { start as otpStart, verify as otpVerify } from "./routes/otp";
 import {
