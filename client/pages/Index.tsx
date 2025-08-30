@@ -17,6 +17,7 @@ import { useI18n } from "@/context/i18n";
 import { SignInForm } from "@/components/auth/SignInForm";
 import { Assistant } from "@/components/chat/Assistant";
 import { Scene3D } from "@/components/3d/Scene3D";
+import { SpaceBackground } from "@/components/3d/SpaceBackground";
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();
@@ -36,13 +37,9 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section
-        className="relative overflow-hidden dark:bg-gradient-to-br dark:from-black dark:via-gray-900 dark:to-black"
-        style={{background: 'linear-gradient(135deg, #1e3a3a 0%, #0f2a2a 50%, #1a3636 100%)'}}
-      >
+      <section className="relative overflow-hidden">
+        <SpaceBackground />
         <Scene3D />
-        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl" style={{backgroundColor: 'rgba(160, 220, 60, 0.25)'}} />
-        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full blur-3xl" style={{backgroundColor: 'rgba(140, 200, 50, 0.2)'}} />
         <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
