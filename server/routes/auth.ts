@@ -3,7 +3,7 @@ import { getDb } from "../db";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-interface JWTPayload { _id: string; email: string }
+interface JWTPayload { _id: string; email: string; role?: string }
 
 const COLLECTION = "users";
 
