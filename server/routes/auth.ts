@@ -147,13 +147,23 @@ export const profileUpdate: RequestHandler = async (req, res) => {
     if (!token) return res.status(401).json({ error: "Missing token" });
     const secret = process.env.JWT_SECRET || "dev-secret";
     const payload = jwt.verify(token, secret) as JWTPayload;
-    const { name } = req.body as { name?: string };
+    const { name, lat, lng, landSize, crops, soilType, practices } = req.body as any;
     const db = await getDb();
     await db
       .collection(COLLECTION)
       .updateOne(
         { _id: payload._id as any },
-        { $set: { ...(name ? { name } : {}) } },
+        {
+          $set: {
+            ...(name ? { name } : {}),
+            ...(lat ? { lat } : {}),
+            ...(lng ? { lng } : {}),
+            ...(landSize ? { landSize } : {}),
+            ...(crops ? { crops } : {}),
+            ...(soilType ? { soilType } : {}),
+            ...(practices ? { practices } : {}),
+          },
+        },
       );
     const user = await db
       .collection(COLLECTION)
