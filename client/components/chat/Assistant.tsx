@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { useEffect, useRef, useState } from "react";
+
 const FAQ: Record<string, string> = {
   "what is carbon credit":
     "A carbon credit represents 1 ton of CO2e reduced or removed. TerraMRV helps estimate and verify credits for agroforestry and rice projects.",
