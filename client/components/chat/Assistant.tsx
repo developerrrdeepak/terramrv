@@ -21,14 +21,35 @@ export function Assistant() {
     { role: "user" | "assistant"; content: string }[]
   >([]);
   const [input, setInput] = useState("");
+  const [usingLLM, setUsingLLM] = useState(false);
 
   const send = async () => {
     if (!input.trim()) return;
     const q = input.trim();
     setMessages((m) => [...m, { role: "user", content: q }]);
     setInput("");
-    const a = localAnswer(q);
-    setMessages((m) => [...m, { role: "assistant", content: a }]);
+
+    try {
+      setUsingLLM(true);
+      const res = await fetch("/api/assistant/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [{ role: "user", content: q }, ...messages] }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.content || localAnswer(q);
+        setMessages((m) => [...m, { role: "assistant", content }]);
+      } else {
+        const a = localAnswer(q);
+        setMessages((m) => [...m, { role: "assistant", content: a }]);
+      }
+    } catch {
+      const a = localAnswer(q);
+      setMessages((m) => [...m, { role: "assistant", content: a }]);
+    } finally {
+      setUsingLLM(false);
+    }
   };
 
   return (
@@ -61,9 +82,10 @@ export function Assistant() {
         />
         <button
           onClick={send}
-          className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
+          className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-60"
+          disabled={usingLLM}
         >
-          Send
+          {usingLLM ? "Thinking…" : "Send"}
         </button>
       </div>
     </div>
