@@ -3,6 +3,7 @@ import { CarbonEstimator } from "@/components/estimator/CarbonEstimator";
 import { ArrowRight, ShieldCheck, Satellite, TreePine, BookOpen, FileSpreadsheet, Users, BarChart3, Cpu, Database } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useI18n } from "@/context/i18n";
+import { SignInForm } from "@/components/auth/SignInForm";
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();
@@ -154,9 +155,7 @@ export default function Index() {
       </section>
 
       <section id="signin" className="container mx-auto px-4 py-16">
-        <div className="rounded-lg border bg-card p-6 text-sm text-muted-foreground">
-          Sign-in flow to be configured (email/OTP/phone). Connect auth provider to enable.
-        </div>
+        <SignInForm />
       </section>
 
       <section id="reports" className="container mx-auto px-4 py-16">
