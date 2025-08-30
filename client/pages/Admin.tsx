@@ -13,6 +13,15 @@ export default function Admin() {
       .catch((e) => setError("Unauthorized"));
   }, []);
 
+  if (!user || user.role !== "admin") {
+    return (
+      <div className="container mx-auto px-4 py-8 text-sm text-muted-foreground">
+        Admin access required. Please login as admin.
+        <div className="mt-3"><a href="#signin" className="rounded-md border px-3 py-2">Sign in</a></div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-2xl font-semibold">Admin Dashboard</h2>
