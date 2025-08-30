@@ -6,6 +6,12 @@ export default function Profile() {
   const [name, setName] = useState(user?.name || "");
   const [email] = useState(user?.email || "");
   const [message, setMessage] = useState<string | null>(null);
+  const [lat, setLat] = useState<string>("");
+  const [lng, setLng] = useState<string>("");
+  const [landSize, setLandSize] = useState<string>("");
+  const [crops, setCrops] = useState<string>("");
+  const [soilType, setSoilType] = useState<string>("");
+  const [practices, setPractices] = useState<string>("");
 
   if (!user) {
     return (
