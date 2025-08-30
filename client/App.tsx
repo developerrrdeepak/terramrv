@@ -21,8 +21,9 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
+          <Header />
           <div className="flex min-h-screen flex-col">
-            <Header />
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -32,6 +33,7 @@ const App = () => (
             </main>
             <Footer />
           </div>
+        </div>
         </BrowserRouter>
       </TooltipProvider>
     </I18nProvider>
