@@ -22,11 +22,44 @@ export function Assistant() {
   >([]);
   const [input, setInput] = useState("");
   const [usingLLM, setUsingLLM] = useState(false);
+  const [imageB64, setImageB64] = useState<string | null>(null);
+  const [recording, setRecording] = useState(false);
+  const mediaRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+
+  const onPickImage = async (file: File | null) => {
+    if (!file) return setImageB64(null);
+    const buf = await file.arrayBuffer();
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+    setImageB64(b64);
+  };
+
+  const toggleRecord = async () => {
+    if (recording) {
+      mediaRef.current?.stop();
+      setRecording(false);
+      return;
+    }
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const rec = new MediaRecorder(stream);
+    mediaRef.current = rec;
+    chunksRef.current = [];
+    rec.ondataavailable = (e) => e.data && chunksRef.current.push(e.data);
+    rec.onstop = async () => {
+      const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+      const res = await fetch("/api/assistant/stt", { method: "POST", headers: { "Content-Type": blob.type }, body: blob });
+      const data = await res.json();
+      if (data?.text) setInput((v) => (v ? v + " " : "") + data.text);
+      stream.getTracks().forEach((t) => t.stop());
+    };
+    rec.start();
+    setRecording(true);
+  };
 
   const send = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() && !imageB64) return;
     const q = input.trim();
-    setMessages((m) => [...m, { role: "user", content: q }]);
+    setMessages((m) => (q ? [...m, { role: "user", content: q }] : m));
     setInput("");
 
     try {
@@ -34,8 +67,9 @@ export function Assistant() {
       const res = await fetch("/api/assistant/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [{ role: "user", content: q }, ...messages] }),
+        body: JSON.stringify({ messages: (q ? [{ role: "user", content: q }] : []).concat(messages), imageBase64: imageB64 }),
       });
+      setImageB64(null);
       if (res.ok) {
         const data = await res.json();
         const content = data.content || localAnswer(q);
