@@ -25,6 +25,9 @@ export function createServer() {
   app.post("/api/auth/login", login);
   app.get("/api/auth/me", me);
 
+  // Admin
+  app.get("/api/admin/summary", (await import("./routes/admin")).summary);
+
   // Seed admin (non-blocking)
   import("./seed").then(m => m.ensureAdmin?.()).catch(() => {});
 
