@@ -18,25 +18,27 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <I18nProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
-          <Header />
-          <div className="flex min-h-screen flex-col">
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </div>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
+              <Header />
+              <div className="flex min-h-screen flex-col">
+                <main className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </div>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </I18nProvider>
   </QueryClientProvider>
 );
