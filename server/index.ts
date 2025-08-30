@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { register, login, me } from "./routes/auth";
+import { summary as adminSummary } from "./routes/admin";
 
 export function createServer() {
   const app = express();
@@ -26,8 +27,7 @@ export function createServer() {
   app.get("/api/auth/me", me);
 
   // Admin
-  const admin = await import("./routes/admin");
-  app.get("/api/admin/summary", admin.summary);
+  app.get("/api/admin/summary", adminSummary);
 
   // Seed admin (non-blocking)
   import("./seed").then(m => m.ensureAdmin?.()).catch(() => {});
