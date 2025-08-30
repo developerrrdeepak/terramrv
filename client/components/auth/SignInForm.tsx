@@ -44,7 +44,10 @@ export function SignInForm() {
     return (
       <div className="rounded-lg border bg-card p-6 shadow-sm">
         <div className="text-sm">You are signed in.</div>
-        <button onClick={signOut} className="mt-3 rounded-md border px-3 py-2 text-sm hover:bg-muted">Sign out</button>
+        <div className="mt-3 flex gap-2">
+          <a href="/dashboard" className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground">Go to Dashboard</a>
+          <button onClick={signOut} className="rounded-md border px-3 py-2 text-sm hover:bg-muted">Sign out</button>
+        </div>
       </div>
     );
 
