@@ -14,6 +14,7 @@ import {
   start as googleStart,
   callback as googleCallback,
 } from "./routes/google";
+import { listLogs, addLog, deleteLog } from "./routes/logs";
 
 export function createServer() {
   const app = express();
