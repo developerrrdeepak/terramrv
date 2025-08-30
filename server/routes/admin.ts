@@ -23,6 +23,36 @@ export const summary: RequestHandler = async (req, res) => {
   res.json({ users });
 };
 
+export const listRegistrations: RequestHandler = async (req, res) => {
+  const adminId = requireAdmin(req);
+  if (!adminId) return res.status(401).json({ error: "Unauthorized" });
+  const status = (req.query.status as string) || "pending";
+  const db = await getDb();
+  const cursor = await (db as any).collection("users").find({ approved: status === "approved" ? true : { $ne: true } });
+  const users = await (cursor as any).toArray();
+  res.json({ users: users.map((u: any) => ({ id: String(u._id), email: u.email, name: u.name, role: u.role, approved: !!u.approved })) });
+};
+
+export const approveRegistration: RequestHandler = async (req, res) => {
+  const adminId = requireAdmin(req);
+  if (!adminId) return res.status(401).json({ error: "Unauthorized" });
+  const { id } = req.params as any;
+  const db = await getDb();
+  await (db as any).collection("users").updateOne({ _id: id as any }, { $set: { approved: true } });
+  res.json({ ok: true });
+};
+
+export const setUserRole: RequestHandler = async (req, res) => {
+  const adminId = requireAdmin(req);
+  if (!adminId) return res.status(401).json({ error: "Unauthorized" });
+  const { id } = req.params as any;
+  const { role } = req.body as any;
+  if (!role) return res.status(400).json({ error: "role required" });
+  const db = await getDb();
+  await (db as any).collection("users").updateOne({ _id: id as any }, { $set: { role } });
+  res.json({ ok: true });
+};
+
 export const listFarmers: RequestHandler = async (req, res) => {
   const adminId = requireAdmin(req);
   if (!adminId) return res.status(401).json({ error: "Unauthorized" });
