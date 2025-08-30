@@ -70,6 +70,9 @@ export function createServer() {
   // Support
   app.post("/api/support", submitSupport);
 
+  // Assistant
+  app.post("/api/assistant/chat", assistantChat);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
