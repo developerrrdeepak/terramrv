@@ -36,10 +36,10 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-900">
+      <section className="relative overflow-hidden" style={{background: 'linear-gradient(135deg, #0E1B14 0%, #134e4a 50%, #0E1B14 100%)'}}>
         <Scene3D />
-        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-lime-400/25 blur-3xl" />
-        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-lime-300/20 blur-3xl" />
+        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl" style={{backgroundColor: 'rgba(22, 163, 74, 0.3)'}} />
+        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full blur-3xl" style={{backgroundColor: 'rgba(34, 197, 94, 0.25)'}} />
         <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
