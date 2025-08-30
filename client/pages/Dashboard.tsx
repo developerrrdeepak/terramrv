@@ -12,6 +12,14 @@ export default function Dashboard() {
     setGreeting(h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening");
   }, []);
 
+  if (!user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <SignInForm />
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
