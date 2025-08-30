@@ -68,13 +68,14 @@ export function Assistant() {
 
     try {
       setUsingLLM(true);
+      const payload = {
+        messages: [...messages, ...(q ? [{ role: "user", content: q }] : [])],
+        imageBase64: imageB64,
+      };
       const res = await fetch("/api/assistant/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: (q ? [{ role: "user", content: q }] : []).concat(messages),
-          imageBase64: imageB64,
-        }),
+        body: JSON.stringify(payload),
       });
       setImageB64(null);
       if (res.ok) {
@@ -82,7 +83,8 @@ export function Assistant() {
         const content = data.content || localAnswer(q);
         setMessages((m) => [...m, { role: "assistant", content }]);
       } else {
-        const a = localAnswer(q);
+        const err = await res.text();
+        const a = `LLM error: ${err.slice(0, 120)}`;
         setMessages((m) => [...m, { role: "assistant", content: a }]);
       }
     } catch {
