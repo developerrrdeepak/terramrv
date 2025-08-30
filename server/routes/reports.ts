@@ -19,23 +19,36 @@ export const farmerReport: RequestHandler = async (req, res) => {
   const user = requireUser(req);
   if (!user) return res.status(401).json({ error: "Unauthorized" });
   const db = await getDb();
-  const logs = await (await (db as any).collection("activity_logs").find({ userId: user.id })).toArray();
+  const logs = await (
+    await (db as any).collection("activity_logs").find({ userId: user.id })
+  ).toArray();
   const byMonth: Record<string, { emissions: number; savings: number }> = {};
   for (const l of logs) {
     const k = String(l.date).slice(0, 7);
     const qty = l.quantity ?? 1;
     const type = String(l.type);
-    const isEmission = ["plowing", "seeding", "harvesting", "fertilizer", "pesticide", "irrigation", "machinery"].includes(type);
-    const value = (isNaN(Number(qty)) ? 1 : Number(qty));
+    const isEmission = [
+      "plowing",
+      "seeding",
+      "harvesting",
+      "fertilizer",
+      "pesticide",
+      "irrigation",
+      "machinery",
+    ].includes(type);
+    const value = isNaN(Number(qty)) ? 1 : Number(qty);
     const v = (byMonth[k] ||= { emissions: 0, savings: 0 });
-    if (isEmission) v.emissions += value; else v.savings += value;
+    if (isEmission) v.emissions += value;
+    else v.savings += value;
   }
   res.json({ byMonth });
 };
 
 export const adminRegionReport: RequestHandler = async (_req, res) => {
   const db = await getDb();
-  const users = await (await (db as any).collection("users").find({})).toArray();
+  const users = await (
+    await (db as any).collection("users").find({})
+  ).toArray();
   const regions: Record<string, number> = {};
   for (const u of users) {
     const lat = parseFloat(u.lat || 0);

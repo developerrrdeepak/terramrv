@@ -13,7 +13,9 @@ export default function MapPage() {
       <div className="mt-4 aspect-video w-full overflow-hidden rounded-md border">
         <iframe title="map" className="h-full w-full" src={src} />
       </div>
-      <div className="mt-2 text-xs text-muted-foreground">Center: {lat.toFixed(4)}, {lng.toFixed(4)}</div>
+      <div className="mt-2 text-xs text-muted-foreground">
+        Center: {lat.toFixed(4)}, {lng.toFixed(4)}
+      </div>
     </div>
   );
 }

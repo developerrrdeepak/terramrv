@@ -3,7 +3,8 @@ import type { RequestHandler } from "express";
 export const chat: RequestHandler = async (req, res) => {
   try {
     const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return res.status(400).json({ error: "Missing OPENAI_API_KEY" });
+    if (!apiKey)
+      return res.status(400).json({ error: "Missing OPENAI_API_KEY" });
     const { messages, imageBase64 } = req.body as {
       messages: { role: "user" | "assistant" | "system"; content: string }[];
       imageBase64?: string | null;
@@ -27,7 +28,10 @@ export const chat: RequestHandler = async (req, res) => {
           role: "user",
           content: [
             { type: "text", text: m.content },
-            { type: "image_url", image_url: { url: `data:image/png;base64,${imageBase64}` } },
+            {
+              type: "image_url",
+              image_url: { url: `data:image/png;base64,${imageBase64}` },
+            },
           ],
         });
       } else {
@@ -64,7 +68,8 @@ export const chat: RequestHandler = async (req, res) => {
 export const stt: RequestHandler = async (req, res) => {
   try {
     const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return res.status(400).json({ error: "Missing OPENAI_API_KEY" });
+    if (!apiKey)
+      return res.status(400).json({ error: "Missing OPENAI_API_KEY" });
     // Expect raw audio in request body as binary (webm/ogg)
     const chunks: Buffer[] = [];
     req.on("data", (c) => chunks.push(c as Buffer));
@@ -72,7 +77,9 @@ export const stt: RequestHandler = async (req, res) => {
     const audio = Buffer.concat(chunks);
 
     const form = new FormData();
-    const file = new Blob([audio], { type: req.headers["content-type"] || "audio/webm" });
+    const file = new Blob([audio], {
+      type: req.headers["content-type"] || "audio/webm",
+    });
     form.append("file", file, "audio.webm");
     form.append("model", "whisper-1");
     const r = await fetch("https://api.openai.com/v1/audio/transcriptions", {

@@ -7,10 +7,21 @@ function initMailer() {
   return true;
 }
 
-export async function sendMail(to: string, subject: string, text: string, html?: string) {
+export async function sendMail(
+  to: string,
+  subject: string,
+  text: string,
+  html?: string,
+) {
   const ok = initMailer();
   const from = process.env.SENDGRID_FROM_EMAIL || "no-reply@terramrv.org";
-  const msg = { to, from, subject, text, html: html || `<pre>${text}</pre>` } as any;
+  const msg = {
+    to,
+    from,
+    subject,
+    text,
+    html: html || `<pre>${text}</pre>`,
+  } as any;
   if (!ok) {
     console.log(`[DEV][mailer] Email to ${to}: ${subject} -> ${text}`);
     return;

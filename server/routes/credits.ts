@@ -65,6 +65,13 @@ export const requestPayout: RequestHandler = async (req, res) => {
   const a = Number(amount);
   if (!a || a <= 0) return res.status(400).json({ error: "Invalid amount" });
   const db = await getDb();
-  await (db as any).collection("payouts").insertOne({ userId: user.id, amount: a, status: "requested", createdAt: new Date() });
+  await (db as any)
+    .collection("payouts")
+    .insertOne({
+      userId: user.id,
+      amount: a,
+      status: "requested",
+      createdAt: new Date(),
+    });
   res.json({ ok: true });
 };

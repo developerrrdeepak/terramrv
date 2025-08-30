@@ -47,7 +47,11 @@ export function Assistant() {
     rec.ondataavailable = (e) => e.data && chunksRef.current.push(e.data);
     rec.onstop = async () => {
       const blob = new Blob(chunksRef.current, { type: "audio/webm" });
-      const res = await fetch("/api/assistant/stt", { method: "POST", headers: { "Content-Type": blob.type }, body: blob });
+      const res = await fetch("/api/assistant/stt", {
+        method: "POST",
+        headers: { "Content-Type": blob.type },
+        body: blob,
+      });
       const data = await res.json();
       if (data?.text) setInput((v) => (v ? v + " " : "") + data.text);
       stream.getTracks().forEach((t) => t.stop());
@@ -67,7 +71,10 @@ export function Assistant() {
       const res = await fetch("/api/assistant/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: (q ? [{ role: "user", content: q }] : []).concat(messages), imageBase64: imageB64 }),
+        body: JSON.stringify({
+          messages: (q ? [{ role: "user", content: q }] : []).concat(messages),
+          imageBase64: imageB64,
+        }),
       });
       setImageB64(null);
       if (res.ok) {
@@ -115,10 +122,18 @@ export function Assistant() {
           className="h-10 min-w-[200px] flex-1 rounded-md border bg-background px-3 text-sm"
         />
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm">
-          <input type="file" accept="image/*" className="hidden" onChange={(e) => onPickImage(e.target.files?.[0] || null)} />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => onPickImage(e.target.files?.[0] || null)}
+          />
           Image
         </label>
-        <button onClick={toggleRecord} className="rounded-md border px-3 py-2 text-sm">
+        <button
+          onClick={toggleRecord}
+          className="rounded-md border px-3 py-2 text-sm"
+        >
           {recording ? "Stop" : "Mic"}
         </button>
         <button
