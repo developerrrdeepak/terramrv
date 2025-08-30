@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useI18n } from "@/context/i18n";
 
 export default function Index() {
-  const { t, lang } = useI18n();
+  const { t, lang, } = useI18n() as any;
   const milestones = [
     { label: "Profile", value: 20 },
     { label: "Data", value: 55 },
