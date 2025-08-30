@@ -15,6 +15,9 @@ import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
 import Credits from "./pages/Credits";
 import Reports from "./pages/Reports";
+import LearningHub from "./pages/LearningHub";
+import Support from "./pages/Support";
+import MapPage from "./pages/Map";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
