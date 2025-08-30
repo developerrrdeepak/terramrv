@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api, saveToken, clearToken, getToken } from "@/lib/auth";
+import { useAuth } from "@/context/auth";
 
 export function SignInForm() {
   const [mode, setMode] = useState<"login" | "register">("login");
