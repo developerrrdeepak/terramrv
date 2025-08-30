@@ -57,6 +57,14 @@ export function createServer() {
   app.post("/api/logs", addLog);
   app.delete("/api/logs/:id", deleteLog);
 
+  // Credits
+  app.get("/api/credits", getCredits);
+  app.post("/api/credits/payouts", requestPayout);
+
+  // Reports
+  app.get("/api/reports/farmer", farmerReport);
+  app.get("/api/admin/reports/regions", adminRegionReport);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
