@@ -2,10 +2,6 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
 import { Suspense } from 'react';
 import { WireframeGlobe } from './WireframeGlobe';
-import { Tree } from './Tree';
-import { Particles } from './Particles';
-import { Leaf } from './Leaf';
-import { CarbonMolecule } from './CarbonMolecule';
 
 export function Scene3D() {
   return (
@@ -18,14 +14,6 @@ export function Scene3D() {
           <pointLight position={[5, -5, 10]} intensity={0.3} color="#22d3ee" />
           
           <WireframeGlobe />
-          <Tree position={[-3, -1, 0]} />
-          <Tree position={[-2.5, 1, -1]} />
-          <CarbonMolecule position={[1, 2, -1]} />
-          <CarbonMolecule position={[-1, -2, 1]} />
-          <Leaf position={[3, 1, -2]} />
-          <Leaf position={[-4, 0, 1]} />
-          <Leaf position={[2, -1, 2]} />
-          <Particles />
           
           <Environment preset="forest" />
           <OrbitControls 
