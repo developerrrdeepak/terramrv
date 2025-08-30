@@ -4,6 +4,7 @@ import { CarbonEstimator } from "@/components/estimator/CarbonEstimator";
 import { BarChart3, Leaf } from "lucide-react";
 import { Assistant } from "@/components/chat/Assistant";
 import { SignInForm } from "@/components/auth/SignInForm";
+import { ActivityLogs } from "@/components/farmer/ActivityLogs";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -59,6 +60,10 @@ export default function Dashboard() {
           <CarbonEstimator />
         </div>
         <Assistant />
+      </div>
+
+      <div className="mt-8">
+        <ActivityLogs />
       </div>
     </div>
   );

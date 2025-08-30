@@ -15,6 +15,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { useI18n } from "@/context/i18n";
 import { SignInForm } from "@/components/auth/SignInForm";
+import { Assistant } from "@/components/chat/Assistant";
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();
@@ -140,6 +141,12 @@ export default function Index() {
               <option value="hi">हिन्दी</option>
             </select>
           </div>
+        </div>
+      </section>
+
+      <section className="container mx-auto px-4">
+        <div className="rounded-xl border bg-card/70 p-5 shadow-sm">
+          <Assistant />
         </div>
       </section>
 

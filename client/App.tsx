@@ -12,8 +12,15 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import Profile from "./pages/Profile";
+import Credits from "./pages/Credits";
+import Reports from "./pages/Reports";
+import LearningHub from "./pages/LearningHub";
+import Support from "./pages/Support";
+import MapPage from "./pages/Map";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { FloatingAssistant } from "@/components/chat/FloatingAssistant";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +40,12 @@ const App = () => (
                     <Route path="/" element={<Index />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/admin" element={<Admin />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/credits" element={<Credits />} />
+                    <Route path="/reports" element={<Reports />} />
+                    <Route path="/learn" element={<LearningHub />} />
+                    <Route path="/support" element={<Support />} />
+                    <Route path="/map" element={<MapPage />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
@@ -40,6 +53,7 @@ const App = () => (
                 <Footer />
               </div>
             </div>
+            <FloatingAssistant />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

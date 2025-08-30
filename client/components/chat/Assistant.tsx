@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const FAQ: Record<string, string> = {
   "what is carbon credit":
@@ -21,14 +21,78 @@ export function Assistant() {
     { role: "user" | "assistant"; content: string }[]
   >([]);
   const [input, setInput] = useState("");
+  const [usingLLM, setUsingLLM] = useState(false);
+  const [imageB64, setImageB64] = useState<string | null>(null);
+  const [recording, setRecording] = useState(false);
+  const mediaRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+
+  const onPickImage = async (file: File | null) => {
+    if (!file) return setImageB64(null);
+    const buf = await file.arrayBuffer();
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(buf)));
+    setImageB64(b64);
+  };
+
+  const toggleRecord = async () => {
+    if (recording) {
+      mediaRef.current?.stop();
+      setRecording(false);
+      return;
+    }
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const rec = new MediaRecorder(stream);
+    mediaRef.current = rec;
+    chunksRef.current = [];
+    rec.ondataavailable = (e) => e.data && chunksRef.current.push(e.data);
+    rec.onstop = async () => {
+      const blob = new Blob(chunksRef.current, { type: "audio/webm" });
+      const res = await fetch("/api/assistant/stt", {
+        method: "POST",
+        headers: { "Content-Type": blob.type },
+        body: blob,
+      });
+      const data = await res.json();
+      if (data?.text) setInput((v) => (v ? v + " " : "") + data.text);
+      stream.getTracks().forEach((t) => t.stop());
+    };
+    rec.start();
+    setRecording(true);
+  };
 
   const send = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() && !imageB64) return;
     const q = input.trim();
-    setMessages((m) => [...m, { role: "user", content: q }]);
+    setMessages((m) => (q ? [...m, { role: "user", content: q }] : m));
     setInput("");
-    const a = localAnswer(q);
-    setMessages((m) => [...m, { role: "assistant", content: a }]);
+
+    try {
+      setUsingLLM(true);
+      const payload = {
+        messages: [...messages, ...(q ? [{ role: "user", content: q }] : [])],
+        imageBase64: imageB64,
+      };
+      const res = await fetch("/api/assistant/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      setImageB64(null);
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.content || localAnswer(q);
+        setMessages((m) => [...m, { role: "assistant", content }]);
+      } else {
+        const err = await res.text();
+        const a = `LLM error: ${err.slice(0, 120)}`;
+        setMessages((m) => [...m, { role: "assistant", content: a }]);
+      }
+    } catch {
+      const a = localAnswer(q);
+      setMessages((m) => [...m, { role: "assistant", content: a }]);
+    } finally {
+      setUsingLLM(false);
+    }
   };
 
   return (
@@ -51,21 +115,40 @@ export function Assistant() {
           ))
         )}
       </div>
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder="Type your question..."
-          className="h-10 flex-1 rounded-md border bg-background px-3 text-sm"
+          className="h-10 min-w-[200px] flex-1 rounded-md border bg-background px-3 text-sm"
         />
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm">
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => onPickImage(e.target.files?.[0] || null)}
+          />
+          Image
+        </label>
+        <button
+          onClick={toggleRecord}
+          className="rounded-md border px-3 py-2 text-sm"
+        >
+          {recording ? "Stop" : "Mic"}
+        </button>
         <button
           onClick={send}
-          className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
+          className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-60"
+          disabled={usingLLM}
         >
-          Send
+          {usingLLM ? "Thinking…" : "Send"}
         </button>
       </div>
+      {imageB64 && (
+        <div className="mt-2 text-xs text-muted-foreground">Image attached</div>
+      )}
     </div>
   );
 }
