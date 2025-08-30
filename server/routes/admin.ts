@@ -29,7 +29,14 @@ export const listFarmers: RequestHandler = async (req, res) => {
   const db = await getDb();
   const cursor = await (db as any).collection("users").find({});
   const users = await (cursor as any).toArray();
-  res.json({ users: users.map((u: any) => ({ id: String(u._id), email: u.email, name: u.name, role: u.role })) });
+  res.json({
+    users: users.map((u: any) => ({
+      id: String(u._id),
+      email: u.email,
+      name: u.name,
+      role: u.role,
+    })),
+  });
 };
 
 export const addFarmer: RequestHandler = async (req, res) => {
@@ -40,7 +47,9 @@ export const addFarmer: RequestHandler = async (req, res) => {
   const db = await getDb();
   const existing = await (db as any).collection("users").findOne({ email });
   if (existing) return res.status(409).json({ error: "Email already exists" });
-  const r = await (db as any).collection("users").insertOne({ email, name, role, createdAt: new Date() });
+  const r = await (db as any)
+    .collection("users")
+    .insertOne({ email, name, role, createdAt: new Date() });
   res.json({ id: String((r as any).insertedId), email, name, role });
 };
 
@@ -51,12 +60,17 @@ export const removeFarmer: RequestHandler = async (req, res) => {
   const db = await getDb();
   try {
     const { ObjectId } = await import("mongodb");
-    const r = await (db as any).collection("users").deleteOne({ _id: new ObjectId(id) as any });
+    const r = await (db as any)
+      .collection("users")
+      .deleteOne({ _id: new ObjectId(id) as any });
     if ((r as any).deletedCount === 0) throw new Error("notfound");
     return res.json({ ok: true });
   } catch {
-    const r = await (db as any).collection("users").deleteOne({ _id: id as any });
-    if ((r as any).deletedCount === 0) return res.status(404).json({ error: "Not found" });
+    const r = await (db as any)
+      .collection("users")
+      .deleteOne({ _id: id as any });
+    if ((r as any).deletedCount === 0)
+      return res.status(404).json({ error: "Not found" });
     return res.json({ ok: true });
   }
 };

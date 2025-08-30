@@ -63,15 +63,13 @@ export const login: RequestHandler = async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ error: "Email and password required" });
     const db = await getDb();
-    const user = await db
-      .collection(COLLECTION)
-      .findOne<{
-        _id: any;
-        email: string;
-        password: string;
-        name?: string;
-        role?: string;
-      }>({ email });
+    const user = await db.collection(COLLECTION).findOne<{
+      _id: any;
+      email: string;
+      password: string;
+      name?: string;
+      role?: string;
+    }>({ email });
     if (!user) return res.status(401).json({ error: "Invalid credentials" });
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(401).json({ error: "Invalid credentials" });
@@ -103,14 +101,12 @@ export const me: RequestHandler = async (req, res) => {
     const payload = jwt.verify(token, secret) as JWTPayload;
     const db = await getDb();
     try {
-      const user = await db
-        .collection(COLLECTION)
-        .findOne<{
-          _id: any;
-          email: string;
-          name?: string;
-          role?: string;
-        }>({ _id: new (await import("mongodb")).ObjectId(payload._id) });
+      const user = await db.collection(COLLECTION).findOne<{
+        _id: any;
+        email: string;
+        name?: string;
+        role?: string;
+      }>({ _id: new (await import("mongodb")).ObjectId(payload._id) });
       if (!user) throw new Error("notfound");
       return res.json({
         user: {
@@ -121,14 +117,12 @@ export const me: RequestHandler = async (req, res) => {
         },
       });
     } catch {
-      const user = await db
-        .collection(COLLECTION)
-        .findOne<{
-          _id: any;
-          email: string;
-          name?: string;
-          role?: string;
-        }>({ _id: (jwt.verify(token, secret) as JWTPayload)._id as any });
+      const user = await db.collection(COLLECTION).findOne<{
+        _id: any;
+        email: string;
+        name?: string;
+        role?: string;
+      }>({ _id: (jwt.verify(token, secret) as JWTPayload)._id as any });
       if (!user) return res.status(404).json({ error: "User not found" });
       return res.json({
         user: {
@@ -155,8 +149,15 @@ export const profileUpdate: RequestHandler = async (req, res) => {
     const payload = jwt.verify(token, secret) as JWTPayload;
     const { name } = req.body as { name?: string };
     const db = await getDb();
-    await db.collection(COLLECTION).updateOne({ _id: payload._id as any }, { $set: { ...(name ? { name } : {}) } });
-    const user = await db.collection(COLLECTION).findOne({ _id: payload._id as any });
+    await db
+      .collection(COLLECTION)
+      .updateOne(
+        { _id: payload._id as any },
+        { $set: { ...(name ? { name } : {}) } },
+      );
+    const user = await db
+      .collection(COLLECTION)
+      .findOne({ _id: payload._id as any });
     res.json({
       user: {
         id: String((user as any)._id),

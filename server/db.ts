@@ -24,7 +24,8 @@ function createMemoryDb(): Db {
         return (arr.find((d) => match(d, query)) as any) ?? null;
       },
       async insertOne(doc: any) {
-        const _id = doc._id || String(Date.now()) + Math.random().toString(16).slice(2);
+        const _id =
+          doc._id || String(Date.now()) + Math.random().toString(16).slice(2);
         const toInsert = { ...doc, _id };
         arr.push(toInsert);
         return { insertedId: _id } as any;
@@ -73,7 +74,10 @@ export async function getDb(): Promise<Db> {
     db = (client as any).db(dbName);
     return db as Db;
   } catch (e) {
-    console.warn("Mongo connection failed. Falling back to in-memory DB:", (e as any)?.message || e);
+    console.warn(
+      "Mongo connection failed. Falling back to in-memory DB:",
+      (e as any)?.message || e,
+    );
     db = createMemoryDb();
     return db as Db;
   }

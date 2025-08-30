@@ -3,7 +3,12 @@ import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { register, login, me, profileGet, profileUpdate } from "./routes/auth";
-import { summary as adminSummary, listFarmers, addFarmer, removeFarmer } from "./routes/admin";
+import {
+  summary as adminSummary,
+  listFarmers,
+  addFarmer,
+  removeFarmer,
+} from "./routes/admin";
 import { start as otpStart, verify as otpVerify } from "./routes/otp";
 import {
   start as googleStart,

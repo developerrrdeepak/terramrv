@@ -6,7 +6,9 @@ export default function Admin() {
   const { user } = useAuth();
   const [summary, setSummary] = useState<{ users: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [farmers, setFarmers] = useState<{ id: string; email: string; name?: string; role?: string }[]>([]);
+  const [farmers, setFarmers] = useState<
+    { id: string; email: string; name?: string; role?: string }[]
+  >([]);
   const [newEmail, setNewEmail] = useState("");
   const [newName, setNewName] = useState("");
 
@@ -72,26 +74,53 @@ export default function Admin() {
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <div className="mb-3 text-sm font-medium">Add Farmer</div>
           <div className="mb-2 grid gap-2">
-            <input className="h-10 rounded-md border bg-background px-3" placeholder="Email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
-            <input className="h-10 rounded-md border bg-background px-3" placeholder="Name (optional)" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            <input
+              className="h-10 rounded-md border bg-background px-3"
+              placeholder="Email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <input
+              className="h-10 rounded-md border bg-background px-3"
+              placeholder="Name (optional)"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+            />
           </div>
-          <button className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground" onClick={add}>Add</button>
+          <button
+            className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
+            onClick={add}
+          >
+            Add
+          </button>
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <div className="mb-3 text-sm font-medium">Farmers</div>
           <div className="grid gap-2">
             {farmers.map((f) => (
-              <div key={f.id} className="flex items-center justify-between rounded-md border p-3">
+              <div
+                key={f.id}
+                className="flex items-center justify-between rounded-md border p-3"
+              >
                 <div>
                   <div className="text-sm font-medium">{f.name || f.email}</div>
-                  <div className="text-xs text-muted-foreground">{f.email} · {f.role}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {f.email} · {f.role}
+                  </div>
                 </div>
-                <button className="text-sm text-red-600 hover:underline" onClick={() => remove(f.id)}>Remove</button>
+                <button
+                  className="text-sm text-red-600 hover:underline"
+                  onClick={() => remove(f.id)}
+                >
+                  Remove
+                </button>
               </div>
             ))}
             {farmers.length === 0 && (
-              <div className="text-sm text-muted-foreground">No farmers yet</div>
+              <div className="text-sm text-muted-foreground">
+                No farmers yet
+              </div>
             )}
           </div>
         </div>

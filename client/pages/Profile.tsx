@@ -35,16 +35,29 @@ export default function Profile() {
       <div className="mt-6 grid max-w-xl gap-4">
         <label className="grid gap-1 text-sm">
           <span>Email</span>
-          <input className="h-10 rounded-md border bg-muted px-3" value={email} disabled />
+          <input
+            className="h-10 rounded-md border bg-muted px-3"
+            value={email}
+            disabled
+          />
         </label>
         <label className="grid gap-1 text-sm">
           <span>Name</span>
-          <input className="h-10 rounded-md border bg-background px-3" value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            className="h-10 rounded-md border bg-background px-3"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
-        <button className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground" onClick={save}>
+        <button
+          className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
+          onClick={save}
+        >
           Save
         </button>
-        {message && <div className="text-xs text-muted-foreground">{message}</div>}
+        {message && (
+          <div className="text-xs text-muted-foreground">{message}</div>
+        )}
       </div>
     </div>
   );
