@@ -17,21 +17,41 @@ export function SignInForm() {
     setLoading(true);
     setMessage(null);
     try {
-      const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
-      const body: any = { email, password };
-      if (mode === "register") body.name = name;
-      const data = await api<{ token: string; user: { id: string; email: string; name: string } }>(endpoint, {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
-      saveToken(data.token);
-      setToken(data.token);
-      setMessage(`Welcome ${data.user.name}`);
+      if (mode === "otp") {
+        if (!code) {
+          // start flow
+          await api("/api/auth/otp/start", { method: "POST", body: JSON.stringify({ email }) });
+          setMessage("Code sent to your email.");
+        } else {
+          const data = await api<{ token: string; user: { id: string; email: string; name: string } }>("/api/auth/otp/verify", {
+            method: "POST",
+            body: JSON.stringify({ email, code }),
+          });
+          saveToken(data.token);
+          setToken(data.token);
+          setMessage(`Welcome ${data.user.name}`);
+        }
+      } else {
+        const endpoint = mode === "login" ? "/api/auth/login" : "/api/auth/register";
+        const body: any = { email, password };
+        if (mode === "register") body.name = name;
+        const data = await api<{ token: string; user: { id: string; email: string; name: string } }>(endpoint, {
+          method: "POST",
+          body: JSON.stringify(body),
+        });
+        saveToken(data.token);
+        setToken(data.token);
+        setMessage(`Welcome ${data.user.name}`);
+      }
     } catch (err: any) {
       setMessage(err?.message || "Error");
     } finally {
       setLoading(false);
     }
+  };
+
+  const google = () => {
+    window.location.href = "/api/auth/social/google/start";
   };
 
   const signOut = () => {
