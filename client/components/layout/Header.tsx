@@ -3,6 +3,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/context/i18n";
 import { useAuth } from "@/context/auth";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const NAV = [
   { href: "#features", label: "Features" },
@@ -52,15 +53,18 @@ export function Header() {
           ))}
         </nav>
         <div className="mt-6 grid gap-2">
-          <select
-            aria-label="Language"
-            value={lang}
-            onChange={(e) => setLang(e.target.value as any)}
-            className="h-9 rounded-md border bg-background px-2 text-sm"
-          >
-            <option value="en">English</option>
-            <option value="hi">हिन्दी</option>
-          </select>
+          <div className="flex gap-2">
+            <select
+              aria-label="Language"
+              value={lang}
+              onChange={(e) => setLang(e.target.value as any)}
+              className="h-9 flex-1 rounded-md border bg-background px-2 text-sm"
+            >
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+            </select>
+            <ThemeToggle />
+          </div>
           <a
             href="#calculator"
             className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95"
