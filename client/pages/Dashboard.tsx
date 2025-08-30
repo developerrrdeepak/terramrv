@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/auth";
 import { CarbonEstimator } from "@/components/estimator/CarbonEstimator";
 import { BarChart3, Leaf } from "lucide-react";
+import { Assistant } from "@/components/chat/Assistant";
 
 export default function Dashboard() {
   const { user } = useAuth();
