@@ -36,9 +36,9 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 160 15% 88%;
-    --input: 160 15% 88%;
-    --ring: 152 60% 35%;
+    --border: 140 15% 88%;
+    --input: 140 15% 88%;
+    --ring: 152 85% 25%;
 
     --radius: 0.5rem;
 
@@ -62,8 +62,8 @@
     --popover: 160 20% 9%;
     --popover-foreground: 144 20% 96%;
 
-    --primary: 152 60% 45%;
-    --primary-foreground: 144 80% 96%;
+    --primary: 152 70% 45%;
+    --primary-foreground: 144 90% 97%;
 
     --secondary: 160 16% 15%;
     --secondary-foreground: 144 20% 96%;
@@ -79,7 +79,7 @@
 
     --border: 160 15% 18%;
     --input: 160 15% 18%;
-    --ring: 152 60% 45%;
+    --ring: 152 70% 45%;
     --sidebar-background: 160 20% 7%;
     --sidebar-foreground: 144 20% 96%;
     --sidebar-primary: 152 60% 45%;
