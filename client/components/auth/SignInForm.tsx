@@ -3,9 +3,10 @@ import { api, saveToken, clearToken, getToken } from "@/lib/auth";
 import { useAuth } from "@/context/auth";
 
 export function SignInForm() {
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [mode, setMode] = useState<"login" | "register" | "otp">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
