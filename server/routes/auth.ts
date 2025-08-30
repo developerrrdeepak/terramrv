@@ -102,24 +102,70 @@ export const me: RequestHandler = async (req, res) => {
     const secret = process.env.JWT_SECRET || "dev-secret";
     const payload = jwt.verify(token, secret) as JWTPayload;
     const db = await getDb();
-    const user = await db
-      .collection(COLLECTION)
-      .findOne<{
-        _id: any;
-        email: string;
-        name?: string;
-        role?: string;
-      }>({ _id: new (await import("mongodb")).ObjectId(payload._id) });
-    if (!user) return res.status(404).json({ error: "User not found" });
+    try {
+      const user = await db
+        .collection(COLLECTION)
+        .findOne<{
+          _id: any;
+          email: string;
+          name?: string;
+          role?: string;
+        }>({ _id: new (await import("mongodb")).ObjectId(payload._id) });
+      if (!user) throw new Error("notfound");
+      return res.json({
+        user: {
+          id: String(user._id),
+          email: user.email,
+          name: user.name || user.email.split("@")[0],
+          role: user.role || "farmer",
+        },
+      });
+    } catch {
+      const user = await db
+        .collection(COLLECTION)
+        .findOne<{
+          _id: any;
+          email: string;
+          name?: string;
+          role?: string;
+        }>({ _id: (jwt.verify(token, secret) as JWTPayload)._id as any });
+      if (!user) return res.status(404).json({ error: "User not found" });
+      return res.json({
+        user: {
+          id: String((user as any)._id),
+          email: (user as any).email,
+          name: (user as any).name || (user as any).email.split("@")[0],
+          role: (user as any).role || "farmer",
+        },
+      });
+    }
+  } catch (e: any) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
+
+export const profileGet: RequestHandler = me;
+
+export const profileUpdate: RequestHandler = async (req, res) => {
+  try {
+    const auth = req.headers.authorization || "";
+    const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
+    if (!token) return res.status(401).json({ error: "Missing token" });
+    const secret = process.env.JWT_SECRET || "dev-secret";
+    const payload = jwt.verify(token, secret) as JWTPayload;
+    const { name } = req.body as { name?: string };
+    const db = await getDb();
+    await db.collection(COLLECTION).updateOne({ _id: payload._id as any }, { $set: { ...(name ? { name } : {}) } });
+    const user = await db.collection(COLLECTION).findOne({ _id: payload._id as any });
     res.json({
       user: {
-        id: String(user._id),
-        email: user.email,
-        name: user.name || user.email.split("@")[0],
-        role: user.role || "farmer",
+        id: String((user as any)._id),
+        email: (user as any).email,
+        name: (user as any).name || (user as any).email.split("@")[0],
+        role: (user as any).role || "farmer",
       },
     });
   } catch (e: any) {
-    res.status(401).json({ error: "Invalid token" });
+    res.status(400).json({ error: e.message || "Update failed" });
   }
 };
