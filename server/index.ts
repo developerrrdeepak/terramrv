@@ -72,6 +72,7 @@ export function createServer() {
 
   // Assistant
   app.post("/api/assistant/chat", assistantChat);
+  app.post("/api/assistant/stt", assistantStt);
 
   // Admin
   app.get("/api/admin/summary", adminSummary);
