@@ -36,7 +36,7 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-br from-teal-800 via-teal-700 to-teal-900 dark:from-black dark:via-gray-900 dark:to-black">
+      <section className="relative overflow-hidden" style={{background: 'linear-gradient(135deg, #1e3a3a 0%, #0f2a2a 50%, #1a3636 100%)'}} className="dark:bg-gradient-to-br dark:from-black dark:via-gray-900 dark:to-black">
         <Scene3D />
         <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-lime-400/30 dark:bg-green-500/20 blur-3xl" />
         <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-lime-300/25 dark:bg-emerald-500/15 blur-3xl" />
@@ -140,7 +140,7 @@ export default function Index() {
               className="h-10 w-full rounded-md border bg-background px-3"
             >
               <option value="en">English</option>
-              <option value="hi">हिन्��ी</option>
+              <option value="hi">हिन्दी</option>
             </select>
           </div>
         </div>
