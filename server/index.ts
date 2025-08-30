@@ -66,6 +66,9 @@ export function createServer() {
   app.get("/api/reports/farmer", farmerReport);
   app.get("/api/admin/reports/regions", adminRegionReport);
 
+  // Support
+  app.post("/api/support", submitSupport);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
