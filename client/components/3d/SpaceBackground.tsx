@@ -4,7 +4,7 @@ export function SpaceBackground() {
   const { theme } = useTheme();
   
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden -z-10">
       {/* Dynamic gradient based on theme */}
       <div 
         className="absolute inset-0"

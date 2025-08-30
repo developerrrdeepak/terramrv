@@ -40,7 +40,7 @@ export default function Index() {
       <section className="relative overflow-hidden">
         <SpaceBackground />
         <Scene3D />
-        <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
+        <div className="relative z-10 container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
               <ShieldCheck className="h-4 w-4" /> {t("hero_badge")}

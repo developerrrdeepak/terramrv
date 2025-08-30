@@ -7,7 +7,7 @@ import { SpaceScene } from "./SpaceScene";
 
 export function Scene3D() {
   return (
-    <div className="absolute inset-0 opacity-30 pointer-events-none">
+    <div className="absolute inset-0 opacity-30 pointer-events-none -z-5">
       <Canvas camera={{ position: [0, 1, 7], fov: 50 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
