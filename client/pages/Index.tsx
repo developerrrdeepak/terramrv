@@ -153,6 +153,12 @@ export default function Index() {
         </div>
       </section>
 
+      <section id="signin" className="container mx-auto px-4 py-16">
+        <div className="rounded-lg border bg-card p-6 text-sm text-muted-foreground">
+          Sign-in flow to be configured (email/OTP/phone). Connect auth provider to enable.
+        </div>
+      </section>
+
       <section id="reports" className="container mx-auto px-4 py-16">
         <div className="grid gap-8 md:grid-cols-2">
           <div className="rounded-lg border bg-card p-6 shadow-sm">
