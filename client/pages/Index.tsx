@@ -183,6 +183,19 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      <section id="collaborate" className="container mx-auto px-4 pb-20">
+        <div className="rounded-lg border bg-card p-6 shadow-sm">
+          <h3 className="text-xl font-semibold">Collaborate with TerraMRV</h3>
+          <p className="mt-2 text-muted-foreground">Startups, NGOs, and enterprises can propose pilots, research, and funding partnerships.</p>
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+            <div className="rounded-md bg-muted p-3">API Access</div>
+            <div className="rounded-md bg-muted p-3">Data Sharing MoU</div>
+            <div className="rounded-md bg-muted p-3">Pilot Programs</div>
+            <div className="rounded-md bg-muted p-3">Grants</div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
