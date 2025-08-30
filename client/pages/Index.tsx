@@ -36,10 +36,13 @@ export default function Index() {
 
   return (
     <div id="top" className="min-h-screen">
-      <section className="relative overflow-hidden" style={{background: 'linear-gradient(135deg, #1e3a3a 0%, #0f2a2a 50%, #1a3636 100%)'}} className="dark:bg-gradient-to-br dark:from-black dark:via-gray-900 dark:to-black">
+      <section
+        className="relative overflow-hidden dark:bg-gradient-to-br dark:from-black dark:via-gray-900 dark:to-black"
+        style={{background: 'linear-gradient(135deg, #1e3a3a 0%, #0f2a2a 50%, #1a3636 100%)'}}
+      >
         <Scene3D />
-        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full bg-lime-400/30 dark:bg-green-500/20 blur-3xl" />
-        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full bg-lime-300/25 dark:bg-emerald-500/15 blur-3xl" />
+        <div className="absolute -left-24 top-[-6rem] h-[28rem] w-[28rem] rounded-full blur-3xl" style={{backgroundColor: 'rgba(160, 220, 60, 0.25)'}} />
+        <div className="absolute right-[-10rem] top-20 h-[22rem] w-[22rem] rounded-full blur-3xl" style={{backgroundColor: 'rgba(140, 200, 50, 0.2)'}} />
         <div className="container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
