@@ -63,7 +63,7 @@ export default function Index() {
             <div className="rounded-2xl border bg-card/70 p-4 shadow-lg ring-1 ring-black/5">
               <div className="grid grid-cols-2 gap-3">
                 <FeatureMini icon={<Satellite className="h-4 w-4" />} title="Satellite MRV" subtitle="Vegetation, land cover, soil moisture" />
-                <FeatureMini icon={<Trees className="h-4 w-4" />} title="Agroforestry" subtitle="Tree growth, biomass, SOC" />
+                <FeatureMini icon={<TreePine className="h-4 w-4" />} title="Agroforestry" subtitle="Tree growth, biomass, SOC" />
                 <FeatureMini icon={<Cpu className="h-4 w-4" />} title="IoT Sensors" subtitle="Soil moisture, weather" />
                 <FeatureMini icon={<Database className="h-4 w-4" />} title="Audit Trails" subtitle="Immutable logs" />
               </div>
