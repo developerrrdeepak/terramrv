@@ -34,6 +34,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo(() => ({ lang, setLang, t }), [lang, t]);
 
+  useEffect(() => {
+    (window as any).setLang = setLang;
+  }, []);
+
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
