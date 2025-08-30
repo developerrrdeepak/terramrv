@@ -20,7 +20,8 @@ export const start: RequestHandler = async (req, res) => {
     .collection("otps")
     .insertOne({ email, hash, expiresAt, used: false, createdAt: new Date() });
   await sendOtp(email, code);
-  res.json({ ok: true });
+  const debug = String(process.env.DEBUG_AUTH || "").toLowerCase() === "true";
+  res.json({ ok: true, ...(debug ? { devCode: code } : {}) });
 };
 
 export const verify: RequestHandler = async (req, res) => {
