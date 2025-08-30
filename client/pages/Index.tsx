@@ -80,7 +80,7 @@ export default function Index() {
         <div className="rounded-xl border bg-card/70 p-5 shadow-sm">
           <div className="text-sm font-medium">{t("choose_language")}</div>
           <div className="mt-3 max-w-sm">
-            <select aria-label={t("choose_language")} value={lang} onChange={(e) => (window as any).setLang?.(e.target.value) } className="h-10 w-full rounded-md border bg-background px-3">
+            <select aria-label={t("choose_language")} value={lang} onChange={(e) => setLang(e.target.value as any)} className="h-10 w-full rounded-md border bg-background px-3">
               <option value="en">English</option>
               <option value="hi">हिन्दी</option>
             </select>
