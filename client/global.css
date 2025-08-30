@@ -12,44 +12,44 @@
    * A different format will require also updating the theme in tailwind.config.ts.
   */
   :root {
-    --background: 185 45% 12%;
+    --background: 185 50% 8%;
     --foreground: 0 0% 98%;
 
-    --card: 185 35% 15%;
-    --card-foreground: 0 0% 95%;
+    --card: 185 45% 10%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 185 35% 15%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 185 45% 10%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 85 100% 65%;
-    --primary-foreground: 185 45% 12%;
+    --primary: 88 85% 70%;
+    --primary-foreground: 185 50% 8%;
 
-    --secondary: 185 25% 18%;
-    --secondary-foreground: 0 0% 90%;
+    --secondary: 185 30% 12%;
+    --secondary-foreground: 0 0% 92%;
 
-    --muted: 185 20% 18%;
-    --muted-foreground: 0 0% 75%;
+    --muted: 185 25% 14%;
+    --muted-foreground: 0 0% 78%;
 
-    --accent: 85 90% 60%;
-    --accent-foreground: 185 45% 12%;
+    --accent: 88 80% 65%;
+    --accent-foreground: 185 50% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 180 15% 25%;
-    --input: 180 15% 25%;
-    --ring: 140 100% 70%;
+    --border: 185 20% 22%;
+    --input: 185 20% 22%;
+    --ring: 88 85% 70%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 180 45% 12%;
+    --sidebar-background: 185 50% 8%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 140 100% 70%;
-    --sidebar-primary-foreground: 180 45% 12%;
-    --sidebar-accent: 180 25% 18%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 180 15% 25%;
-    --sidebar-ring: 140 100% 70%;
+    --sidebar-primary: 88 85% 70%;
+    --sidebar-primary-foreground: 185 50% 8%;
+    --sidebar-accent: 185 30% 12%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 185 20% 22%;
+    --sidebar-ring: 88 85% 70%;
   }
 
   .dark {
