@@ -18,6 +18,8 @@ import {
   callback as googleCallback,
 } from "./routes/google";
 import { listLogs, addLog, deleteLog } from "./routes/logs";
+import { getCredits, requestPayout } from "./routes/credits";
+import { farmerReport, adminRegionReport } from "./routes/reports";
 
 export function createServer() {
   const app = express();
