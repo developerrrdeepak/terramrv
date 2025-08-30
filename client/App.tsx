@@ -52,6 +52,7 @@ const App = () => (
                 <Footer />
               </div>
             </div>
+            <FloatingAssistant />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
