@@ -1,12 +1,12 @@
-import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 export function SpaceScene() {
   const starsRef = useRef<THREE.Points>(null);
   const nebula1Ref = useRef<THREE.Mesh>(null);
   const nebula2Ref = useRef<THREE.Mesh>(null);
-  
+
   // Create star field
   const starPositions = useMemo(() => {
     const positions = new Float32Array(2000 * 3);
@@ -43,15 +43,17 @@ export function SpaceScene() {
       starsRef.current.rotation.y = state.clock.getElapsedTime() * 0.001;
       starsRef.current.rotation.x = state.clock.getElapsedTime() * 0.0005;
     }
-    
+
     if (nebula1Ref.current) {
       nebula1Ref.current.rotation.z = state.clock.getElapsedTime() * 0.002;
-      nebula1Ref.current.material.opacity = 0.1 + Math.sin(state.clock.getElapsedTime() * 0.5) * 0.05;
+      nebula1Ref.current.material.opacity =
+        0.1 + Math.sin(state.clock.getElapsedTime() * 0.5) * 0.05;
     }
-    
+
     if (nebula2Ref.current) {
       nebula2Ref.current.rotation.z = -state.clock.getElapsedTime() * 0.003;
-      nebula2Ref.current.material.opacity = 0.08 + Math.cos(state.clock.getElapsedTime() * 0.7) * 0.04;
+      nebula2Ref.current.material.opacity =
+        0.08 + Math.cos(state.clock.getElapsedTime() * 0.7) * 0.04;
     }
   });
 
@@ -85,20 +87,12 @@ export function SpaceScene() {
       {/* Nebula clouds */}
       <mesh ref={nebula1Ref} position={[-15, 10, -20]}>
         <sphereGeometry args={[12, 32, 32]} />
-        <meshBasicMaterial
-          color="#22d3ee"
-          transparent={true}
-          opacity={0.1}
-        />
+        <meshBasicMaterial color="#22d3ee" transparent={true} opacity={0.1} />
       </mesh>
 
       <mesh ref={nebula2Ref} position={[20, -8, -25]}>
         <sphereGeometry args={[15, 32, 32]} />
-        <meshBasicMaterial
-          color="#10b981"
-          transparent={true}
-          opacity={0.08}
-        />
+        <meshBasicMaterial color="#10b981" transparent={true} opacity={0.08} />
       </mesh>
 
       {/* Distant galaxy effect */}
