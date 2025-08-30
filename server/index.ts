@@ -21,6 +21,7 @@ import { listLogs, addLog, deleteLog } from "./routes/logs";
 import { getCredits, requestPayout } from "./routes/credits";
 import { farmerReport, adminRegionReport } from "./routes/reports";
 import { submitSupport } from "./routes/support";
+import { chat as assistantChat } from "./routes/assistant";
 
 export function createServer() {
   const app = express();
