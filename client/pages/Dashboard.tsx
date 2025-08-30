@@ -60,6 +60,10 @@ export default function Dashboard() {
         </div>
         <Assistant />
       </div>
+
+      <div className="mt-8">
+        <ActivityLogs />
+      </div>
     </div>
   );
 }
