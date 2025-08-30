@@ -60,6 +60,9 @@ export function createServer() {
   app.get("/api/admin/farmers", listFarmers);
   app.post("/api/admin/farmers", addFarmer);
   app.delete("/api/admin/farmers/:id", removeFarmer);
+  app.get("/api/admin/registrations", listRegistrations);
+  app.post("/api/admin/registrations/:id/approve", approveRegistration);
+  app.post("/api/admin/users/:id/role", setUserRole);
 
   // Seed admin (non-blocking)
   import("./seed").then((m) => m.ensureAdmin?.()).catch(() => {});
