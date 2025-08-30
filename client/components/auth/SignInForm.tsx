@@ -24,6 +24,7 @@ export function SignInForm() {
         body: JSON.stringify(body),
       });
       saveToken(data.token);
+      setToken(data.token);
       setMessage(`Welcome ${data.user.name}`);
     } catch (err: any) {
       setMessage(err?.message || "Error");
