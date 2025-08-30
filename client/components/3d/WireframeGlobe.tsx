@@ -16,31 +16,31 @@ export function WireframeGlobe() {
   return (
     <group position={[2, 0, 0]}>
       {/* Main wireframe globe */}
-      <Sphere ref={meshRef} args={[2, 32, 16]} position={[0, 0, 0]}>
+      <Sphere ref={meshRef} args={[2, 64, 32]} position={[0, 0, 0]}>
         <meshBasicMaterial
-          color="#4ade80"
+          color="#84cc16"
           wireframe={true}
           transparent={true}
-          opacity={0.6}
+          opacity={0.8}
         />
       </Sphere>
-      
+
       {/* Inner glow sphere */}
-      <Sphere args={[1.9, 16, 16]} position={[0, 0, 0]}>
+      <Sphere args={[1.9, 32, 16]} position={[0, 0, 0]}>
         <meshBasicMaterial
-          color="#22d3ee"
+          color="#84cc16"
           transparent={true}
-          opacity={0.1}
+          opacity={0.15}
         />
       </Sphere>
-      
+
       {/* Continent outlines */}
-      <Sphere args={[2.01, 32, 16]} position={[0, 0, 0]}>
+      <Sphere args={[2.02, 64, 32]} position={[0, 0, 0]}>
         <meshBasicMaterial
-          color="#6ee7b7"
+          color="#a3e635"
           wireframe={true}
           transparent={true}
-          opacity={0.3}
+          opacity={0.4}
         />
       </Sphere>
     </group>
