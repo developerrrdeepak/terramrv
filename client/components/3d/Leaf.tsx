@@ -1,14 +1,20 @@
-import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
-export function Leaf({ position = [0, 0, 0] }: { position?: [number, number, number] }) {
+export function Leaf({
+  position = [0, 0, 0],
+}: {
+  position?: [number, number, number];
+}) {
   const meshRef = useRef<THREE.Mesh>(null);
-  
+
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.z = Math.sin(state.clock.getElapsedTime() * 2) * 0.2;
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.getElapsedTime() * 1.5) * 0.1;
+      meshRef.current.rotation.z =
+        Math.sin(state.clock.getElapsedTime() * 2) * 0.2;
+      meshRef.current.position.y =
+        position[1] + Math.sin(state.clock.getElapsedTime() * 1.5) * 0.1;
     }
   });
 

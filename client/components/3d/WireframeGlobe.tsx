@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Sphere, Torus } from '@react-three/drei';
-import * as THREE from 'three';
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Sphere, Torus } from "@react-three/drei";
+import * as THREE from "three";
 
 export function WireframeGlobe() {
   const globeRef = useRef<THREE.Group>(null);
@@ -65,45 +65,25 @@ export function WireframeGlobe() {
 
       {/* Pulsing inner glow sphere */}
       <Sphere ref={innerRef} args={[1.9, 32, 16]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#22C55E"
-          transparent={true}
-          opacity={0.15}
-        />
+        <meshBasicMaterial color="#22C55E" transparent={true} opacity={0.15} />
       </Sphere>
 
       {/* Rotating energy rings */}
       <Torus ref={ring1Ref} args={[2.5, 0.02, 8, 32]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#16A34A"
-          transparent={true}
-          opacity={0.7}
-        />
+        <meshBasicMaterial color="#16A34A" transparent={true} opacity={0.7} />
       </Torus>
 
       <Torus ref={ring2Ref} args={[2.8, 0.015, 8, 32]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#22C55E"
-          transparent={true}
-          opacity={0.5}
-        />
+        <meshBasicMaterial color="#22C55E" transparent={true} opacity={0.5} />
       </Torus>
 
       <Torus ref={ring3Ref} args={[3.1, 0.01, 8, 32]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#16A34A"
-          transparent={true}
-          opacity={0.3}
-        />
+        <meshBasicMaterial color="#16A34A" transparent={true} opacity={0.3} />
       </Torus>
 
       {/* Outer glow effect */}
       <Sphere args={[3.5, 16, 16]} position={[0, 0, 0]}>
-        <meshBasicMaterial
-          color="#22C55E"
-          transparent={true}
-          opacity={0.05}
-        />
+        <meshBasicMaterial color="#22C55E" transparent={true} opacity={0.05} />
       </Sphere>
     </group>
   );

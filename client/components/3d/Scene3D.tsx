@@ -1,8 +1,8 @@
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
-import { Suspense } from 'react';
-import { WireframeGlobe } from './WireframeGlobe';
-import { FloatingDots } from './FloatingDots';
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Environment } from "@react-three/drei";
+import { Suspense } from "react";
+import { WireframeGlobe } from "./WireframeGlobe";
+import { FloatingDots } from "./FloatingDots";
 
 export function Scene3D() {
   return (
@@ -11,17 +11,21 @@ export function Scene3D() {
         <Suspense fallback={null}>
           <ambientLight intensity={0.7} />
           <directionalLight position={[10, 10, 5]} intensity={1.2} />
-          <pointLight position={[-10, -10, -5]} intensity={0.6} color="#16A34A" />
+          <pointLight
+            position={[-10, -10, -5]}
+            intensity={0.6}
+            color="#16A34A"
+          />
           <pointLight position={[5, -5, 10]} intensity={0.4} color="#22C55E" />
-          
+
           <WireframeGlobe />
           <FloatingDots />
-          
+
           <Environment preset="forest" />
-          <OrbitControls 
-            enableZoom={false} 
-            enablePan={false} 
-            autoRotate 
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            autoRotate
             autoRotateSpeed={0.5}
           />
         </Suspense>

@@ -1,14 +1,14 @@
-import { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
 
 export function Particles() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  
+
   const particleCount = 50;
-  
+
   const dummy = useMemo(() => new THREE.Object3D(), []);
-  
+
   const particles = useMemo(() => {
     const temp = [];
     for (let i = 0; i < particleCount; i++) {
@@ -16,10 +16,10 @@ export function Particles() {
         position: [
           (Math.random() - 0.5) * 10,
           (Math.random() - 0.5) * 10,
-          (Math.random() - 0.5) * 10
+          (Math.random() - 0.5) * 10,
         ],
         speed: Math.random() * 0.02 + 0.005,
-        factor: Math.random() * 100 + 10
+        factor: Math.random() * 100 + 10,
       });
     }
     return temp;
@@ -30,16 +30,16 @@ export function Particles() {
       particles.forEach((particle, i) => {
         const { position, speed, factor } = particle;
         const t = state.clock.getElapsedTime();
-        
+
         dummy.position.set(
           position[0] + Math.sin(t * speed + factor) * 0.3,
           position[1] + Math.cos(t * speed + factor) * 0.3,
-          position[2]
+          position[2],
         );
-        
+
         dummy.scale.setScalar(Math.sin(t * speed + factor) * 0.3 + 0.7);
         dummy.updateMatrix();
-        
+
         meshRef.current!.setMatrixAt(i, dummy.matrix);
       });
       meshRef.current.instanceMatrix.needsUpdate = true;
