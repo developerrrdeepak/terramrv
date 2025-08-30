@@ -74,26 +74,41 @@ export function SignInForm() {
 
   return (
     <form onSubmit={onSubmit} className="rounded-lg border bg-card p-6 shadow-sm">
-      <div className="mb-3 flex items-center gap-3 text-sm">
+      <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
         <button type="button" className={`rounded-md border px-3 py-1 ${mode === "login" ? "bg-muted" : ""}`} onClick={() => setMode("login")}>Login</button>
         <button type="button" className={`rounded-md border px-3 py-1 ${mode === "register" ? "bg-muted" : ""}`} onClick={() => setMode("register")}>Register</button>
+        <button type="button" className={`rounded-md border px-3 py-1 ${mode === "otp" ? "bg-muted" : ""}`} onClick={() => setMode("otp")}>Email OTP</button>
+        <button type="button" className="rounded-md border px-3 py-1" onClick={google}>Google</button>
       </div>
+
       {mode === "register" && (
         <label className="mb-3 grid gap-1 text-sm">
           <span>Name</span>
           <input className="h-10 rounded-md border bg-background px-3" value={name} onChange={(e) => setName(e.target.value)} />
         </label>
       )}
+
       <label className="mb-3 grid gap-1 text-sm">
         <span>Email</span>
         <input type="email" className="h-10 rounded-md border bg-background px-3" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
-      <label className="mb-4 grid gap-1 text-sm">
-        <span>Password</span>
-        <input type="password" className="h-10 rounded-md border bg-background px-3" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </label>
+
+      {mode !== "otp" && (
+        <label className="mb-4 grid gap-1 text-sm">
+          <span>Password</span>
+          <input type="password" className="h-10 rounded-md border bg-background px-3" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </label>
+      )}
+
+      {mode === "otp" && (
+        <label className="mb-4 grid gap-1 text-sm">
+          <span>Code (leave blank, click submit to receive)</span>
+          <input className="h-10 rounded-md border bg-background px-3" value={code} onChange={(e) => setCode(e.target.value)} />
+        </label>
+      )}
+
       <button disabled={loading} className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60">
-        {loading ? "Please wait…" : mode === "login" ? "Sign in" : "Create account"}
+        {loading ? "Please wait…" : mode === "register" ? "Create account" : mode === "otp" ? (code ? "Verify" : "Send code") : "Sign in"}
       </button>
       {message && <div className="mt-3 text-xs text-muted-foreground">{message}</div>}
     </form>
