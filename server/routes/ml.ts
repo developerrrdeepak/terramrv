@@ -253,16 +253,16 @@ async function detectAnomalies(
     volumeAnomalies,
   );
 
-  const anomalies = [...temporalAnomalies, ...volumeAnomalies].map(
+  const anomalies: AnomalyCheckResponse["anomalies"] = [...temporalAnomalies, ...volumeAnomalies].map(
     (anomaly) => ({
-      type: anomaly.type,
+      type: anomaly.type as string,
       severity:
         anomaly.score > 0.8
           ? "high"
           : anomaly.score > 0.5
             ? "medium"
-            : ("low" as const),
-      description: anomaly.description,
+            : "low",
+      description: anomaly.description as string,
     }),
   );
 
