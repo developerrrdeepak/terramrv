@@ -64,14 +64,96 @@ export const requestPayout: RequestHandler = async (req, res) => {
   const { amount } = req.body as any;
   const a = Number(amount);
   if (!a || a <= 0) return res.status(400).json({ error: "Invalid amount" });
+
   const db = await getDb();
-  await (db as any)
-    .collection("payouts")
-    .insertOne({
-      userId: user.id,
-      amount: a,
-      status: "requested",
-      createdAt: new Date(),
+
+  // Get activity logs for fraud detection
+  const logsCursor = await (db as any)
+    .collection("activity_logs")
+    .find({ userId: user.id });
+  const logs = await (logsCursor as any).toArray();
+
+  // Perform anomaly detection
+  try {
+    const anomalyCheck = await performAnomalyCheck(user.id, logs, a);
+
+    let status = "requested";
+    let flagged = false;
+
+    if (anomalyCheck.riskScore > 0.7) {
+      status = "flagged_high_risk";
+      flagged = true;
+    } else if (anomalyCheck.riskScore > 0.4) {
+      status = "pending_review";
+      flagged = true;
+    }
+
+    await (db as any)
+      .collection("payouts")
+      .insertOne({
+        userId: user.id,
+        amount: a,
+        status,
+        flagged,
+        riskScore: anomalyCheck.riskScore,
+        anomalies: anomalyCheck.anomalies,
+        mlRecommendations: anomalyCheck.recommendations,
+        createdAt: new Date(),
+      });
+
+    res.json({
+      ok: true,
+      status,
+      flagged,
+      message: flagged ? "Request submitted for review due to unusual activity patterns" : "Payout requested successfully"
     });
-  res.json({ ok: true });
+  } catch (error) {
+    console.error("Anomaly detection failed:", error);
+    // Fallback to manual review if ML fails
+    await (db as any)
+      .collection("payouts")
+      .insertOne({
+        userId: user.id,
+        amount: a,
+        status: "pending_review",
+        flagged: true,
+        notes: "ML anomaly detection unavailable - manual review required",
+        createdAt: new Date(),
+      });
+
+    res.json({
+      ok: true,
+      status: "pending_review",
+      flagged: true,
+      message: "Request submitted for manual review"
+    });
+  }
 };
+
+// Internal function to call ML anomaly detection
+async function performAnomalyCheck(userId: string, activityLogs: any[], requestedAmount: number) {
+  const response = await fetch(`${process.env.API_BASE_URL || "http://localhost:8080"}/api/ml/anomaly-check`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${generateInternalToken(userId)}`, // Internal service token
+    },
+    body: JSON.stringify({
+      userId,
+      activityLogs,
+      timeWindow: "30d",
+      requestedAmount,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Anomaly check failed: ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+function generateInternalToken(userId: string): string {
+  const secret = process.env.JWT_SECRET || "dev-secret";
+  return jwt.sign({ _id: userId, internal: true }, secret, { expiresIn: "5m" });
+}
