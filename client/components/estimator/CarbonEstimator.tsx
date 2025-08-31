@@ -19,6 +19,16 @@ interface EstimatorInput {
   rainfall: number; // mm/year
 }
 
+interface MLEstimateResponse {
+  yearly: number;
+  current: number;
+  projection: { year: number; credits: number; confidence: number }[];
+  confidence: number;
+  modelVersion: string;
+  featureImportance: { [key: string]: number };
+  recommendations: string[];
+}
+
 interface QueueItem extends EstimatorInput {
   id: string;
   createdAt: number;
