@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { AlertTriangle, WifiOff, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, WifiOff, CheckCircle2, Brain } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online";
 
 interface EstimatorInput {
