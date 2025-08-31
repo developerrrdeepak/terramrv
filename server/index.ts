@@ -43,7 +43,10 @@ export function createServer() {
   const dsn = process.env.SENTRY_DSN;
   if (dsn) {
     Sentry.init({ dsn, environment: process.env.NODE_ENV, tracesSampleRate: 0.2 });
-    app.use(Sentry.Handlers.requestHandler());
+    const anySentry: any = Sentry as any;
+    if (anySentry?.Handlers?.requestHandler) {
+      app.use(anySentry.Handlers.requestHandler());
+    }
   }
 
   // Middleware
@@ -121,7 +124,10 @@ export function createServer() {
   app.post("/api/admin/users/:id/role", setUserRole);
 
   if (dsn) {
-    app.use(Sentry.Handlers.errorHandler());
+    const anySentry: any = Sentry as any;
+    if (anySentry?.Handlers?.errorHandler) {
+      app.use(anySentry.Handlers.errorHandler());
+    }
   }
 
   // Seed admin (non-blocking)
