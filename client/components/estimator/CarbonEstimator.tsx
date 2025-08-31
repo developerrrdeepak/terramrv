@@ -34,7 +34,8 @@ interface QueueItem extends EstimatorInput {
   createdAt: number;
 }
 
-function estimateCredits(input: EstimatorInput) {
+// Fallback heuristic estimation for offline mode
+function fallbackEstimateCredits(input: EstimatorInput) {
   const { areaHa, system, soilSOC, treeCover, rainfall } = input;
   const treeFactor = system === "Agroforestry" ? 0.9 : 0.4;
   const moistureAdj = Math.min(1.2, Math.max(0.8, rainfall / 1000));
@@ -45,9 +46,47 @@ function estimateCredits(input: EstimatorInput) {
   const projection = Array.from({ length: 6 }).map((_, i) => ({
     year: i,
     credits: Math.round(yearly * Math.min(1, 0.15 + i * 0.17) * 10) / 10,
+    confidence: 0.7, // Lower confidence for fallback
   }));
   const current = projection[projection.length - 1].credits;
-  return { yearly, current, projection };
+  return {
+    yearly,
+    current,
+    projection,
+    confidence: 0.7,
+    modelVersion: "fallback-v1.0",
+    featureImportance: {
+      soilSOC: 0.25,
+      treeCover: 0.22,
+      rainfall: 0.18,
+      system: 0.15,
+      areaHa: 0.12,
+      climate: 0.08,
+    },
+    recommendations: ["Using fallback estimation - connect to internet for enhanced ML predictions"]
+  };
+}
+
+// ML-powered estimation
+async function estimateCreditsML(input: EstimatorInput): Promise<MLEstimateResponse> {
+  try {
+    const response = await fetch("/api/ml/carbon-estimate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("ML estimation failed, using fallback:", error);
+    return fallbackEstimateCredits(input);
+  }
 }
 
 const QUEUE_KEY = "terramrv_offline_queue";
