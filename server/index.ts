@@ -75,6 +75,11 @@ export function createServer() {
   app.post("/api/assistant/chat", assistantChat);
   app.post("/api/assistant/stt", assistantStt);
 
+  // ML Models
+  app.post("/api/ml/carbon-estimate", carbonEstimate);
+  app.post("/api/ml/soil-health", soilHealthPredict);
+  app.post("/api/ml/anomaly-check", anomalyCheck);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
