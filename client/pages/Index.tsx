@@ -18,6 +18,7 @@ import { useI18n } from "@/context/i18n";
 import { SignInForm } from "@/components/auth/SignInForm";
 import { Assistant } from "@/components/chat/Assistant";
 import { lazy, Suspense, useMemo } from "react";
+import { isWebGLAvailable } from "@/lib/webgl";
 const Scene3D = lazy(() =>
   import("@/components/3d/Scene3D").then((m) => ({ default: m.Scene3D })),
 );
@@ -26,7 +27,7 @@ const SpaceBackground = lazy(() =>
     default: m.SpaceBackground,
   })),
 );
-const enable3D = typeof window !== "undefined" && !(import.meta as any).env?.PROD;
+const enable3D = isWebGLAvailable() && import.meta.env.DEV;
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();
