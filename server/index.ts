@@ -81,6 +81,12 @@ export function createServer() {
   app.post("/api/ml/soil-health", soilHealthPredict);
   app.post("/api/ml/anomaly-check", anomalyCheck);
 
+  // Satellite Data & Remote Sensing
+  app.post("/api/satellite/fetch", fetchImagery);
+  app.post("/api/satellite/analyze-vegetation", analyzeVegetation);
+  app.post("/api/satellite/classify-land-cover", classifyLandCover);
+  app.post("/api/satellite/detect-changes", detectChanges);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
