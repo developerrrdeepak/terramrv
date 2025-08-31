@@ -30,6 +30,8 @@ import { FloatingAssistant } from "@/components/chat/FloatingAssistant";
 
 const queryClient = new QueryClient();
 
+import { ErrorBoundary } from "@sentry/react";
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="system" storageKey="terramrv-theme">
@@ -38,7 +40,8 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+            <ErrorBoundary fallback={<div className="p-4 text-red-500">Something went wrong loading the app. Please refresh.</div>}>
+              <BrowserRouter>
               <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
                 <Header />
                 <div className="flex min-h-screen flex-col">
@@ -62,6 +65,7 @@ const App = () => (
               </div>
               <FloatingAssistant />
             </BrowserRouter>
+            </ErrorBoundary>
           </TooltipProvider>
         </AuthProvider>
       </I18nProvider>
