@@ -50,7 +50,8 @@ export function SpaceScene() {
       const val1 = 0.1 + Math.sin(state.clock.getElapsedTime() * 0.5) * 0.05;
       if (Array.isArray(mat1)) {
         mat1.forEach((m) => {
-          if ("opacity" in m) (m as THREE.Material & { opacity: number }).opacity = val1;
+          if ("opacity" in m)
+            (m as THREE.Material & { opacity: number }).opacity = val1;
         });
       } else if ("opacity" in mat1) {
         (mat1 as THREE.Material & { opacity: number }).opacity = val1;
@@ -63,7 +64,8 @@ export function SpaceScene() {
       const val2 = 0.08 + Math.cos(state.clock.getElapsedTime() * 0.7) * 0.04;
       if (Array.isArray(mat2)) {
         mat2.forEach((m) => {
-          if ("opacity" in m) (m as THREE.Material & { opacity: number }).opacity = val2;
+          if ("opacity" in m)
+            (m as THREE.Material & { opacity: number }).opacity = val2;
         });
       } else if ("opacity" in mat2) {
         (mat2 as THREE.Material & { opacity: number }).opacity = val2;
