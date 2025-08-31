@@ -661,6 +661,11 @@ export default function Admin() {
           </div>
         </TabsContent>
 
+        {/* Real-Time Tab */}
+        <TabsContent value="realtime" className="space-y-6">
+          <RealTimeAnalytics />
+        </TabsContent>
+
         {/* System Tab */}
         <TabsContent value="system" className="space-y-6">
           <h2 className="text-xl font-semibold">System Health</h2>
