@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
 import { WireframeGlobe } from "./WireframeGlobe";
 import { FloatingDots } from "./FloatingDots";
@@ -23,7 +23,6 @@ export function Scene3D() {
           <WireframeGlobe />
           <FloatingDots />
 
-          <Environment preset="forest" />
           <OrbitControls
             enableZoom={false}
             enablePan={false}
