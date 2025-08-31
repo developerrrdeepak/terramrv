@@ -13,22 +13,22 @@ export function Footer() {
           <div className="text-sm font-medium">Product</div>
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
             <li>
-              <a href="#features" className="hover:text-foreground">
+              <a href="/#features" className="hover:text-foreground">
                 Features
               </a>
             </li>
             <li>
-              <a href="#calculator" className="hover:text-foreground">
+              <a href="/#calculator" className="hover:text-foreground">
                 Carbon Calculator
               </a>
             </li>
             <li>
-              <a href="#education" className="hover:text-foreground">
+              <a href="/#education" className="hover:text-foreground">
                 Education Hub
               </a>
             </li>
             <li>
-              <a href="#collaborate" className="hover:text-foreground">
+              <a href="/#collaborate" className="hover:text-foreground">
                 Collaborations
               </a>
             </li>
