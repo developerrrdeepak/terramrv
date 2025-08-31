@@ -307,15 +307,24 @@ export function CarbonEstimator() {
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="mb-2 text-sm text-muted-foreground">
-            Projected credits over 5 years
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
+              Projected credits over 5 years
+            </span>
+            {isLoading && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="h-3 w-3 animate-spin rounded-full border border-gray-300 border-t-primary" />
+                Processing with AI...
+              </div>
+            )}
           </div>
           <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={result.projection}
-                margin={{ left: 8, right: 8, top: 10, bottom: 0 }}
-              >
+            {result && !isLoading ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={result.projection}
+                  margin={{ left: 8, right: 8, top: 10, bottom: 0 }}
+                >
                 <defs>
                   <linearGradient id="colorCredits" x1="0" y1="0" x2="0" y2="1">
                     <stop
@@ -349,8 +358,13 @@ export function CarbonEstimator() {
                   fill="url(#colorCredits)"
                   strokeWidth={2}
                 />
-              </AreaChart>
-            </ResponsiveContainer>
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex h-full items-center justify-center text-muted-foreground">
+                {isLoading ? "Calculating projections..." : "No data available"}
+              </div>
+            )}
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
             <div className="rounded-md bg-muted p-3">
@@ -358,13 +372,13 @@ export function CarbonEstimator() {
                 Estimated yearly credits
               </div>
               <div className="text-xl font-semibold">
-                {result.yearly.toFixed(1)} tCO2e
+                {result ? `${result.yearly.toFixed(1)} tCO2e` : "--"}
               </div>
             </div>
             <div className="rounded-md bg-muted p-3">
               <div className="text-muted-foreground">Potential value (USD)</div>
               <div className="text-xl font-semibold">
-                ${(result.current * 7).toFixed(0)}
+                {result ? `$${(result.current * 7).toFixed(0)}` : "--"}
               </div>
             </div>
           </div>
