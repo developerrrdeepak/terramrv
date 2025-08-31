@@ -445,7 +445,7 @@ export function CropMonitor() {
                     }
                     formatter={(value: any, name) => [
                       Number(value).toFixed(3),
-                      name.toUpperCase(),
+                      String(name).toUpperCase(),
                     ]}
                   />
                   <Legend />
