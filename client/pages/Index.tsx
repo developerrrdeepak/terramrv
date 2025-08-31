@@ -18,8 +18,14 @@ import { useI18n } from "@/context/i18n";
 import { SignInForm } from "@/components/auth/SignInForm";
 import { Assistant } from "@/components/chat/Assistant";
 import { lazy, Suspense, useMemo } from "react";
-const Scene3D = lazy(() => import("@/components/3d/Scene3D").then(m => ({ default: m.Scene3D })));
-const SpaceBackground = lazy(() => import("@/components/3d/SpaceBackground").then(m => ({ default: m.SpaceBackground })));
+const Scene3D = lazy(() =>
+  import("@/components/3d/Scene3D").then((m) => ({ default: m.Scene3D })),
+);
+const SpaceBackground = lazy(() =>
+  import("@/components/3d/SpaceBackground").then((m) => ({
+    default: m.SpaceBackground,
+  })),
+);
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();

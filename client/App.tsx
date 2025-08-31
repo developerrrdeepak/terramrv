@@ -40,31 +40,37 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <ErrorBoundary fallback={<div className="p-4 text-red-500">Something went wrong loading the app. Please refresh.</div>}>
-              <BrowserRouter>
-              <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
-                <Header />
-                <div className="flex min-h-screen flex-col">
-                  <main className="flex-1">
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/admin" element={<Admin />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/credits" element={<Credits />} />
-                      <Route path="/reports" element={<Reports />} />
-                      <Route path="/learn" element={<LearningHub />} />
-                      <Route path="/support" element={<Support />} />
-                      <Route path="/map" element={<MapPage />} />
-                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </main>
-                  <Footer />
+            <ErrorBoundary
+              fallback={
+                <div className="p-4 text-red-500">
+                  Something went wrong loading the app. Please refresh.
                 </div>
-              </div>
-              <FloatingAssistant />
-            </BrowserRouter>
+              }
+            >
+              <BrowserRouter>
+                <div className="min-h-screen md:grid md:grid-cols-[260px_1fr]">
+                  <Header />
+                  <div className="flex min-h-screen flex-col">
+                    <main className="flex-1">
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/credits" element={<Credits />} />
+                        <Route path="/reports" element={<Reports />} />
+                        <Route path="/learn" element={<LearningHub />} />
+                        <Route path="/support" element={<Support />} />
+                        <Route path="/map" element={<MapPage />} />
+                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </main>
+                    <Footer />
+                  </div>
+                </div>
+                <FloatingAssistant />
+              </BrowserRouter>
             </ErrorBoundary>
           </TooltipProvider>
         </AuthProvider>
