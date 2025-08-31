@@ -100,9 +100,29 @@ export function CarbonEstimator() {
     rainfall: 900,
   });
   const [syncedCount, setSyncedCount] = useState(0);
+  const [result, setResult] = useState<MLEstimateResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const online = useOnlineStatus();
 
-  const result = useMemo(() => estimateCredits(input), [input]);
+  // Update estimation when input changes
+  useEffect(() => {
+    const updateEstimation = async () => {
+      setIsLoading(true);
+      try {
+        const newResult = online
+          ? await estimateCreditsML(input)
+          : fallbackEstimateCredits(input);
+        setResult(newResult);
+      } catch (error) {
+        console.error("Estimation error:", error);
+        setResult(fallbackEstimateCredits(input));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    updateEstimation();
+  }, [input, online]);
 
   useEffect(() => {
     if (!online) return;
