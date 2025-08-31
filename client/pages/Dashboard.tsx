@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth";
 import { SignInForm } from "@/components/auth/SignInForm";
+import { CropMonitor } from "@/components/crops/CropMonitor";
 import {
   Sprout,
   TrendingUp,
