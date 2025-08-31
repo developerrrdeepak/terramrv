@@ -26,6 +26,7 @@ const SpaceBackground = lazy(() =>
     default: m.SpaceBackground,
   })),
 );
+const enable3D = typeof window !== "undefined" && !(import.meta as any).env?.PROD;
 
 export default function Index() {
   const { t, lang, setLang } = useI18n();
@@ -46,12 +47,16 @@ export default function Index() {
   return (
     <div id="top" className="min-h-screen">
       <section className="relative overflow-hidden">
-        <Suspense fallback={null}>
-          <SpaceBackground />
-        </Suspense>
-        <Suspense fallback={null}>
-          <Scene3D />
-        </Suspense>
+        {enable3D && (
+          <Suspense fallback={null}>
+            <SpaceBackground />
+          </Suspense>
+        )}
+        {enable3D && (
+          <Suspense fallback={null}>
+            <Scene3D />
+          </Suspense>
+        )}
         <div className="relative z-10 container mx-auto grid items-center gap-10 px-4 pb-10 pt-12 md:grid-cols-2 md:pt-20">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
