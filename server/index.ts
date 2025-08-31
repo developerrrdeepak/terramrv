@@ -70,7 +70,7 @@ export function createServer() {
   app.post("/api/auth/register", register);
   app.post("/api/auth/login", login);
   app.get("/api/auth/me", me);
-  app.get("/api/profile", profileGet);
+  app.get("/api/profile/", me);
   app.put("/api/profile", profileUpdate);
 
   // OTP Email

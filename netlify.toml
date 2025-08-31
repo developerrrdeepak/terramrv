@@ -1,20 +1,19 @@
+
 [build]
-  command = "npm run build:client"
-  functions = "netlify/functions"
+  command = "pnpm build"
   publish = "dist/spa"
+  functions = "netlify/functions"
 
-
-[functions]
-  external_node_modules = ["express"]
-  node_bundler = "esbuild"
+[dev]
+  command = "pnpm dev"
+  port = 8080
+  targetPort = 8080
 
 [[redirects]]
-  force = true
   from = "/api/*"
-  status = 200
   to = "/.netlify/functions/api/:splat"
+  status = 200
 
-# SPA fallback so client-side routing works and root renders correctly
 [[redirects]]
   from = "/*"
   to = "/index.html"
