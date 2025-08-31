@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/auth";
 import { api } from "@/lib/auth";
+import { RealTimeAnalytics } from "@/components/analytics/RealTimeAnalytics";
 import {
   Users,
   ShieldCheck,
