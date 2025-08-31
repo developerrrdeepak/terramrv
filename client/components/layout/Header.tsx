@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/context/i18n";
 import { useAuth } from "@/context/auth";
 import { ThemeTabs } from "@/components/ui/theme-tabs";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 const NAV = [
   { href: "#features", label: "Features" },
