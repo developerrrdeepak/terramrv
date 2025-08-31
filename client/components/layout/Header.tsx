@@ -7,14 +7,14 @@ import { ThemeTabs } from "@/components/ui/theme-tabs";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 const NAV = [
-  { href: "#features", label: "Features" },
-  { href: "#calculator", label: "Calculator" },
-  { href: "#soil-health", label: "Soil Health AI" },
-  { href: "#crop-monitoring", label: "Crop Monitor" },
-  { href: "#transparency", label: "Transparency" },
-  { href: "#education", label: "Education" },
-  { href: "#reports", label: "Reports" },
-  { href: "#collaborate", label: "Collaborate" },
+  { href: "/#features", label: "Features" },
+  { href: "/#calculator", label: "Calculator" },
+  { href: "/#soil-health", label: "Soil Health AI" },
+  { href: "/#crop-monitoring", label: "Crop Monitor" },
+  { href: "/#transparency", label: "Transparency" },
+  { href: "/#education", label: "Education" },
+  { href: "/#reports", label: "Reports" },
+  { href: "/#collaborate", label: "Collaborate" },
 ];
 
 export function Header() {
@@ -24,7 +24,7 @@ export function Header() {
   return (
     <aside className="sticky top-0 z-40 h-screen w-full border-r bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:block">
       <div className="flex h-14 items-center justify-between px-4 md:hidden">
-        <a href="#top" className="flex items-center gap-2 text-primary">
+        <a href="/#top" className="flex items-center gap-2 text-primary">
           <Leaf className="h-6 w-6" />
           <span className="font-semibold">{t("brand")}</span>
         </a>
@@ -39,7 +39,7 @@ export function Header() {
 
       <div className={cn("px-4 pb-6 md:block", open ? "block" : "hidden")}>
         <div className="hidden md:flex items-center gap-2 py-4">
-          <a href="#top" className="flex items-center gap-2 text-primary">
+          <a href="/#top" className="flex items-center gap-2 text-primary">
             <Leaf className="h-6 w-6" />
             <span className="font-semibold">{t("brand")}</span>
           </a>

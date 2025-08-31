@@ -1,4 +1,5 @@
 import "./global.css";
+import "./lib/sentry";
 
 import { Toaster } from "@/components/ui/toaster";
 import { createRoot } from "react-dom/client";
@@ -64,4 +65,8 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+const container = document.getElementById("root")!;
+const existing = (window as any).__app_root;
+const root = existing || createRoot(container);
+(window as any).__app_root = root;
+root.render(<App />);
