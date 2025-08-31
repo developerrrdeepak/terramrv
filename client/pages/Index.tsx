@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { CarbonEstimator } from "@/components/estimator/CarbonEstimator";
 import { SoilHealthPredictor } from "@/components/soil/SoilHealthPredictor";
 import { CropMonitor } from "@/components/crops/CropMonitor";
