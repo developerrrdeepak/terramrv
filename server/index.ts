@@ -22,6 +22,19 @@ import { getCredits, requestPayout } from "./routes/credits";
 import { farmerReport, adminRegionReport } from "./routes/reports";
 import { submitSupport } from "./routes/support";
 import { chat as assistantChat, stt as assistantStt } from "./routes/assistant";
+import { carbonEstimate, soilHealthPredict, anomalyCheck } from "./routes/ml";
+import {
+  fetchImagery,
+  analyzeVegetation,
+  classifyLandCover,
+  detectChanges,
+} from "./routes/satellite";
+import {
+  getHistoricalWeather,
+  getWeatherForecast,
+  analyzeClimate,
+  getWeatherAlerts,
+} from "./routes/weather";
 
 export function createServer() {
   const app = express();
@@ -73,6 +86,23 @@ export function createServer() {
   // Assistant
   app.post("/api/assistant/chat", assistantChat);
   app.post("/api/assistant/stt", assistantStt);
+
+  // ML Models
+  app.post("/api/ml/carbon-estimate", carbonEstimate);
+  app.post("/api/ml/soil-health", soilHealthPredict);
+  app.post("/api/ml/anomaly-check", anomalyCheck);
+
+  // Satellite Data & Remote Sensing
+  app.post("/api/satellite/fetch", fetchImagery);
+  app.post("/api/satellite/analyze-vegetation", analyzeVegetation);
+  app.post("/api/satellite/classify-land-cover", classifyLandCover);
+  app.post("/api/satellite/detect-changes", detectChanges);
+
+  // Weather Data & Climate Analysis
+  app.post("/api/weather/historical", getHistoricalWeather);
+  app.post("/api/weather/forecast", getWeatherForecast);
+  app.post("/api/weather/climate-analysis", analyzeClimate);
+  app.post("/api/weather/alerts", getWeatherAlerts);
 
   // Admin
   app.get("/api/admin/summary", adminSummary);

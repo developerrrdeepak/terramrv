@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { api } from "@/lib/auth";
 
 export default function Credits() {

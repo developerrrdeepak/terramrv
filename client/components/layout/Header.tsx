@@ -4,10 +4,13 @@ import { cn } from "@/lib/utils";
 import { useI18n } from "@/context/i18n";
 import { useAuth } from "@/context/auth";
 import { ThemeTabs } from "@/components/ui/theme-tabs";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 const NAV = [
   { href: "#features", label: "Features" },
   { href: "#calculator", label: "Calculator" },
+  { href: "#soil-health", label: "Soil Health AI" },
+  { href: "#crop-monitoring", label: "Crop Monitor" },
   { href: "#transparency", label: "Transparency" },
   { href: "#education", label: "Education" },
   { href: "#reports", label: "Reports" },
@@ -64,6 +67,9 @@ export function Header() {
           </select>
 
           <ThemeTabs />
+
+          {user && <NotificationCenter />}
+
           <a
             href="#calculator"
             className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95"

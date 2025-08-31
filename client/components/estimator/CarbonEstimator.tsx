@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { AlertTriangle, WifiOff, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, WifiOff, CheckCircle2, Brain } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online";
 
 interface EstimatorInput {
@@ -19,12 +19,23 @@ interface EstimatorInput {
   rainfall: number; // mm/year
 }
 
+interface MLEstimateResponse {
+  yearly: number;
+  current: number;
+  projection: { year: number; credits: number; confidence: number }[];
+  confidence: number;
+  modelVersion: string;
+  featureImportance: { [key: string]: number };
+  recommendations: string[];
+}
+
 interface QueueItem extends EstimatorInput {
   id: string;
   createdAt: number;
 }
 
-function estimateCredits(input: EstimatorInput) {
+// Fallback heuristic estimation for offline mode
+function fallbackEstimateCredits(input: EstimatorInput) {
   const { areaHa, system, soilSOC, treeCover, rainfall } = input;
   const treeFactor = system === "Agroforestry" ? 0.9 : 0.4;
   const moistureAdj = Math.min(1.2, Math.max(0.8, rainfall / 1000));
@@ -35,9 +46,51 @@ function estimateCredits(input: EstimatorInput) {
   const projection = Array.from({ length: 6 }).map((_, i) => ({
     year: i,
     credits: Math.round(yearly * Math.min(1, 0.15 + i * 0.17) * 10) / 10,
+    confidence: 0.7, // Lower confidence for fallback
   }));
   const current = projection[projection.length - 1].credits;
-  return { yearly, current, projection };
+  return {
+    yearly,
+    current,
+    projection,
+    confidence: 0.7,
+    modelVersion: "fallback-v1.0",
+    featureImportance: {
+      soilSOC: 0.25,
+      treeCover: 0.22,
+      rainfall: 0.18,
+      system: 0.15,
+      areaHa: 0.12,
+      climate: 0.08,
+    },
+    recommendations: [
+      "Using fallback estimation - connect to internet for enhanced ML predictions",
+    ],
+  };
+}
+
+// ML-powered estimation
+async function estimateCreditsML(
+  input: EstimatorInput,
+): Promise<MLEstimateResponse> {
+  try {
+    const response = await fetch("/api/ml/carbon-estimate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("ML estimation failed, using fallback:", error);
+    return fallbackEstimateCredits(input);
+  }
 }
 
 const QUEUE_KEY = "terramrv_offline_queue";
@@ -51,9 +104,29 @@ export function CarbonEstimator() {
     rainfall: 900,
   });
   const [syncedCount, setSyncedCount] = useState(0);
+  const [result, setResult] = useState<MLEstimateResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const online = useOnlineStatus();
 
-  const result = useMemo(() => estimateCredits(input), [input]);
+  // Update estimation when input changes
+  useEffect(() => {
+    const updateEstimation = async () => {
+      setIsLoading(true);
+      try {
+        const newResult = online
+          ? await estimateCreditsML(input)
+          : fallbackEstimateCredits(input);
+        setResult(newResult);
+      } catch (error) {
+        console.error("Estimation error:", error);
+        setResult(fallbackEstimateCredits(input));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    updateEstimation();
+  }, [input, online]);
 
   useEffect(() => {
     if (!online) return;
@@ -171,17 +244,66 @@ export function CarbonEstimator() {
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <button
               onClick={saveEntry}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95"
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95 disabled:opacity-50"
             >
+              {isLoading ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                <Brain className="h-4 w-4" />
+              )}
               Save Entry
             </button>
             <p className="text-sm text-muted-foreground">
               Projected credits this year:{" "}
               <span className="font-semibold text-foreground">
-                {result.current.toFixed(1)} tCO2e
+                {result
+                  ? `${result.current.toFixed(1)} tCO2e`
+                  : "Calculating..."}
               </span>
+              {result && result.confidence && (
+                <span className="ml-2 text-xs">
+                  ({Math.round(result.confidence * 100)}% confidence)
+                </span>
+              )}
             </p>
           </div>
+
+          {/* Model Information */}
+          {result && !isLoading && (
+            <div className="mt-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Brain className="h-3 w-3" />
+                <span>Model: {result.modelVersion}</span>
+                {online ? (
+                  <span className="text-emerald-600">
+                    • Enhanced ML Prediction
+                  </span>
+                ) : (
+                  <span className="text-amber-600">• Offline Fallback</span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {result &&
+            result.recommendations &&
+            result.recommendations.length > 0 && (
+              <div className="mt-3 rounded-md bg-blue-50 p-3 text-xs">
+                <div className="font-medium text-blue-900 mb-1">
+                  AI Recommendations:
+                </div>
+                <ul className="space-y-1 text-blue-800">
+                  {result.recommendations.slice(0, 3).map((rec, i) => (
+                    <li key={i} className="flex items-start gap-1">
+                      <span className="text-blue-500 mt-0.5">•</span>
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           {syncedCount > 0 ? (
             <div className="mt-3 inline-flex items-center gap-2 rounded-md bg-emerald-100 px-3 py-2 text-xs text-emerald-800">
               <CheckCircle2 className="h-4 w-4" /> Synced {syncedCount} entr
@@ -197,50 +319,73 @@ export function CarbonEstimator() {
         </div>
 
         <div className="rounded-lg border bg-card p-6 shadow-sm">
-          <div className="mb-2 text-sm text-muted-foreground">
-            Projected credits over 5 years
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
+              Projected credits over 5 years
+            </span>
+            {isLoading && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <div className="h-3 w-3 animate-spin rounded-full border border-gray-300 border-t-primary" />
+                Processing with AI...
+              </div>
+            )}
           </div>
           <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart
-                data={result.projection}
-                margin={{ left: 8, right: 8, top: 10, bottom: 0 }}
-              >
-                <defs>
-                  <linearGradient id="colorCredits" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor="hsl(var(--primary))"
-                      stopOpacity={0.5}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor="hsl(var(--primary))"
-                      stopOpacity={0.05}
-                    />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                <XAxis
-                  dataKey="year"
-                  tickFormatter={(v) => (v === 0 ? "Now" : `Y${v}`)}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis tickLine={false} axisLine={false} />
-                <Tooltip
-                  formatter={(v: any) => [`${v} tCO2e`, "Credits"]}
-                  labelFormatter={(l) => (l === 0 ? "Current" : `Year ${l}`)}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="credits"
-                  stroke="hsl(var(--primary))"
-                  fill="url(#colorCredits)"
-                  strokeWidth={2}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            {result && !isLoading ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={result.projection}
+                  margin={{ left: 8, right: 8, top: 10, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="colorCredits"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor="hsl(var(--primary))"
+                        stopOpacity={0.5}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="hsl(var(--primary))"
+                        stopOpacity={0.05}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-muted"
+                  />
+                  <XAxis
+                    dataKey="year"
+                    tickFormatter={(v) => (v === 0 ? "Now" : `Y${v}`)}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis tickLine={false} axisLine={false} />
+                  <Tooltip
+                    formatter={(v: any) => [`${v} tCO2e`, "Credits"]}
+                    labelFormatter={(l) => (l === 0 ? "Current" : `Year ${l}`)}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="credits"
+                    stroke="hsl(var(--primary))"
+                    fill="url(#colorCredits)"
+                    strokeWidth={2}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex h-full items-center justify-center text-muted-foreground">
+                {isLoading ? "Calculating projections..." : "No data available"}
+              </div>
+            )}
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
             <div className="rounded-md bg-muted p-3">
@@ -248,13 +393,13 @@ export function CarbonEstimator() {
                 Estimated yearly credits
               </div>
               <div className="text-xl font-semibold">
-                {result.yearly.toFixed(1)} tCO2e
+                {result ? `${result.yearly.toFixed(1)} tCO2e` : "--"}
               </div>
             </div>
             <div className="rounded-md bg-muted p-3">
               <div className="text-muted-foreground">Potential value (USD)</div>
               <div className="text-xl font-semibold">
-                ${(result.current * 7).toFixed(0)}
+                {result ? `$${(result.current * 7).toFixed(0)}` : "--"}
               </div>
             </div>
           </div>
