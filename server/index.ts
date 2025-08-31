@@ -22,6 +22,7 @@ import { getCredits, requestPayout } from "./routes/credits";
 import { farmerReport, adminRegionReport } from "./routes/reports";
 import { submitSupport } from "./routes/support";
 import { chat as assistantChat, stt as assistantStt } from "./routes/assistant";
+import { carbonEstimate, soilHealthPredict, anomalyCheck } from "./routes/ml";
 
 export function createServer() {
   const app = express();
