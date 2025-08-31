@@ -513,6 +513,10 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+
+          <div className="mt-8">
+            <CropMonitor />
+          </div>
         </TabsContent>
 
         {/* Financial Tab */}
