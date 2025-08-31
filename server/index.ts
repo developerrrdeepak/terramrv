@@ -42,7 +42,11 @@ export function createServer() {
 
   const dsn = process.env.SENTRY_DSN;
   if (dsn) {
-    Sentry.init({ dsn, environment: process.env.NODE_ENV, tracesSampleRate: 0.2 });
+    Sentry.init({
+      dsn,
+      environment: process.env.NODE_ENV,
+      tracesSampleRate: 0.2,
+    });
     const anySentry: any = Sentry as any;
     if (anySentry?.Handlers?.requestHandler) {
       app.use(anySentry.Handlers.requestHandler());
