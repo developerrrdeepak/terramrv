@@ -7,14 +7,14 @@ import { ThemeTabs } from "@/components/ui/theme-tabs";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 const NAV = [
-  { href: "#features", label: "Features" },
-  { href: "#calculator", label: "Calculator" },
-  { href: "#soil-health", label: "Soil Health AI" },
-  { href: "#crop-monitoring", label: "Crop Monitor" },
-  { href: "#transparency", label: "Transparency" },
-  { href: "#education", label: "Education" },
-  { href: "#reports", label: "Reports" },
-  { href: "#collaborate", label: "Collaborate" },
+  { href: "/#features", label: "Features" },
+  { href: "/#calculator", label: "Calculator" },
+  { href: "/#soil-health", label: "Soil Health AI" },
+  { href: "/#crop-monitoring", label: "Crop Monitor" },
+  { href: "/#transparency", label: "Transparency" },
+  { href: "/#education", label: "Education" },
+  { href: "/#reports", label: "Reports" },
+  { href: "/#collaborate", label: "Collaborate" },
 ];
 
 export function Header() {
