@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import * as Sentry from "@sentry/node";
 import { handleDemo } from "./routes/demo";
 import { register, login, me, profileGet, profileUpdate } from "./routes/auth";
 import {
@@ -38,6 +39,12 @@ import {
 
 export function createServer() {
   const app = express();
+
+  const dsn = process.env.SENTRY_DSN;
+  if (dsn) {
+    Sentry.init({ dsn, environment: process.env.NODE_ENV, tracesSampleRate: 0.2 });
+    app.use(Sentry.Handlers.requestHandler());
+  }
 
   // Middleware
   app.use(cors());
@@ -112,6 +119,10 @@ export function createServer() {
   app.get("/api/admin/registrations", listRegistrations);
   app.post("/api/admin/registrations/:id/approve", approveRegistration);
   app.post("/api/admin/users/:id/role", setUserRole);
+
+  if (dsn) {
+    app.use(Sentry.Handlers.errorHandler());
+  }
 
   // Seed admin (non-blocking)
   import("./seed").then((m) => m.ensureAdmin?.()).catch(() => {});
