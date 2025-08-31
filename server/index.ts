@@ -88,6 +88,12 @@ export function createServer() {
   app.post("/api/satellite/classify-land-cover", classifyLandCover);
   app.post("/api/satellite/detect-changes", detectChanges);
 
+  // Weather Data & Climate Analysis
+  app.post("/api/weather/historical", getHistoricalWeather);
+  app.post("/api/weather/forecast", getWeatherForecast);
+  app.post("/api/weather/climate-analysis", analyzeClimate);
+  app.post("/api/weather/alerts", getWeatherAlerts);
+
   // Admin
   app.get("/api/admin/summary", adminSummary);
   app.get("/api/admin/farmers", listFarmers);
