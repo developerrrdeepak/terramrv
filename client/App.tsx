@@ -1,5 +1,9 @@
 import "./global.css";
 import "./lib/sentry";
+// Ensure HMR client in dev only
+if (import.meta && (import.meta as any).hot) {
+  import("/@vite/client");
+}
 
 import { Toaster } from "@/components/ui/toaster";
 import { createRoot } from "react-dom/client";
