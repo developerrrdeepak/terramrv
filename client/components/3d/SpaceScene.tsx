@@ -46,14 +46,28 @@ export function SpaceScene() {
 
     if (nebula1Ref.current) {
       nebula1Ref.current.rotation.z = state.clock.getElapsedTime() * 0.002;
-      nebula1Ref.current.material.opacity =
-        0.1 + Math.sin(state.clock.getElapsedTime() * 0.5) * 0.05;
+      const mat1 = nebula1Ref.current.material;
+      const val1 = 0.1 + Math.sin(state.clock.getElapsedTime() * 0.5) * 0.05;
+      if (Array.isArray(mat1)) {
+        mat1.forEach((m) => {
+          if ("opacity" in m) (m as THREE.Material & { opacity: number }).opacity = val1;
+        });
+      } else if ("opacity" in mat1) {
+        (mat1 as THREE.Material & { opacity: number }).opacity = val1;
+      }
     }
 
     if (nebula2Ref.current) {
       nebula2Ref.current.rotation.z = -state.clock.getElapsedTime() * 0.003;
-      nebula2Ref.current.material.opacity =
-        0.08 + Math.cos(state.clock.getElapsedTime() * 0.7) * 0.04;
+      const mat2 = nebula2Ref.current.material;
+      const val2 = 0.08 + Math.cos(state.clock.getElapsedTime() * 0.7) * 0.04;
+      if (Array.isArray(mat2)) {
+        mat2.forEach((m) => {
+          if ("opacity" in m) (m as THREE.Material & { opacity: number }).opacity = val2;
+        });
+      } else if ("opacity" in mat2) {
+        (mat2 as THREE.Material & { opacity: number }).opacity = val2;
+      }
     }
   });
 
