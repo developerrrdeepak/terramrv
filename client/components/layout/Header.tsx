@@ -8,6 +8,8 @@ import { ThemeTabs } from "@/components/ui/theme-tabs";
 const NAV = [
   { href: "#features", label: "Features" },
   { href: "#calculator", label: "Calculator" },
+  { href: "#soil-health", label: "Soil Health AI" },
+  { href: "#crop-monitoring", label: "Crop Monitor" },
   { href: "#transparency", label: "Transparency" },
   { href: "#education", label: "Education" },
   { href: "#reports", label: "Reports" },
