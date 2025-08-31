@@ -240,17 +240,58 @@ export function CarbonEstimator() {
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <button
               onClick={saveEntry}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95"
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow hover:opacity-95 disabled:opacity-50"
             >
+              {isLoading ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                <Brain className="h-4 w-4" />
+              )}
               Save Entry
             </button>
             <p className="text-sm text-muted-foreground">
               Projected credits this year:{" "}
               <span className="font-semibold text-foreground">
-                {result.current.toFixed(1)} tCO2e
+                {result ? `${result.current.toFixed(1)} tCO2e` : "Calculating..."}
               </span>
+              {result && result.confidence && (
+                <span className="ml-2 text-xs">
+                  ({Math.round(result.confidence * 100)}% confidence)
+                </span>
+              )}
             </p>
           </div>
+
+          {/* Model Information */}
+          {result && !isLoading && (
+            <div className="mt-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Brain className="h-3 w-3" />
+                <span>Model: {result.modelVersion}</span>
+                {online ? (
+                  <span className="text-emerald-600">• Enhanced ML Prediction</span>
+                ) : (
+                  <span className="text-amber-600">• Offline Fallback</span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {result && result.recommendations && result.recommendations.length > 0 && (
+            <div className="mt-3 rounded-md bg-blue-50 p-3 text-xs">
+              <div className="font-medium text-blue-900 mb-1">AI Recommendations:</div>
+              <ul className="space-y-1 text-blue-800">
+                {result.recommendations.slice(0, 3).map((rec, i) => (
+                  <li key={i} className="flex items-start gap-1">
+                    <span className="text-blue-500 mt-0.5">•</span>
+                    <span>{rec}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {syncedCount > 0 ? (
             <div className="mt-3 inline-flex items-center gap-2 rounded-md bg-emerald-100 px-3 py-2 text-xs text-emerald-800">
               <CheckCircle2 className="h-4 w-4" /> Synced {syncedCount} entr
