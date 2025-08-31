@@ -191,6 +191,14 @@ export default function Index() {
 
       <CarbonEstimator />
 
+      <section id="soil-health" className="container mx-auto px-4 py-16">
+        <SoilHealthPredictor />
+      </section>
+
+      <section id="crop-monitoring" className="container mx-auto px-4 py-16">
+        <CropMonitor />
+      </section>
+
       <section id="transparency" className="container mx-auto px-4 py-16">
         <div className="rounded-lg border bg-card p-6 shadow-sm">
           <div className="grid gap-8 md:grid-cols-2">
