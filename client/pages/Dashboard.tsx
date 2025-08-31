@@ -66,6 +66,10 @@ export default function Dashboard() {
       <div className="mt-8">
         <ActivityLogs />
       </div>
+
+      <div className="mt-8">
+        <SoilHealthPredictor />
+      </div>
     </div>
   );
 }
