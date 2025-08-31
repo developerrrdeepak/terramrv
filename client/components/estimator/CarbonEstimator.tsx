@@ -63,12 +63,16 @@ function fallbackEstimateCredits(input: EstimatorInput) {
       areaHa: 0.12,
       climate: 0.08,
     },
-    recommendations: ["Using fallback estimation - connect to internet for enhanced ML predictions"]
+    recommendations: [
+      "Using fallback estimation - connect to internet for enhanced ML predictions",
+    ],
   };
 }
 
 // ML-powered estimation
-async function estimateCreditsML(input: EstimatorInput): Promise<MLEstimateResponse> {
+async function estimateCreditsML(
+  input: EstimatorInput,
+): Promise<MLEstimateResponse> {
   try {
     const response = await fetch("/api/ml/carbon-estimate", {
       method: "POST",
@@ -253,7 +257,9 @@ export function CarbonEstimator() {
             <p className="text-sm text-muted-foreground">
               Projected credits this year:{" "}
               <span className="font-semibold text-foreground">
-                {result ? `${result.current.toFixed(1)} tCO2e` : "Calculating..."}
+                {result
+                  ? `${result.current.toFixed(1)} tCO2e`
+                  : "Calculating..."}
               </span>
               {result && result.confidence && (
                 <span className="ml-2 text-xs">
@@ -270,7 +276,9 @@ export function CarbonEstimator() {
                 <Brain className="h-3 w-3" />
                 <span>Model: {result.modelVersion}</span>
                 {online ? (
-                  <span className="text-emerald-600">• Enhanced ML Prediction</span>
+                  <span className="text-emerald-600">
+                    • Enhanced ML Prediction
+                  </span>
                 ) : (
                   <span className="text-amber-600">• Offline Fallback</span>
                 )}
@@ -279,19 +287,23 @@ export function CarbonEstimator() {
           )}
 
           {/* Recommendations */}
-          {result && result.recommendations && result.recommendations.length > 0 && (
-            <div className="mt-3 rounded-md bg-blue-50 p-3 text-xs">
-              <div className="font-medium text-blue-900 mb-1">AI Recommendations:</div>
-              <ul className="space-y-1 text-blue-800">
-                {result.recommendations.slice(0, 3).map((rec, i) => (
-                  <li key={i} className="flex items-start gap-1">
-                    <span className="text-blue-500 mt-0.5">•</span>
-                    <span>{rec}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          {result &&
+            result.recommendations &&
+            result.recommendations.length > 0 && (
+              <div className="mt-3 rounded-md bg-blue-50 p-3 text-xs">
+                <div className="font-medium text-blue-900 mb-1">
+                  AI Recommendations:
+                </div>
+                <ul className="space-y-1 text-blue-800">
+                  {result.recommendations.slice(0, 3).map((rec, i) => (
+                    <li key={i} className="flex items-start gap-1">
+                      <span className="text-blue-500 mt-0.5">•</span>
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           {syncedCount > 0 ? (
             <div className="mt-3 inline-flex items-center gap-2 rounded-md bg-emerald-100 px-3 py-2 text-xs text-emerald-800">
               <CheckCircle2 className="h-4 w-4" /> Synced {syncedCount} entr
@@ -325,39 +337,48 @@ export function CarbonEstimator() {
                   data={result.projection}
                   margin={{ left: 8, right: 8, top: 10, bottom: 0 }}
                 >
-                <defs>
-                  <linearGradient id="colorCredits" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor="hsl(var(--primary))"
-                      stopOpacity={0.5}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor="hsl(var(--primary))"
-                      stopOpacity={0.05}
-                    />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                <XAxis
-                  dataKey="year"
-                  tickFormatter={(v) => (v === 0 ? "Now" : `Y${v}`)}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis tickLine={false} axisLine={false} />
-                <Tooltip
-                  formatter={(v: any) => [`${v} tCO2e`, "Credits"]}
-                  labelFormatter={(l) => (l === 0 ? "Current" : `Year ${l}`)}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="credits"
-                  stroke="hsl(var(--primary))"
-                  fill="url(#colorCredits)"
-                  strokeWidth={2}
-                />
+                  <defs>
+                    <linearGradient
+                      id="colorCredits"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="5%"
+                        stopColor="hsl(var(--primary))"
+                        stopOpacity={0.5}
+                      />
+                      <stop
+                        offset="95%"
+                        stopColor="hsl(var(--primary))"
+                        stopOpacity={0.05}
+                      />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    className="stroke-muted"
+                  />
+                  <XAxis
+                    dataKey="year"
+                    tickFormatter={(v) => (v === 0 ? "Now" : `Y${v}`)}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis tickLine={false} axisLine={false} />
+                  <Tooltip
+                    formatter={(v: any) => [`${v} tCO2e`, "Credits"]}
+                    labelFormatter={(l) => (l === 0 ? "Current" : `Year ${l}`)}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="credits"
+                    stroke="hsl(var(--primary))"
+                    fill="url(#colorCredits)"
+                    strokeWidth={2}
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (

@@ -88,63 +88,68 @@ export const requestPayout: RequestHandler = async (req, res) => {
       flagged = true;
     }
 
-    await (db as any)
-      .collection("payouts")
-      .insertOne({
-        userId: user.id,
-        amount: a,
-        status,
-        flagged,
-        riskScore: anomalyCheck.riskScore,
-        anomalies: anomalyCheck.anomalies,
-        mlRecommendations: anomalyCheck.recommendations,
-        createdAt: new Date(),
-      });
+    await (db as any).collection("payouts").insertOne({
+      userId: user.id,
+      amount: a,
+      status,
+      flagged,
+      riskScore: anomalyCheck.riskScore,
+      anomalies: anomalyCheck.anomalies,
+      mlRecommendations: anomalyCheck.recommendations,
+      createdAt: new Date(),
+    });
 
     res.json({
       ok: true,
       status,
       flagged,
-      message: flagged ? "Request submitted for review due to unusual activity patterns" : "Payout requested successfully"
+      message: flagged
+        ? "Request submitted for review due to unusual activity patterns"
+        : "Payout requested successfully",
     });
   } catch (error) {
     console.error("Anomaly detection failed:", error);
     // Fallback to manual review if ML fails
-    await (db as any)
-      .collection("payouts")
-      .insertOne({
-        userId: user.id,
-        amount: a,
-        status: "pending_review",
-        flagged: true,
-        notes: "ML anomaly detection unavailable - manual review required",
-        createdAt: new Date(),
-      });
+    await (db as any).collection("payouts").insertOne({
+      userId: user.id,
+      amount: a,
+      status: "pending_review",
+      flagged: true,
+      notes: "ML anomaly detection unavailable - manual review required",
+      createdAt: new Date(),
+    });
 
     res.json({
       ok: true,
       status: "pending_review",
       flagged: true,
-      message: "Request submitted for manual review"
+      message: "Request submitted for manual review",
     });
   }
 };
 
 // Internal function to call ML anomaly detection
-async function performAnomalyCheck(userId: string, activityLogs: any[], requestedAmount: number) {
-  const response = await fetch(`${process.env.API_BASE_URL || "http://localhost:8080"}/api/ml/anomaly-check`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${generateInternalToken(userId)}`, // Internal service token
+async function performAnomalyCheck(
+  userId: string,
+  activityLogs: any[],
+  requestedAmount: number,
+) {
+  const response = await fetch(
+    `${process.env.API_BASE_URL || "http://localhost:8080"}/api/ml/anomaly-check`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${generateInternalToken(userId)}`, // Internal service token
+      },
+      body: JSON.stringify({
+        userId,
+        activityLogs,
+        timeWindow: "30d",
+        requestedAmount,
+      }),
     },
-    body: JSON.stringify({
-      userId,
-      activityLogs,
-      timeWindow: "30d",
-      requestedAmount,
-    }),
-  });
+  );
 
   if (!response.ok) {
     throw new Error(`Anomaly check failed: ${response.status}`);

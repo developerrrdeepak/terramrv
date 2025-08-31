@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import { Bell, X, CheckCircle, AlertTriangle, Info, Settings, Filter } from "lucide-react";
+import {
+  Bell,
+  X,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  Settings,
+  Filter,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -23,10 +31,10 @@ interface NotificationCenterProps {
   maxNotifications?: number;
 }
 
-export function NotificationCenter({ 
-  position = "top-right", 
-  autoHide = true, 
-  maxNotifications = 50 
+export function NotificationCenter({
+  position = "top-right",
+  autoHide = true,
+  maxNotifications = 50,
 }: NotificationCenterProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -36,10 +44,10 @@ export function NotificationCenter({
   useEffect(() => {
     // Load initial notifications
     loadNotifications();
-    
+
     // Set up real-time notification polling
     const interval = setInterval(pollNotifications, 30000); // Poll every 30 seconds
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -49,65 +57,70 @@ export function NotificationCenter({
       {
         id: "1",
         title: "Carbon Credits Verified",
-        message: "Your Q4 2024 carbon credits (12.5 tCO2e) have been successfully verified and approved.",
+        message:
+          "Your Q4 2024 carbon credits (12.5 tCO2e) have been successfully verified and approved.",
         type: "success",
         timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 minutes ago
         read: false,
         actionable: true,
         category: "verification",
         priority: "medium",
-        metadata: { credits: 12.5, period: "Q4 2024" }
+        metadata: { credits: 12.5, period: "Q4 2024" },
       },
       {
         id: "2",
         title: "Weather Alert",
-        message: "Heavy rainfall expected in your area within 24 hours. Consider protecting sensitive crops.",
+        message:
+          "Heavy rainfall expected in your area within 24 hours. Consider protecting sensitive crops.",
         type: "warning",
         timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
         read: false,
         actionable: true,
         category: "weather",
         priority: "high",
-        metadata: { location: "Plot 1", rainfall: 45 }
+        metadata: { location: "Plot 1", rainfall: 45 },
       },
       {
         id: "3",
         title: "Payout Processed",
-        message: "Your monthly payout of ₹2,850 has been processed and will arrive in 2-3 business days.",
+        message:
+          "Your monthly payout of ₹2,850 has been processed and will arrive in 2-3 business days.",
         type: "success",
         timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
         read: true,
         actionable: false,
         category: "finance",
         priority: "medium",
-        metadata: { amount: 2850, currency: "INR" }
+        metadata: { amount: 2850, currency: "INR" },
       },
       {
         id: "4",
         title: "ML Model Update",
-        message: "Your soil health prediction model has been updated with latest satellite data.",
+        message:
+          "Your soil health prediction model has been updated with latest satellite data.",
         type: "info",
         timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
         read: false,
         actionable: false,
         category: "system",
         priority: "low",
-        metadata: { model: "soil_health_v2.1" }
+        metadata: { model: "soil_health_v2.1" },
       },
       {
         id: "5",
         title: "Training Available",
-        message: "New sustainable farming workshop: 'Advanced Agroforestry Techniques' is now available.",
+        message:
+          "New sustainable farming workshop: 'Advanced Agroforestry Techniques' is now available.",
         type: "info",
         timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(), // 2 days ago
         read: false,
         actionable: true,
         category: "education",
         priority: "low",
-        metadata: { course: "agroforestry_advanced", duration: "2 hours" }
-      }
+        metadata: { course: "agroforestry_advanced", duration: "2 hours" },
+      },
     ];
-    
+
     setNotifications(mockNotifications);
   };
 
@@ -117,23 +130,28 @@ export function NotificationCenter({
       // In a real app, this would be an API call
       // const response = await fetch('/api/notifications/poll');
       // const newNotifications = await response.json();
-      
+
       // For demo, occasionally add a new notification
-      if (Math.random() < 0.1) { // 10% chance
+      if (Math.random() < 0.1) {
+        // 10% chance
         const newNotification: Notification = {
           id: Date.now().toString(),
           title: "Soil Moisture Alert",
-          message: "Soil moisture in Plot 2 has dropped below optimal levels. Consider irrigation.",
+          message:
+            "Soil moisture in Plot 2 has dropped below optimal levels. Consider irrigation.",
           type: "warning",
           timestamp: new Date().toISOString(),
           read: false,
           actionable: true,
           category: "monitoring",
           priority: "medium",
-          metadata: { plot: "Plot 2", moisture: 32 }
+          metadata: { plot: "Plot 2", moisture: 32 },
         };
-        
-        setNotifications(prev => [newNotification, ...prev.slice(0, maxNotifications - 1)]);
+
+        setNotifications((prev) => [
+          newNotification,
+          ...prev.slice(0, maxNotifications - 1),
+        ]);
       }
     } catch (error) {
       console.error("Failed to poll notifications:", error);
@@ -141,47 +159,56 @@ export function NotificationCenter({
   };
 
   const markAsRead = (id: string) => {
-    setNotifications(prev => prev.map(n => 
-      n.id === id ? { ...n, read: true } : n
-    ));
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n)),
+    );
   };
 
   const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
   const removeNotification = (id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   const getFilteredNotifications = () => {
     let filtered = notifications;
-    
+
     if (filter !== "all") {
-      filtered = filtered.filter(n => {
+      filtered = filtered.filter((n) => {
         switch (filter) {
-          case "unread": return !n.read;
-          case "actionable": return n.actionable;
-          case "high-priority": return n.priority === "high";
-          default: return true;
+          case "unread":
+            return !n.read;
+          case "actionable":
+            return n.actionable;
+          case "high-priority":
+            return n.priority === "high";
+          default:
+            return true;
         }
       });
     }
-    
+
     if (selectedCategory !== "all") {
-      filtered = filtered.filter(n => n.category === selectedCategory);
+      filtered = filtered.filter((n) => n.category === selectedCategory);
     }
-    
+
     return filtered;
   };
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case "success": return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case "warning": return <AlertTriangle className="h-4 w-4 text-amber-600" />;
-      case "error": return <AlertTriangle className="h-4 w-4 text-red-600" />;
-      case "info": return <Info className="h-4 w-4 text-blue-600" />;
-      default: return <Bell className="h-4 w-4" />;
+      case "success":
+        return <CheckCircle className="h-4 w-4 text-green-600" />;
+      case "warning":
+        return <AlertTriangle className="h-4 w-4 text-amber-600" />;
+      case "error":
+        return <AlertTriangle className="h-4 w-4 text-red-600" />;
+      case "info":
+        return <Info className="h-4 w-4 text-blue-600" />;
+      default:
+        return <Bell className="h-4 w-4" />;
     }
   };
 
@@ -192,7 +219,7 @@ export function NotificationCenter({
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
-    
+
     if (diffMins < 1) return "Just now";
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
@@ -200,8 +227,8 @@ export function NotificationCenter({
     return date.toLocaleDateString();
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
-  const categories = [...new Set(notifications.map(n => n.category))];
+  const unreadCount = notifications.filter((n) => !n.read).length;
+  const categories = [...new Set(notifications.map((n) => n.category))];
 
   return (
     <div className="relative">
@@ -214,8 +241,8 @@ export function NotificationCenter({
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
-          <Badge 
-            variant="destructive" 
+          <Badge
+            variant="destructive"
             className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center"
           >
             {unreadCount > 99 ? "99+" : unreadCount}
@@ -247,7 +274,7 @@ export function NotificationCenter({
                 </Button>
               </div>
             </div>
-            
+
             {/* Filters */}
             <div className="flex items-center gap-2 text-sm">
               <select
@@ -260,14 +287,14 @@ export function NotificationCenter({
                 <option value="actionable">Actionable</option>
                 <option value="high-priority">High Priority</option>
               </select>
-              
+
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="rounded border bg-background px-2 py-1 text-xs"
               >
                 <option value="all">All Categories</option>
-                {categories.map(cat => (
+                {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat.charAt(0).toUpperCase() + cat.slice(1)}
                   </option>
@@ -288,7 +315,7 @@ export function NotificationCenter({
                 <div
                   key={notification.id}
                   className={`border-b p-4 hover:bg-muted cursor-pointer ${
-                    !notification.read ? 'bg-blue-50' : ''
+                    !notification.read ? "bg-blue-50" : ""
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
@@ -298,10 +325,16 @@ export function NotificationCenter({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-medium text-sm">{notification.title}</h4>
+                        <h4 className="font-medium text-sm">
+                          {notification.title}
+                        </h4>
                         <div className="flex items-center gap-2">
-                          <Badge 
-                            variant={notification.priority === 'high' ? 'destructive' : 'secondary'}
+                          <Badge
+                            variant={
+                              notification.priority === "high"
+                                ? "destructive"
+                                : "secondary"
+                            }
                             className="text-xs"
                           >
                             {notification.priority}
@@ -325,7 +358,11 @@ export function NotificationCenter({
                           {formatTimestamp(notification.timestamp)}
                         </span>
                         {notification.actionable && (
-                          <Button size="sm" variant="outline" className="text-xs h-6">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="text-xs h-6"
+                          >
                             Take Action
                           </Button>
                         )}
@@ -373,17 +410,19 @@ export function useNotifications() {
     return () => clearInterval(interval);
   }, []);
 
-  const addNotification = (notification: Omit<Notification, "id" | "timestamp">) => {
+  const addNotification = (
+    notification: Omit<Notification, "id" | "timestamp">,
+  ) => {
     const newNotification: Notification = {
       ...notification,
       id: Date.now().toString(),
       timestamp: new Date().toISOString(),
     };
-    setNotifications(prev => [newNotification, ...prev]);
+    setNotifications((prev) => [newNotification, ...prev]);
   };
 
   const removeNotification = (id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
   return {
@@ -394,11 +433,11 @@ export function useNotifications() {
 }
 
 // Toast notification component for immediate alerts
-export function ToastNotification({ 
-  notification, 
-  onClose 
-}: { 
-  notification: Notification; 
+export function ToastNotification({
+  notification,
+  onClose,
+}: {
+  notification: Notification;
   onClose: () => void;
 }) {
   useEffect(() => {
@@ -410,17 +449,24 @@ export function ToastNotification({
   }, [onClose]);
 
   return (
-    <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border max-w-sm ${
-      notification.type === 'success' ? 'bg-green-50 border-green-200' :
-      notification.type === 'warning' ? 'bg-amber-50 border-amber-200' :
-      notification.type === 'error' ? 'bg-red-50 border-red-200' :
-      'bg-blue-50 border-blue-200'
-    }`}>
+    <div
+      className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg border max-w-sm ${
+        notification.type === "success"
+          ? "bg-green-50 border-green-200"
+          : notification.type === "warning"
+            ? "bg-amber-50 border-amber-200"
+            : notification.type === "error"
+              ? "bg-red-50 border-red-200"
+              : "bg-blue-50 border-blue-200"
+      }`}
+    >
       <div className="flex items-start gap-3">
         {getNotificationIcon(notification.type)}
         <div className="flex-1">
           <h4 className="font-medium text-sm">{notification.title}</h4>
-          <p className="text-sm text-muted-foreground mt-1">{notification.message}</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {notification.message}
+          </p>
         </div>
         <button
           onClick={onClose}
@@ -435,10 +481,15 @@ export function ToastNotification({
 
 function getNotificationIcon(type: string) {
   switch (type) {
-    case "success": return <CheckCircle className="h-4 w-4 text-green-600" />;
-    case "warning": return <AlertTriangle className="h-4 w-4 text-amber-600" />;
-    case "error": return <AlertTriangle className="h-4 w-4 text-red-600" />;
-    case "info": return <Info className="h-4 w-4 text-blue-600" />;
-    default: return <Bell className="h-4 w-4" />;
+    case "success":
+      return <CheckCircle className="h-4 w-4 text-green-600" />;
+    case "warning":
+      return <AlertTriangle className="h-4 w-4 text-amber-600" />;
+    case "error":
+      return <AlertTriangle className="h-4 w-4 text-red-600" />;
+    case "info":
+      return <Info className="h-4 w-4 text-blue-600" />;
+    default:
+      return <Bell className="h-4 w-4" />;
   }
 }

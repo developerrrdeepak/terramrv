@@ -77,8 +77,8 @@ export default function Admin() {
     setLoading(true);
     try {
       // Simulate comprehensive admin data loading
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       setAdminData({
         overview: {
           totalUsers: 1247,
@@ -115,7 +115,10 @@ export default function Admin() {
           <p className="text-muted-foreground mb-4">
             You need administrator privileges to access this dashboard.
           </p>
-          <Button variant="outline" onClick={() => window.location.href = "/"}>
+          <Button
+            variant="outline"
+            onClick={() => (window.location.href = "/")}
+          >
             Return to Home
           </Button>
         </div>
@@ -147,7 +150,17 @@ export default function Admin() {
     );
   }
 
-  const { overview, userManagement, financialData, verificationQueue, fraudAlerts, regionalData, systemMetrics, mlPerformance, recentActivity } = adminData;
+  const {
+    overview,
+    userManagement,
+    financialData,
+    verificationQueue,
+    fraudAlerts,
+    regionalData,
+    systemMetrics,
+    mlPerformance,
+    recentActivity,
+  } = adminData;
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
@@ -155,7 +168,9 @@ export default function Admin() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-muted-foreground">System overview and management</p>
+          <p className="text-muted-foreground">
+            System overview and management
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm">
@@ -174,15 +189,22 @@ export default function Admin() {
       </div>
 
       {/* Critical Alerts */}
-      {fraudAlerts.filter((alert: any) => alert.severity === "high").length > 0 && (
+      {fraudAlerts.filter((alert: any) => alert.severity === "high").length >
+        0 && (
         <div className="rounded-lg bg-red-50 border border-red-200 p-4">
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle className="h-5 w-5 text-red-600" />
-            <h3 className="font-semibold text-red-900">Critical Security Alerts</h3>
+            <h3 className="font-semibold text-red-900">
+              Critical Security Alerts
+            </h3>
           </div>
-          {fraudAlerts.filter((alert: any) => alert.severity === "high").map((alert: any, i: number) => (
-            <p key={i} className="text-sm text-red-800">{alert.message}</p>
-          ))}
+          {fraudAlerts
+            .filter((alert: any) => alert.severity === "high")
+            .map((alert: any, i: number) => (
+              <p key={i} className="text-sm text-red-800">
+                {alert.message}
+              </p>
+            ))}
         </div>
       )}
 
@@ -247,18 +269,30 @@ export default function Admin() {
               <div className="space-y-3">
                 {recentActivity.map((activity: any, i: number) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className={`rounded-full p-1 ${
-                      activity.type === 'success' ? 'bg-green-100' : 
-                      activity.type === 'warning' ? 'bg-amber-100' : 'bg-blue-100'
-                    }`}>
-                      <activity.icon className={`h-3 w-3 ${
-                        activity.type === 'success' ? 'text-green-600' : 
-                        activity.type === 'warning' ? 'text-amber-600' : 'text-blue-600'
-                      }`} />
+                    <div
+                      className={`rounded-full p-1 ${
+                        activity.type === "success"
+                          ? "bg-green-100"
+                          : activity.type === "warning"
+                            ? "bg-amber-100"
+                            : "bg-blue-100"
+                      }`}
+                    >
+                      <activity.icon
+                        className={`h-3 w-3 ${
+                          activity.type === "success"
+                            ? "text-green-600"
+                            : activity.type === "warning"
+                              ? "text-amber-600"
+                              : "text-blue-600"
+                        }`}
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{activity.title}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {activity.time}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -275,11 +309,18 @@ export default function Admin() {
                 {systemMetrics.services.map((service: any, i: number) => (
                   <div key={i} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`rounded-full w-2 h-2 ${
-                        service.status === 'operational' ? 'bg-green-500' :
-                        service.status === 'degraded' ? 'bg-amber-500' : 'bg-red-500'
-                      }`} />
-                      <span className="text-sm font-medium">{service.name}</span>
+                      <div
+                        className={`rounded-full w-2 h-2 ${
+                          service.status === "operational"
+                            ? "bg-green-500"
+                            : service.status === "degraded"
+                              ? "bg-amber-500"
+                              : "bg-red-500"
+                        }`}
+                      />
+                      <span className="text-sm font-medium">
+                        {service.name}
+                      </span>
                     </div>
                     <div className="text-sm text-muted-foreground">
                       {service.uptime}% uptime
@@ -300,8 +341,12 @@ export default function Admin() {
               {regionalData.map((region: any, i: number) => (
                 <div key={i} className="text-center">
                   <div className="text-2xl font-bold">{region.farmers}</div>
-                  <div className="text-sm text-muted-foreground">{region.name}</div>
-                  <div className="text-xs text-muted-foreground">{region.credits} tCO2e</div>
+                  <div className="text-sm text-muted-foreground">
+                    {region.name}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {region.credits} tCO2e
+                  </div>
                 </div>
               ))}
             </div>
@@ -342,7 +387,7 @@ export default function Admin() {
                   className="pl-10 w-64"
                 />
               </div>
-              <select 
+              <select
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e.target.value)}
                 className="rounded-md border bg-background px-3 py-2 text-sm"
@@ -364,40 +409,56 @@ export default function Admin() {
               <h3 className="font-semibold">User Directory</h3>
             </div>
             <div className="divide-y">
-              {userManagement.users.filter((user: any) => 
-                user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchTerm.toLowerCase())
-              ).map((user: any, i: number) => (
-                <div key={i} className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="rounded-full bg-primary/10 p-2">
-                      <Users className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">{user.name}</div>
-                      <div className="text-sm text-muted-foreground">{user.email}</div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="outline">{user.role}</Badge>
-                        <Badge variant={user.status === 'active' ? 'default' : 'secondary'}>
-                          {user.status}
-                        </Badge>
-                        {user.verified && <Badge variant="outline">Verified</Badge>}
+              {userManagement.users
+                .filter(
+                  (user: any) =>
+                    user.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase()) ||
+                    user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+                )
+                .map((user: any, i: number) => (
+                  <div
+                    key={i}
+                    className="p-4 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="rounded-full bg-primary/10 p-2">
+                        <Users className="h-4 w-4 text-primary" />
+                      </div>
+                      <div>
+                        <div className="font-medium">{user.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {user.email}
+                        </div>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant="outline">{user.role}</Badge>
+                          <Badge
+                            variant={
+                              user.status === "active" ? "default" : "secondary"
+                            }
+                          >
+                            {user.status}
+                          </Badge>
+                          {user.verified && (
+                            <Badge variant="outline">Verified</Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm">
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Mail className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Mail className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </TabsContent>
@@ -405,7 +466,7 @@ export default function Admin() {
         {/* Verification Tab */}
         <TabsContent value="verification" className="space-y-6">
           <h2 className="text-xl font-semibold">Verification Management</h2>
-          
+
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Verification Queue */}
             <div className="rounded-lg border bg-card p-6">
@@ -419,7 +480,11 @@ export default function Admin() {
                   <div key={i} className="border rounded-lg p-3">
                     <div className="flex items-center justify-between mb-2">
                       <div className="font-medium">{item.farmerName}</div>
-                      <Badge variant={item.priority === 'high' ? 'destructive' : 'secondary'}>
+                      <Badge
+                        variant={
+                          item.priority === "high" ? "destructive" : "secondary"
+                        }
+                      >
                         {item.priority}
                       </Badge>
                     </div>
@@ -451,7 +516,9 @@ export default function Admin() {
               <div className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm">Pending Reviews</span>
-                  <span className="font-medium">{verificationQueue.length}</span>
+                  <span className="font-medium">
+                    {verificationQueue.length}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm">Approved This Month</span>
@@ -480,7 +547,7 @@ export default function Admin() {
         {/* Financial Tab */}
         <TabsContent value="financial" className="space-y-6">
           <h2 className="text-xl font-semibold">Financial Overview</h2>
-          
+
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-4">Revenue Trends</h3>
@@ -508,26 +575,38 @@ export default function Admin() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">₹{financialData.payouts.total.toLocaleString()}</div>
-                    <div className="text-sm text-muted-foreground">Total Paid</div>
+                    <div className="text-2xl font-bold text-green-600">
+                      ₹{financialData.payouts.total.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Total Paid
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">₹{financialData.payouts.pending.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-blue-600">
+                      ₹{financialData.payouts.pending.toLocaleString()}
+                    </div>
                     <div className="text-sm text-muted-foreground">Pending</div>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>This Month</span>
-                    <span>₹{financialData.payouts.thisMonth.toLocaleString()}</span>
+                    <span>
+                      ₹{financialData.payouts.thisMonth.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Last Month</span>
-                    <span>₹{financialData.payouts.lastMonth.toLocaleString()}</span>
+                    <span>
+                      ₹{financialData.payouts.lastMonth.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Average Per Farmer</span>
-                    <span>₹{financialData.payouts.avgPerFarmer.toLocaleString()}</span>
+                    <span>
+                      ₹{financialData.payouts.avgPerFarmer.toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -537,8 +616,12 @@ export default function Admin() {
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-2">Platform Revenue</h3>
-              <div className="text-3xl font-bold text-green-600">₹{overview.revenue.toLocaleString()}</div>
-              <p className="text-sm text-muted-foreground">+22% from last month</p>
+              <div className="text-3xl font-bold text-green-600">
+                ₹{overview.revenue.toLocaleString()}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                +22% from last month
+              </p>
             </div>
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-2">Transaction Volume</h3>
@@ -556,36 +639,56 @@ export default function Admin() {
         {/* Security Tab */}
         <TabsContent value="security" className="space-y-6">
           <h2 className="text-xl font-semibold">Security & Fraud Detection</h2>
-          
+
           <div className="grid gap-6">
             {/* Fraud Alerts */}
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5" />
                 Security Alerts
-                <Badge variant="destructive">{fraudAlerts.filter((a: any) => a.severity === 'high').length}</Badge>
+                <Badge variant="destructive">
+                  {fraudAlerts.filter((a: any) => a.severity === "high").length}
+                </Badge>
               </h3>
               <div className="space-y-3">
                 {fraudAlerts.map((alert: any, i: number) => (
-                  <div key={i} className={`border rounded-lg p-3 ${
-                    alert.severity === 'high' ? 'border-red-200 bg-red-50' :
-                    alert.severity === 'medium' ? 'border-amber-200 bg-amber-50' :
-                    'border-gray-200'
-                  }`}>
+                  <div
+                    key={i}
+                    className={`border rounded-lg p-3 ${
+                      alert.severity === "high"
+                        ? "border-red-200 bg-red-50"
+                        : alert.severity === "medium"
+                          ? "border-amber-200 bg-amber-50"
+                          : "border-gray-200"
+                    }`}
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <div className="font-medium">{alert.title}</div>
-                      <Badge variant={
-                        alert.severity === 'high' ? 'destructive' :
-                        alert.severity === 'medium' ? 'default' : 'secondary'
-                      }>
+                      <Badge
+                        variant={
+                          alert.severity === "high"
+                            ? "destructive"
+                            : alert.severity === "medium"
+                              ? "default"
+                              : "secondary"
+                        }
+                      >
                         {alert.severity}
                       </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">{alert.description}</p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {alert.description}
+                    </p>
                     <div className="flex items-center gap-2">
-                      <Button size="sm" variant="outline">Investigate</Button>
-                      <Button size="sm" variant="outline">Dismiss</Button>
-                      <span className="text-xs text-muted-foreground ml-auto">{alert.timestamp}</span>
+                      <Button size="sm" variant="outline">
+                        Investigate
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        Dismiss
+                      </Button>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {alert.timestamp}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -602,8 +705,12 @@ export default function Admin() {
                 {mlPerformance.map((model: any, i: number) => (
                   <div key={i} className="border rounded-lg p-4">
                     <div className="font-medium mb-2">{model.name}</div>
-                    <div className="text-2xl font-bold mb-1">{model.accuracy}%</div>
-                    <div className="text-sm text-muted-foreground mb-2">Accuracy</div>
+                    <div className="text-2xl font-bold mb-1">
+                      {model.accuracy}%
+                    </div>
+                    <div className="text-sm text-muted-foreground mb-2">
+                      Accuracy
+                    </div>
                     <div className="text-xs text-muted-foreground">
                       Last updated: {model.lastUpdated}
                     </div>
@@ -617,7 +724,7 @@ export default function Admin() {
         {/* Analytics Tab */}
         <TabsContent value="analytics" className="space-y-6">
           <h2 className="text-xl font-semibold">Advanced Analytics</h2>
-          
+
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-4">User Growth</h3>
@@ -628,7 +735,12 @@ export default function Admin() {
                     <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="users" stroke="hsl(var(--primary))" strokeWidth={2} />
+                    <Line
+                      type="monotone"
+                      dataKey="users"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth={2}
+                    />
                   </RechartsLineChart>
                 </ResponsiveContainer>
               </div>
@@ -644,14 +756,18 @@ export default function Admin() {
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      label={({ name, percent }) =>
+                        `${name} ${(percent * 100).toFixed(0)}%`
+                      }
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {financialData.creditDistribution.map((entry: any, index: number) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
+                      {financialData.creditDistribution.map(
+                        (entry: any, index: number) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ),
+                      )}
                     </Pie>
                     <Tooltip />
                   </RechartsPieChart>
@@ -669,7 +785,7 @@ export default function Admin() {
         {/* System Tab */}
         <TabsContent value="system" className="space-y-6">
           <h2 className="text-xl font-semibold">System Health</h2>
-          
+
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-4">Server Metrics</h3>
@@ -726,12 +842,16 @@ function MetricCard({ title, value, icon, trend, trendUp, color }: any) {
   return (
     <div className="rounded-lg border bg-card p-6">
       <div className="flex items-center justify-between">
-        <div className={`rounded-lg p-2 ${colorClasses[color as keyof typeof colorClasses]}`}>
+        <div
+          className={`rounded-lg p-2 ${colorClasses[color as keyof typeof colorClasses]}`}
+        >
           {icon}
         </div>
         {trendUp !== null && (
-          <div className={`flex items-center gap-1 text-sm ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
-            <TrendingUp className={`h-4 w-4 ${!trendUp && 'rotate-180'}`} />
+          <div
+            className={`flex items-center gap-1 text-sm ${trendUp ? "text-green-600" : "text-red-600"}`}
+          >
+            <TrendingUp className={`h-4 w-4 ${!trendUp && "rotate-180"}`} />
             {trend}
           </div>
         )}
@@ -751,30 +871,65 @@ function MetricCard({ title, value, icon, trend, trendUp, color }: any) {
 function generateUserData() {
   return {
     users: [
-      { name: "Rajesh Kumar", email: "rajesh@farmer.com", role: "farmer", status: "active", verified: true, joinDate: "2024-01-15" },
-      { name: "Priya Sharma", email: "priya@farmer.com", role: "farmer", status: "active", verified: true, joinDate: "2024-02-20" },
-      { name: "Dr. Amit Singh", email: "amit@verifier.com", role: "verifier", status: "active", verified: true, joinDate: "2024-01-10" },
-      { name: "Sarah Johnson", email: "sarah@admin.com", role: "admin", status: "active", verified: true, joinDate: "2023-12-01" },
-      { name: "Ram Prasad", email: "ram@farmer.com", role: "farmer", status: "pending", verified: false, joinDate: "2024-12-01" },
-    ]
+      {
+        name: "Rajesh Kumar",
+        email: "rajesh@farmer.com",
+        role: "farmer",
+        status: "active",
+        verified: true,
+        joinDate: "2024-01-15",
+      },
+      {
+        name: "Priya Sharma",
+        email: "priya@farmer.com",
+        role: "farmer",
+        status: "active",
+        verified: true,
+        joinDate: "2024-02-20",
+      },
+      {
+        name: "Dr. Amit Singh",
+        email: "amit@verifier.com",
+        role: "verifier",
+        status: "active",
+        verified: true,
+        joinDate: "2024-01-10",
+      },
+      {
+        name: "Sarah Johnson",
+        email: "sarah@admin.com",
+        role: "admin",
+        status: "active",
+        verified: true,
+        joinDate: "2023-12-01",
+      },
+      {
+        name: "Ram Prasad",
+        email: "ram@farmer.com",
+        role: "farmer",
+        status: "pending",
+        verified: false,
+        joinDate: "2024-12-01",
+      },
+    ],
   };
 }
 
 function generateFinancialData() {
   return {
     revenue: Array.from({ length: 12 }, (_, i) => ({
-      month: new Date(2024, i).toLocaleDateString('en', { month: 'short' }),
+      month: new Date(2024, i).toLocaleDateString("en", { month: "short" }),
       amount: 150000 + Math.random() * 100000,
     })),
     userGrowth: Array.from({ length: 12 }, (_, i) => ({
-      month: new Date(2024, i).toLocaleDateString('en', { month: 'short' }),
+      month: new Date(2024, i).toLocaleDateString("en", { month: "short" }),
       users: 100 + i * 95 + Math.random() * 50,
     })),
     creditDistribution: [
-      { name: 'Agroforestry', value: 45, color: '#8884d8' },
-      { name: 'Rice', value: 30, color: '#82ca9d' },
-      { name: 'Wheat', value: 15, color: '#ffc658' },
-      { name: 'Other', value: 10, color: '#ff7300' },
+      { name: "Agroforestry", value: 45, color: "#8884d8" },
+      { name: "Rice", value: 30, color: "#82ca9d" },
+      { name: "Wheat", value: 15, color: "#ffc658" },
+      { name: "Other", value: 10, color: "#ff7300" },
     ],
     payouts: {
       total: 2450000,
@@ -782,16 +937,40 @@ function generateFinancialData() {
       thisMonth: 280000,
       lastMonth: 245000,
       avgPerFarmer: 2850,
-    }
+    },
   };
 }
 
 function generateVerificationQueue() {
   return [
-    { farmerName: "Rajesh Kumar", type: "Carbon Credits", credits: 12.5, priority: "high", submittedDate: "2024-12-08" },
-    { farmerName: "Priya Sharma", type: "Soil Analysis", credits: 8.2, priority: "medium", submittedDate: "2024-12-07" },
-    { farmerName: "Ram Prasad", type: "Activity Logs", credits: 15.3, priority: "low", submittedDate: "2024-12-06" },
-    { farmerName: "Sunita Devi", type: "Carbon Credits", credits: 22.1, priority: "high", submittedDate: "2024-12-05" },
+    {
+      farmerName: "Rajesh Kumar",
+      type: "Carbon Credits",
+      credits: 12.5,
+      priority: "high",
+      submittedDate: "2024-12-08",
+    },
+    {
+      farmerName: "Priya Sharma",
+      type: "Soil Analysis",
+      credits: 8.2,
+      priority: "medium",
+      submittedDate: "2024-12-07",
+    },
+    {
+      farmerName: "Ram Prasad",
+      type: "Activity Logs",
+      credits: 15.3,
+      priority: "low",
+      submittedDate: "2024-12-06",
+    },
+    {
+      farmerName: "Sunita Devi",
+      type: "Carbon Credits",
+      credits: 22.1,
+      priority: "high",
+      submittedDate: "2024-12-05",
+    },
   ];
 }
 
@@ -799,22 +978,24 @@ function generateFraudAlerts() {
   return [
     {
       title: "Suspicious Activity Pattern",
-      description: "User ID 2847 has submitted unusually high credit claims in a short period.",
+      description:
+        "User ID 2847 has submitted unusually high credit claims in a short period.",
       severity: "high",
-      timestamp: "2 hours ago"
+      timestamp: "2 hours ago",
     },
     {
       title: "Duplicate Submissions",
-      description: "Multiple farmers from same location submitting identical data.",
+      description:
+        "Multiple farmers from same location submitting identical data.",
       severity: "medium",
-      timestamp: "5 hours ago"
+      timestamp: "5 hours ago",
     },
     {
       title: "Anomalous GPS Coordinates",
       description: "Farm coordinates don't match satellite imagery analysis.",
       severity: "medium",
-      timestamp: "1 day ago"
-    }
+      timestamp: "1 day ago",
+    },
   ];
 }
 
@@ -840,7 +1021,7 @@ function generateSystemMetrics() {
       { name: "Memory Usage", usage: 68 },
       { name: "Disk Usage", usage: 32 },
       { name: "Network I/O", usage: 23 },
-    ]
+    ],
   };
 }
 
@@ -854,10 +1035,35 @@ function generateMLPerformance() {
 
 function generateRecentActivity() {
   return [
-    { title: "New farmer registration approved", time: "5 minutes ago", icon: Users, type: "success" },
-    { title: "ML model retrained successfully", time: "2 hours ago", icon: Brain, type: "success" },
-    { title: "Security alert triggered", time: "3 hours ago", icon: AlertTriangle, type: "warning" },
-    { title: "Batch payout processed", time: "5 hours ago", icon: DollarSign, type: "success" },
-    { title: "System backup completed", time: "8 hours ago", icon: Database, type: "info" },
+    {
+      title: "New farmer registration approved",
+      time: "5 minutes ago",
+      icon: Users,
+      type: "success",
+    },
+    {
+      title: "ML model retrained successfully",
+      time: "2 hours ago",
+      icon: Brain,
+      type: "success",
+    },
+    {
+      title: "Security alert triggered",
+      time: "3 hours ago",
+      icon: AlertTriangle,
+      type: "warning",
+    },
+    {
+      title: "Batch payout processed",
+      time: "5 hours ago",
+      icon: DollarSign,
+      type: "success",
+    },
+    {
+      title: "System backup completed",
+      time: "8 hours ago",
+      icon: Database,
+      type: "info",
+    },
   ];
 }

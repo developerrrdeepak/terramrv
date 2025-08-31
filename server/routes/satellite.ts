@@ -69,30 +69,46 @@ export const fetchImagery: RequestHandler = async (req, res) => {
     const user = requireUser(req);
     if (!user) return res.status(401).json({ error: "Unauthorized" });
 
-    const { latitude, longitude, startDate, endDate, cloudCover = 20, resolution = 10 } = req.body as SatelliteRequest;
+    const {
+      latitude,
+      longitude,
+      startDate,
+      endDate,
+      cloudCover = 20,
+      resolution = 10,
+    } = req.body as SatelliteRequest;
 
     if (!latitude || !longitude || !startDate || !endDate) {
       return res.status(400).json({ error: "Missing required parameters" });
     }
 
     // Simulate satellite data fetching (in production, integrate with APIs like Google Earth Engine, Planet, etc.)
-    const imagery = await fetchSatelliteData(latitude, longitude, startDate, endDate, cloudCover, resolution);
-    
+    const imagery = await fetchSatelliteData(
+      latitude,
+      longitude,
+      startDate,
+      endDate,
+      cloudCover,
+      resolution,
+    );
+
     // Store in database
     const db = await getDb();
     await (db as any).collection("satellite_imagery").insertMany(
-      imagery.map(img => ({
+      imagery.map((img) => ({
         ...img,
         userId: user.id,
         location: { type: "Point", coordinates: [longitude, latitude] },
         createdAt: new Date(),
-      }))
+      })),
     );
 
     res.json({ success: true, count: imagery.length, imagery });
   } catch (error: any) {
     console.error("Satellite fetch error:", error);
-    res.status(500).json({ error: error.message || "Failed to fetch satellite data" });
+    res
+      .status(500)
+      .json({ error: error.message || "Failed to fetch satellite data" });
   }
 };
 
@@ -109,27 +125,32 @@ export const analyzeVegetation: RequestHandler = async (req, res) => {
     }
 
     const db = await getDb();
-    
+
     // Fetch stored imagery
-    const cursor = await (db as any).collection("satellite_imagery").find({
-      userId: user.id,
-      location: {
-        $near: {
-          $geometry: { type: "Point", coordinates: [longitude, latitude] },
-          $maxDistance: 1000 // 1km radius
-        }
-      }
-    }).sort({ date: 1 });
-    
+    const cursor = await (db as any)
+      .collection("satellite_imagery")
+      .find({
+        userId: user.id,
+        location: {
+          $near: {
+            $geometry: { type: "Point", coordinates: [longitude, latitude] },
+            $maxDistance: 1000, // 1km radius
+          },
+        },
+      })
+      .sort({ date: 1 });
+
     const imagery = await cursor.toArray();
 
     if (imagery.length === 0) {
-      return res.status(404).json({ error: "No satellite data found for this location" });
+      return res
+        .status(404)
+        .json({ error: "No satellite data found for this location" });
     }
 
     // Perform vegetation analysis
     const analysis = await performVegetationAnalysis(imagery);
-    
+
     // Store analysis results
     await (db as any).collection("vegetation_analysis").insertOne({
       userId: user.id,
@@ -160,7 +181,7 @@ export const classifyLandCover: RequestHandler = async (req, res) => {
 
     // Simulate land cover classification (integrate with ML models)
     const classification = await classifyLandCoverML(latitude, longitude, date);
-    
+
     const db = await getDb();
     await (db as any).collection("land_cover").insertOne({
       userId: user.id,
@@ -186,12 +207,19 @@ export const detectChanges: RequestHandler = async (req, res) => {
     const { latitude, longitude, beforeDate, afterDate } = req.body;
 
     if (!latitude || !longitude || !beforeDate || !afterDate) {
-      return res.status(400).json({ error: "Missing required parameters for change detection" });
+      return res
+        .status(400)
+        .json({ error: "Missing required parameters for change detection" });
     }
 
     // Simulate change detection analysis
-    const changes = await detectLandCoverChanges(latitude, longitude, beforeDate, afterDate);
-    
+    const changes = await detectLandCoverChanges(
+      latitude,
+      longitude,
+      beforeDate,
+      afterDate,
+    );
+
     const db = await getDb();
     await (db as any).collection("change_detection").insertOne({
       userId: user.id,
@@ -212,30 +240,32 @@ export const detectChanges: RequestHandler = async (req, res) => {
 // Helper functions for satellite data processing
 
 async function fetchSatelliteData(
-  lat: number, 
-  lng: number, 
-  startDate: string, 
-  endDate: string, 
-  cloudCover: number, 
-  resolution: number
+  lat: number,
+  lng: number,
+  startDate: string,
+  endDate: string,
+  cloudCover: number,
+  resolution: number,
 ): Promise<SatelliteImagery[]> {
   // Simulate fetching from satellite APIs (Sentinel-2, Landsat, etc.)
   const start = new Date(startDate);
   const end = new Date(endDate);
   const imagery: SatelliteImagery[] = [];
-  
+
   // Generate mock imagery data points
-  const daysDiff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  const daysDiff = Math.ceil(
+    (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+  );
   const interval = Math.max(1, Math.floor(daysDiff / 20)); // Max 20 images
-  
+
   for (let i = 0; i < daysDiff; i += interval) {
     const date = new Date(start.getTime() + i * 24 * 60 * 60 * 1000);
     const cloudCoverForDate = Math.random() * 100;
-    
+
     if (cloudCoverForDate <= cloudCover) {
       imagery.push({
         id: `img_${date.getTime()}`,
-        date: date.toISOString().split('T')[0],
+        date: date.toISOString().split("T")[0],
         cloudCover: cloudCoverForDate,
         bands: {
           red: `band_red_${date.getTime()}`,
@@ -254,19 +284,19 @@ async function fetchSatelliteData(
       });
     }
   }
-  
+
   return imagery;
 }
 
 function calculateIndices(lat: number, lng: number, date: Date) {
   // Simulate vegetation indices calculation
   const seasonality = Math.sin((date.getMonth() / 12) * 2 * Math.PI) * 0.2;
-  const latitudeFactor = Math.cos(lat * Math.PI / 180) * 0.1;
+  const latitudeFactor = Math.cos((lat * Math.PI) / 180) * 0.1;
   const randomness = (Math.random() - 0.5) * 0.2;
-  
+
   const baseNDVI = 0.6 + seasonality + latitudeFactor + randomness;
   const ndvi = Math.max(0, Math.min(1, baseNDVI));
-  
+
   return {
     ndvi: Number(ndvi.toFixed(3)),
     evi: Number((ndvi * 0.8 + 0.1).toFixed(3)),
@@ -275,32 +305,39 @@ function calculateIndices(lat: number, lng: number, date: Date) {
   };
 }
 
-async function performVegetationAnalysis(imagery: any[]): Promise<VegetationAnalysis> {
+async function performVegetationAnalysis(
+  imagery: any[],
+): Promise<VegetationAnalysis> {
   // Extract NDVI values
-  const ndviValues = imagery.map(img => img.indices.ndvi).filter(v => v !== null);
-  const dates = imagery.map(img => img.date);
-  
+  const ndviValues = imagery
+    .map((img) => img.indices.ndvi)
+    .filter((v) => v !== null);
+  const dates = imagery.map((img) => img.date);
+
   if (ndviValues.length === 0) {
     throw new Error("No valid NDVI data available");
   }
-  
+
   // Calculate trend
   const trend = calculateTrend(ndviValues);
-  
+
   // Detect anomalies
   const anomalies = detectAnomalies(imagery);
-  
+
   // Calculate summary statistics
   const avgNDVI = ndviValues.reduce((a, b) => a + b, 0) / ndviValues.length;
   const maxNDVI = Math.max(...ndviValues);
   const minNDVI = Math.min(...ndviValues);
-  
+
   // Estimate biomass change (simplified)
   const biomassChange = (maxNDVI - minNDVI) * 100; // Percentage change
-  
+
   // Health score based on NDVI stability and values
-  const healthScore = Math.min(100, avgNDVI * 100 + (100 - (maxNDVI - minNDVI) * 100));
-  
+  const healthScore = Math.min(
+    100,
+    avgNDVI * 100 + (100 - (maxNDVI - minNDVI) * 100),
+  );
+
   return {
     trend,
     seasonality: 0.8, // Simplified seasonality score
@@ -315,32 +352,39 @@ async function performVegetationAnalysis(imagery: any[]): Promise<VegetationAnal
   };
 }
 
-function calculateTrend(values: number[]): "increasing" | "decreasing" | "stable" {
+function calculateTrend(
+  values: number[],
+): "increasing" | "decreasing" | "stable" {
   if (values.length < 2) return "stable";
-  
+
   const first = values.slice(0, Math.floor(values.length / 3));
   const last = values.slice(-Math.floor(values.length / 3));
-  
+
   const firstAvg = first.reduce((a, b) => a + b, 0) / first.length;
   const lastAvg = last.reduce((a, b) => a + b, 0) / last.length;
-  
+
   const change = lastAvg - firstAvg;
-  
+
   if (change > 0.05) return "increasing";
   if (change < -0.05) return "decreasing";
   return "stable";
 }
 
-function detectAnomalies(imagery: any[]): { date: string; severity: number; type: string }[] {
+function detectAnomalies(
+  imagery: any[],
+): { date: string; severity: number; type: string }[] {
   const anomalies = [];
-  const ndviValues = imagery.map(img => img.indices.ndvi);
+  const ndviValues = imagery.map((img) => img.indices.ndvi);
   const mean = ndviValues.reduce((a, b) => a + b, 0) / ndviValues.length;
-  const stdDev = Math.sqrt(ndviValues.reduce((sq, n) => sq + Math.pow(n - mean, 2), 0) / ndviValues.length);
-  
+  const stdDev = Math.sqrt(
+    ndviValues.reduce((sq, n) => sq + Math.pow(n - mean, 2), 0) /
+      ndviValues.length,
+  );
+
   for (let i = 0; i < imagery.length; i++) {
     const ndvi = imagery[i].indices.ndvi;
     const deviation = Math.abs(ndvi - mean) / stdDev;
-    
+
     if (deviation > 2) {
       anomalies.push({
         date: imagery[i].date,
@@ -349,44 +393,67 @@ function detectAnomalies(imagery: any[]): { date: string; severity: number; type
       });
     }
   }
-  
+
   return anomalies;
 }
 
 async function classifyLandCoverML(lat: number, lng: number, date?: string) {
   // Simulate ML-based land cover classification
-  const classes = ["forest", "agriculture", "urban", "water", "grassland", "barren"];
+  const classes = [
+    "forest",
+    "agriculture",
+    "urban",
+    "water",
+    "grassland",
+    "barren",
+  ];
   const probabilities = [0.4, 0.3, 0.1, 0.05, 0.1, 0.05]; // Agricultural area bias
-  
+
   const randomIndex = Math.floor(Math.random() * classes.length);
   const primaryClass = classes[randomIndex];
   const confidence = 0.7 + Math.random() * 0.25;
-  
+
   return {
     primaryClass,
     confidence: Number(confidence.toFixed(2)),
-    probabilities: classes.reduce((obj, cls, i) => {
-      obj[cls] = Number((probabilities[i] + (Math.random() - 0.5) * 0.2).toFixed(2));
-      return obj;
-    }, {} as Record<string, number>),
+    probabilities: classes.reduce(
+      (obj, cls, i) => {
+        obj[cls] = Number(
+          (probabilities[i] + (Math.random() - 0.5) * 0.2).toFixed(2),
+        );
+        return obj;
+      },
+      {} as Record<string, number>,
+    ),
     metadata: {
       model: "land_cover_cnn_v2.1",
-      date: date || new Date().toISOString().split('T')[0],
+      date: date || new Date().toISOString().split("T")[0],
       processingTime: Math.random() * 5 + 1, // 1-6 seconds
     },
   };
 }
 
-async function detectLandCoverChanges(lat: number, lng: number, beforeDate: string, afterDate: string) {
+async function detectLandCoverChanges(
+  lat: number,
+  lng: number,
+  beforeDate: string,
+  afterDate: string,
+) {
   // Simulate change detection between two time periods
-  const changeTypes = ["deforestation", "afforestation", "urbanization", "crop_change", "no_change"];
+  const changeTypes = [
+    "deforestation",
+    "afforestation",
+    "urbanization",
+    "crop_change",
+    "no_change",
+  ];
   const probabilities = [0.1, 0.15, 0.05, 0.3, 0.4];
-  
+
   const randomIndex = Math.floor(Math.random() * changeTypes.length);
   const changeType = changeTypes[randomIndex];
   const confidence = 0.6 + Math.random() * 0.35;
   const areaChanged = Math.random() * 100; // Percentage
-  
+
   return {
     changeType,
     confidence: Number(confidence.toFixed(2)),
@@ -405,35 +472,52 @@ async function detectLandCoverChanges(lat: number, lng: number, beforeDate: stri
   };
 }
 
-function generateChangeRecommendations(changeType: string, areaChanged: number): string[] {
+function generateChangeRecommendations(
+  changeType: string,
+  areaChanged: number,
+): string[] {
   const recommendations = [];
-  
+
   switch (changeType) {
     case "deforestation":
-      recommendations.push("Consider reforestation to restore carbon sequestration capacity");
-      recommendations.push("Implement soil conservation measures to prevent erosion");
+      recommendations.push(
+        "Consider reforestation to restore carbon sequestration capacity",
+      );
+      recommendations.push(
+        "Implement soil conservation measures to prevent erosion",
+      );
       if (areaChanged > 20) {
-        recommendations.push("Significant forest loss detected - investigate causes and implement protection measures");
+        recommendations.push(
+          "Significant forest loss detected - investigate causes and implement protection measures",
+        );
       }
       break;
-      
+
     case "afforestation":
-      recommendations.push("Excellent progress on forest restoration - continue monitoring growth");
-      recommendations.push("Document tree species and planting density for carbon credit calculations");
+      recommendations.push(
+        "Excellent progress on forest restoration - continue monitoring growth",
+      );
+      recommendations.push(
+        "Document tree species and planting density for carbon credit calculations",
+      );
       break;
-      
+
     case "crop_change":
       recommendations.push("Monitor soil health impacts of crop rotation");
-      recommendations.push("Consider carbon-friendly crop varieties and practices");
+      recommendations.push(
+        "Consider carbon-friendly crop varieties and practices",
+      );
       break;
-      
+
     case "urbanization":
-      recommendations.push("Urban expansion detected - consider sustainable development practices");
+      recommendations.push(
+        "Urban expansion detected - consider sustainable development practices",
+      );
       break;
-      
+
     default:
       recommendations.push("Continue monitoring for changes");
   }
-  
+
   return recommendations;
 }

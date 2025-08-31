@@ -63,7 +63,7 @@ export default function Dashboard() {
     setGreeting(
       h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening",
     );
-    
+
     if (user) {
       loadDashboardData();
     }
@@ -73,8 +73,8 @@ export default function Dashboard() {
     setLoading(true);
     try {
       // Simulate API calls to load dashboard data
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setDashboardData({
         overview: {
           carbonCredits: 45.7,
@@ -121,7 +121,16 @@ export default function Dashboard() {
     );
   }
 
-  const { overview, recentActivity, weatherAlerts, financialData, farmMetrics, mlInsights, notifications, quickActions } = dashboardData;
+  const {
+    overview,
+    recentActivity,
+    weatherAlerts,
+    financialData,
+    farmMetrics,
+    mlInsights,
+    notifications,
+    quickActions,
+  } = dashboardData;
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6">
@@ -130,7 +139,7 @@ export default function Dashboard() {
         <div>
           <div className="text-sm text-muted-foreground">{greeting}</div>
           <h1 className="text-3xl font-bold">
-            Welcome back, {user?.name || user?.email?.split('@')[0]}
+            Welcome back, {user?.name || user?.email?.split("@")[0]}
           </h1>
         </div>
         <div className="flex items-center gap-2">
@@ -150,10 +159,14 @@ export default function Dashboard() {
         <div className="rounded-lg bg-red-50 border border-red-200 p-4">
           <div className="flex items-center gap-2 mb-2">
             <AlertTriangle className="h-5 w-5 text-red-600" />
-            <h3 className="font-semibold text-red-900">Critical Weather Alert</h3>
+            <h3 className="font-semibold text-red-900">
+              Critical Weather Alert
+            </h3>
           </div>
           {weatherAlerts.critical.map((alert: any, i: number) => (
-            <p key={i} className="text-sm text-red-800">{alert.message}</p>
+            <p key={i} className="text-sm text-red-800">
+              {alert.message}
+            </p>
           ))}
         </div>
       )}
@@ -215,7 +228,12 @@ export default function Dashboard() {
               </h3>
               <div className="space-y-3">
                 {quickActions.map((action: any, i: number) => (
-                  <Button key={i} variant="outline" className="w-full justify-start" size="sm">
+                  <Button
+                    key={i}
+                    variant="outline"
+                    className="w-full justify-start"
+                    size="sm"
+                  >
                     <action.icon className="h-4 w-4 mr-2" />
                     {action.label}
                   </Button>
@@ -237,7 +255,9 @@ export default function Dashboard() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{activity.title}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {activity.time}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -253,15 +273,26 @@ export default function Dashboard() {
               </h3>
               <div className="space-y-3">
                 {notifications.map((notification: any, i: number) => (
-                  <div key={i} className={`rounded-lg p-3 text-sm ${
-                    notification.type === 'warning' ? 'bg-amber-50 text-amber-800' :
-                    notification.type === 'success' ? 'bg-green-50 text-green-800' :
-                    'bg-blue-50 text-blue-800'
-                  }`}>
+                  <div
+                    key={i}
+                    className={`rounded-lg p-3 text-sm ${
+                      notification.type === "warning"
+                        ? "bg-amber-50 text-amber-800"
+                        : notification.type === "success"
+                          ? "bg-green-50 text-green-800"
+                          : "bg-blue-50 text-blue-800"
+                    }`}
+                  >
                     <div className="flex items-center gap-2">
-                      {notification.type === 'warning' && <AlertTriangle className="h-4 w-4" />}
-                      {notification.type === 'success' && <CheckCircle className="h-4 w-4" />}
-                      {notification.type === 'info' && <Bell className="h-4 w-4" />}
+                      {notification.type === "warning" && (
+                        <AlertTriangle className="h-4 w-4" />
+                      )}
+                      {notification.type === "success" && (
+                        <CheckCircle className="h-4 w-4" />
+                      )}
+                      {notification.type === "info" && (
+                        <Bell className="h-4 w-4" />
+                      )}
                       <span className="font-medium">{notification.title}</span>
                     </div>
                     <p className="mt-1 text-xs">{notification.message}</p>
@@ -284,7 +315,9 @@ export default function Dashboard() {
                       </div>
                       <div>
                         <p className="font-medium">Plot {plot}</p>
-                        <p className="text-sm text-muted-foreground">2.5 hectares • Rice</p>
+                        <p className="text-sm text-muted-foreground">
+                          2.5 hectares • Rice
+                        </p>
                       </div>
                     </div>
                     <Badge variant={plot <= 2 ? "default" : "secondary"}>
@@ -332,7 +365,7 @@ export default function Dashboard() {
         <TabsContent value="analytics" className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">Performance Analytics</h2>
-            <select 
+            <select
               value={selectedTimeRange}
               onChange={(e) => setSelectedTimeRange(e.target.value)}
               className="rounded-md border bg-background px-3 py-2 text-sm"
@@ -376,14 +409,18 @@ export default function Dashboard() {
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      label={({ name, percent }) =>
+                        `${name} ${(percent * 100).toFixed(0)}%`
+                      }
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
                     >
-                      {financialData.incomeBreakdown.map((entry: any, index: number) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
+                      {financialData.incomeBreakdown.map(
+                        (entry: any, index: number) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ),
+                      )}
                     </Pie>
                     <Tooltip />
                   </PieChart>
@@ -402,9 +439,24 @@ export default function Dashboard() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="soilHealth" stroke="#8884d8" name="Soil Health" />
-                  <Line type="monotone" dataKey="cropHealth" stroke="#82ca9d" name="Crop Health" />
-                  <Line type="monotone" dataKey="biodiversity" stroke="#ffc658" name="Biodiversity" />
+                  <Line
+                    type="monotone"
+                    dataKey="soilHealth"
+                    stroke="#8884d8"
+                    name="Soil Health"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="cropHealth"
+                    stroke="#82ca9d"
+                    name="Crop Health"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="biodiversity"
+                    stroke="#ffc658"
+                    name="Biodiversity"
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -414,7 +466,7 @@ export default function Dashboard() {
         {/* Farm Health Tab */}
         <TabsContent value="farm" className="space-y-6">
           <h2 className="text-xl font-semibold">Farm Health Monitoring</h2>
-          
+
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
@@ -522,7 +574,7 @@ export default function Dashboard() {
         {/* Financial Tab */}
         <TabsContent value="financial" className="space-y-6">
           <h2 className="text-xl font-semibold">Financial Overview</h2>
-          
+
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-4">Monthly Income</h3>
@@ -543,12 +595,23 @@ export default function Dashboard() {
               <h3 className="font-semibold mb-4">Payout History</h3>
               <div className="space-y-3">
                 {financialData.payouts.map((payout: any, i: number) => (
-                  <div key={i} className="flex items-center justify-between border-b pb-2">
+                  <div
+                    key={i}
+                    className="flex items-center justify-between border-b pb-2"
+                  >
                     <div>
-                      <p className="font-medium">₹{payout.amount.toLocaleString()}</p>
-                      <p className="text-sm text-muted-foreground">{payout.date}</p>
+                      <p className="font-medium">
+                        ₹{payout.amount.toLocaleString()}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {payout.date}
+                      </p>
                     </div>
-                    <Badge variant={payout.status === 'completed' ? 'default' : 'secondary'}>
+                    <Badge
+                      variant={
+                        payout.status === "completed" ? "default" : "secondary"
+                      }
+                    >
                       {payout.status}
                     </Badge>
                   </div>
@@ -560,13 +623,21 @@ export default function Dashboard() {
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-2">Total Earnings</h3>
-              <div className="text-3xl font-bold text-green-600">₹{overview.totalIncome.toLocaleString()}</div>
-              <p className="text-sm text-muted-foreground">+15% from last month</p>
+              <div className="text-3xl font-bold text-green-600">
+                ₹{overview.totalIncome.toLocaleString()}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                +15% from last month
+              </p>
             </div>
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-2">Pending Credits</h3>
-              <div className="text-3xl font-bold text-blue-600">{overview.pendingClaims}</div>
-              <p className="text-sm text-muted-foreground">Under verification</p>
+              <div className="text-3xl font-bold text-blue-600">
+                {overview.pendingClaims}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Under verification
+              </p>
             </div>
             <div className="rounded-lg border bg-card p-6">
               <h3 className="font-semibold mb-2">Credit Price</h3>
@@ -582,7 +653,7 @@ export default function Dashboard() {
             <Brain className="h-5 w-5" />
             AI-Powered Insights
           </h2>
-          
+
           <div className="grid gap-6">
             {mlInsights.map((insight: any, i: number) => (
               <div key={i} className="rounded-lg border bg-card p-6">
@@ -592,17 +663,23 @@ export default function Dashboard() {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold mb-2">{insight.title}</h3>
-                    <p className="text-muted-foreground mb-4">{insight.description}</p>
+                    <p className="text-muted-foreground mb-4">
+                      {insight.description}
+                    </p>
                     <div className="flex items-center gap-2 mb-4">
-                      <Badge variant="secondary">Confidence: {insight.confidence}%</Badge>
+                      <Badge variant="secondary">
+                        Confidence: {insight.confidence}%
+                      </Badge>
                       <Badge variant="outline">{insight.category}</Badge>
                     </div>
                     <div className="space-y-2">
                       <h4 className="font-medium">Recommendations:</h4>
                       <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                        {insight.recommendations.map((rec: string, j: number) => (
-                          <li key={j}>{rec}</li>
-                        ))}
+                        {insight.recommendations.map(
+                          (rec: string, j: number) => (
+                            <li key={j}>{rec}</li>
+                          ),
+                        )}
                       </ul>
                     </div>
                     {insight.actionable && (
@@ -634,12 +711,16 @@ function MetricCard({ title, value, icon, trend, trendUp, color }: any) {
   return (
     <div className="rounded-lg border bg-card p-6">
       <div className="flex items-center justify-between">
-        <div className={`rounded-lg p-2 ${colorClasses[color as keyof typeof colorClasses]}`}>
+        <div
+          className={`rounded-lg p-2 ${colorClasses[color as keyof typeof colorClasses]}`}
+        >
           {icon}
         </div>
         {trendUp !== null && (
-          <div className={`flex items-center gap-1 text-sm ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
-            <TrendingUp className={`h-4 w-4 ${!trendUp && 'rotate-180'}`} />
+          <div
+            className={`flex items-center gap-1 text-sm ${trendUp ? "text-green-600" : "text-red-600"}`}
+          >
+            <TrendingUp className={`h-4 w-4 ${!trendUp && "rotate-180"}`} />
             {trend}
           </div>
         )}
@@ -659,7 +740,11 @@ function MetricCard({ title, value, icon, trend, trendUp, color }: any) {
 function generateRecentActivity() {
   return [
     { title: "Soil analysis completed", time: "2 hours ago", icon: Droplets },
-    { title: "Carbon credits verified", time: "5 hours ago", icon: CheckCircle },
+    {
+      title: "Carbon credits verified",
+      time: "5 hours ago",
+      icon: CheckCircle,
+    },
     { title: "Weather alert received", time: "1 day ago", icon: AlertTriangle },
     { title: "Activity log updated", time: "2 days ago", icon: FileText },
     { title: "Payout processed", time: "3 days ago", icon: DollarSign },
@@ -668,46 +753,54 @@ function generateRecentActivity() {
 
 function generateWeatherAlerts() {
   return {
-    critical: Math.random() > 0.7 ? [
-      { message: "Heavy rainfall expected in next 24 hours. Ensure proper drainage." }
-    ] : [],
+    critical:
+      Math.random() > 0.7
+        ? [
+            {
+              message:
+                "Heavy rainfall expected in next 24 hours. Ensure proper drainage.",
+            },
+          ]
+        : [],
     warnings: [
       { message: "High humidity may increase disease risk", type: "warning" },
-    ]
+    ],
   };
 }
 
 function generateFinancialData() {
   return {
     creditHistory: Array.from({ length: 12 }, (_, i) => ({
-      month: new Date(2024, i).toLocaleDateString('en', { month: 'short' }),
+      month: new Date(2024, i).toLocaleDateString("en", { month: "short" }),
       credits: 20 + Math.random() * 30,
     })),
     incomeBreakdown: [
-      { name: 'Carbon Credits', value: 8500, color: '#8884d8' },
-      { name: 'Crop Sales', value: 3200, color: '#82ca9d' },
-      { name: 'Subsidies', value: 750, color: '#ffc658' },
+      { name: "Carbon Credits", value: 8500, color: "#8884d8" },
+      { name: "Crop Sales", value: 3200, color: "#82ca9d" },
+      { name: "Subsidies", value: 750, color: "#ffc658" },
     ],
     monthlyIncome: Array.from({ length: 6 }, (_, i) => ({
-      month: new Date(2024, i + 6).toLocaleDateString('en', { month: 'short' }),
+      month: new Date(2024, i + 6).toLocaleDateString("en", { month: "short" }),
       amount: 1000 + Math.random() * 2000,
     })),
     payouts: [
       { amount: 2850, date: "Dec 15, 2024", status: "completed" },
       { amount: 3200, date: "Nov 15, 2024", status: "completed" },
       { amount: 1800, date: "Oct 15, 2024", status: "pending" },
-    ]
+    ],
   };
 }
 
 function generateFarmMetrics() {
   return {
     healthHistory: Array.from({ length: 30 }, (_, i) => ({
-      date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toLocaleDateString(),
+      date: new Date(
+        Date.now() - (29 - i) * 24 * 60 * 60 * 1000,
+      ).toLocaleDateString(),
       soilHealth: 70 + Math.random() * 20,
       cropHealth: 75 + Math.random() * 20,
       biodiversity: 65 + Math.random() * 25,
-    }))
+    })),
   };
 }
 
@@ -715,7 +808,8 @@ function generateMLInsights() {
   return [
     {
       title: "Optimal Irrigation Timing",
-      description: "AI analysis suggests adjusting irrigation schedule based on weather patterns and soil moisture data.",
+      description:
+        "AI analysis suggests adjusting irrigation schedule based on weather patterns and soil moisture data.",
       confidence: 92,
       category: "Water Management",
       icon: Droplets,
@@ -723,12 +817,13 @@ function generateMLInsights() {
       recommendations: [
         "Reduce irrigation frequency by 15% in the next week",
         "Schedule deep watering sessions on Tuesday and Friday",
-        "Monitor soil moisture levels daily"
-      ]
+        "Monitor soil moisture levels daily",
+      ],
     },
     {
       title: "Yield Prediction Update",
-      description: "Based on current growth patterns and weather data, yield forecast has been updated.",
+      description:
+        "Based on current growth patterns and weather data, yield forecast has been updated.",
       confidence: 87,
       category: "Yield Forecasting",
       icon: TrendingUp,
@@ -736,12 +831,13 @@ function generateMLInsights() {
       recommendations: [
         "Expected yield: 4.8 tons/hectare (+8% from initial estimate)",
         "Continue current fertilization schedule",
-        "Monitor for pest activity in next 2 weeks"
-      ]
+        "Monitor for pest activity in next 2 weeks",
+      ],
     },
     {
       title: "Carbon Sequestration Opportunity",
-      description: "Analysis shows potential for increased carbon credits through enhanced practices.",
+      description:
+        "Analysis shows potential for increased carbon credits through enhanced practices.",
       confidence: 85,
       category: "Carbon Credits",
       icon: Leaf,
@@ -749,9 +845,9 @@ function generateMLInsights() {
       recommendations: [
         "Plant cover crops in fallow areas",
         "Implement no-till practices in Plot 3",
-        "Consider agroforestry integration"
-      ]
-    }
+        "Consider agroforestry integration",
+      ],
+    },
   ];
 }
 
@@ -760,18 +856,18 @@ function generateNotifications() {
     {
       title: "Verification Complete",
       message: "Your Q4 carbon credits have been verified and approved.",
-      type: "success"
+      type: "success",
     },
     {
       title: "Weather Alert",
       message: "Heavy rainfall expected tomorrow. Check drainage systems.",
-      type: "warning"
+      type: "warning",
     },
     {
       title: "Training Available",
       message: "New sustainable farming workshop available online.",
-      type: "info"
-    }
+      type: "info",
+    },
   ];
 }
 

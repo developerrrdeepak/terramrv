@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { MapPin, Beaker, Leaf, AlertCircle, CheckCircle, Brain } from "lucide-react";
+import {
+  MapPin,
+  Beaker,
+  Leaf,
+  AlertCircle,
+  CheckCircle,
+  Brain,
+} from "lucide-react";
 import { useAuth } from "@/context/auth";
 
 interface SoilHealthRequest {
@@ -16,7 +23,11 @@ interface SoilHealthResponse {
   confidence: number;
   soilHealthScore: number;
   recommendations: string[];
-  samplingPoints: { lat: number; lng: number; priority: "high" | "medium" | "low" }[];
+  samplingPoints: {
+    lat: number;
+    lng: number;
+    priority: "high" | "medium" | "low";
+  }[];
 }
 
 const SOIL_TYPES = [
@@ -80,9 +91,9 @@ export function SoilHealthPredictor() {
       const userLng = parseFloat((user as any)?.lng || "0");
       const userCrops = (user as any)?.crops || "Rice";
       const userPractices = (user as any)?.practices || "Conventional";
-      
+
       if (userLat && userLng) {
-        setInput(prev => ({
+        setInput((prev) => ({
           ...prev,
           latitude: userLat,
           longitude: userLng,
@@ -98,7 +109,7 @@ export function SoilHealthPredictor() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setInput(prev => ({
+          setInput((prev) => ({
             ...prev,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -106,8 +117,10 @@ export function SoilHealthPredictor() {
         },
         (error) => {
           console.error("Location error:", error);
-          setError("Could not get your location. Please enter coordinates manually.");
-        }
+          setError(
+            "Could not get your location. Please enter coordinates manually.",
+          );
+        },
       );
     } else {
       setError("Geolocation is not supported by this browser.");
@@ -128,7 +141,7 @@ export function SoilHealthPredictor() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(input),
       });
@@ -154,10 +167,14 @@ export function SoilHealthPredictor() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "bg-red-500";
-      case "medium": return "bg-yellow-500";
-      case "low": return "bg-green-500";
-      default: return "bg-gray-500";
+      case "high":
+        return "bg-red-500";
+      case "medium":
+        return "bg-yellow-500";
+      case "low":
+        return "bg-green-500";
+      default:
+        return "bg-gray-500";
     }
   };
 
@@ -166,7 +183,8 @@ export function SoilHealthPredictor() {
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-bold">AI Soil Health Predictor</h2>
         <p className="mt-2 text-muted-foreground">
-          Get ML-powered soil organic carbon predictions and personalized recommendations
+          Get ML-powered soil organic carbon predictions and personalized
+          recommendations
         </p>
       </div>
 
@@ -194,7 +212,12 @@ export function SoilHealthPredictor() {
                 type="number"
                 step="0.000001"
                 value={input.latitude}
-                onChange={(e) => setInput(prev => ({ ...prev, latitude: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setInput((prev) => ({
+                    ...prev,
+                    latitude: Number(e.target.value),
+                  }))
+                }
                 className="h-10 rounded-md border bg-background px-3"
                 placeholder="e.g., 28.6139"
               />
@@ -206,7 +229,12 @@ export function SoilHealthPredictor() {
                 type="number"
                 step="0.000001"
                 value={input.longitude}
-                onChange={(e) => setInput(prev => ({ ...prev, longitude: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setInput((prev) => ({
+                    ...prev,
+                    longitude: Number(e.target.value),
+                  }))
+                }
                 className="h-10 rounded-md border bg-background px-3"
                 placeholder="e.g., 77.2090"
               />
@@ -216,11 +244,15 @@ export function SoilHealthPredictor() {
               <span>Soil Type</span>
               <select
                 value={input.soilType}
-                onChange={(e) => setInput(prev => ({ ...prev, soilType: e.target.value }))}
+                onChange={(e) =>
+                  setInput((prev) => ({ ...prev, soilType: e.target.value }))
+                }
                 className="h-10 rounded-md border bg-background px-3"
               >
-                {SOIL_TYPES.map(type => (
-                  <option key={type} value={type}>{type}</option>
+                {SOIL_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
                 ))}
               </select>
             </label>
@@ -229,11 +261,15 @@ export function SoilHealthPredictor() {
               <span>Primary Crops</span>
               <select
                 value={input.crops}
-                onChange={(e) => setInput(prev => ({ ...prev, crops: e.target.value }))}
+                onChange={(e) =>
+                  setInput((prev) => ({ ...prev, crops: e.target.value }))
+                }
                 className="h-10 rounded-md border bg-background px-3"
               >
-                {COMMON_CROPS.map(crop => (
-                  <option key={crop} value={crop}>{crop}</option>
+                {COMMON_CROPS.map((crop) => (
+                  <option key={crop} value={crop}>
+                    {crop}
+                  </option>
                 ))}
               </select>
             </label>
@@ -242,11 +278,15 @@ export function SoilHealthPredictor() {
               <span>Farming Practices</span>
               <select
                 value={input.practices}
-                onChange={(e) => setInput(prev => ({ ...prev, practices: e.target.value }))}
+                onChange={(e) =>
+                  setInput((prev) => ({ ...prev, practices: e.target.value }))
+                }
                 className="h-10 rounded-md border bg-background px-3"
               >
-                {FARMING_PRACTICES.map(practice => (
-                  <option key={practice} value={practice}>{practice}</option>
+                {FARMING_PRACTICES.map((practice) => (
+                  <option key={practice} value={practice}>
+                    {practice}
+                  </option>
                 ))}
               </select>
             </label>
@@ -257,10 +297,14 @@ export function SoilHealthPredictor() {
                 type="number"
                 step="0.1"
                 value={input.historicalSOC || ""}
-                onChange={(e) => setInput(prev => ({ 
-                  ...prev, 
-                  historicalSOC: e.target.value ? Number(e.target.value) : undefined 
-                }))}
+                onChange={(e) =>
+                  setInput((prev) => ({
+                    ...prev,
+                    historicalSOC: e.target.value
+                      ? Number(e.target.value)
+                      : undefined,
+                  }))
+                }
                 className="h-10 rounded-md border bg-background px-3"
                 placeholder="Leave empty if unknown"
               />
@@ -304,18 +348,29 @@ export function SoilHealthPredictor() {
               {/* Key Metrics */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-lg border p-4">
-                  <div className="text-sm text-muted-foreground">Predicted SOC</div>
-                  <div className="text-2xl font-bold">{result.predictedSOC.toFixed(1)} tC/ha</div>
+                  <div className="text-sm text-muted-foreground">
+                    Predicted SOC
+                  </div>
+                  <div className="text-2xl font-bold">
+                    {result.predictedSOC.toFixed(1)} tC/ha
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     {Math.round(result.confidence * 100)}% confidence
                   </div>
                 </div>
-                <div className={`rounded-lg border p-4 ${getHealthScoreColor(result.soilHealthScore)}`}>
+                <div
+                  className={`rounded-lg border p-4 ${getHealthScoreColor(result.soilHealthScore)}`}
+                >
                   <div className="text-sm">Soil Health Score</div>
-                  <div className="text-2xl font-bold">{Math.round(result.soilHealthScore)}/100</div>
+                  <div className="text-2xl font-bold">
+                    {Math.round(result.soilHealthScore)}/100
+                  </div>
                   <div className="text-xs">
-                    {result.soilHealthScore >= 80 ? "Excellent" : 
-                     result.soilHealthScore >= 60 ? "Good" : "Needs Improvement"}
+                    {result.soilHealthScore >= 80
+                      ? "Excellent"
+                      : result.soilHealthScore >= 60
+                        ? "Good"
+                        : "Needs Improvement"}
                   </div>
                 </div>
               </div>
@@ -347,9 +402,14 @@ export function SoilHealthPredictor() {
                   </h4>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {result.samplingPoints.map((point, i) => (
-                      <div key={i} className="flex items-center justify-between text-sm">
+                      <div
+                        key={i}
+                        className="flex items-center justify-between text-sm"
+                      >
                         <div className="flex items-center gap-2">
-                          <div className={`h-2 w-2 rounded-full ${getPriorityColor(point.priority)}`} />
+                          <div
+                            className={`h-2 w-2 rounded-full ${getPriorityColor(point.priority)}`}
+                          />
                           <span>
                             {point.lat.toFixed(4)}, {point.lng.toFixed(4)}
                           </span>
@@ -371,7 +431,10 @@ export function SoilHealthPredictor() {
                   <p>Analyzing soil conditions with AI...</p>
                 </div>
               ) : (
-                <p>Enter your location and soil details to get AI-powered predictions</p>
+                <p>
+                  Enter your location and soil details to get AI-powered
+                  predictions
+                </p>
               )}
             </div>
           )}
@@ -381,7 +444,10 @@ export function SoilHealthPredictor() {
       {/* Information Footer */}
       <div className="mt-8 rounded-lg bg-muted p-4 text-xs text-muted-foreground">
         <p>
-          <strong>About the AI Model:</strong> Our soil health predictor uses machine learning trained on thousands of soil samples, satellite data, and climate patterns. Predictions include uncertainty estimates and should be validated with field sampling for critical decisions.
+          <strong>About the AI Model:</strong> Our soil health predictor uses
+          machine learning trained on thousands of soil samples, satellite data,
+          and climate patterns. Predictions include uncertainty estimates and
+          should be validated with field sampling for critical decisions.
         </p>
       </div>
     </section>

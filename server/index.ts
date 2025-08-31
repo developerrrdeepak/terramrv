@@ -23,8 +23,18 @@ import { farmerReport, adminRegionReport } from "./routes/reports";
 import { submitSupport } from "./routes/support";
 import { chat as assistantChat, stt as assistantStt } from "./routes/assistant";
 import { carbonEstimate, soilHealthPredict, anomalyCheck } from "./routes/ml";
-import { fetchImagery, analyzeVegetation, classifyLandCover, detectChanges } from "./routes/satellite";
-import { getHistoricalWeather, getWeatherForecast, analyzeClimate, getWeatherAlerts } from "./routes/weather";
+import {
+  fetchImagery,
+  analyzeVegetation,
+  classifyLandCover,
+  detectChanges,
+} from "./routes/satellite";
+import {
+  getHistoricalWeather,
+  getWeatherForecast,
+  analyzeClimate,
+  getWeatherAlerts,
+} from "./routes/weather";
 
 export function createServer() {
   const app = express();
