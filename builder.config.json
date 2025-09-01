@@ -1,0 +1,6 @@
+{
+  "command": "8080",
+  "serverUrl": "https://locall.host/3000/",
+  "authenticateProxy": false,
+  "commitMode": "commits"
+}

@@ -1,0 +1,1 @@
+{"functions":[{"bundler":"esbuild","buildData":{"runtimeAPIVersion":1},"mainFile":"C:\\Users\\devel\\OneDrive\\Desktop\\mrv\\terramrvd\\netlify\\functions\\api.ts","name":"api","priority":10,"path":"C:\\Users\\devel\\OneDrive\\Desktop\\mrv\\terramrvd\\.netlify\\functions\\api.zip","runtime":"js"}],"system":{"arch":"x64","platform":"win32"},"timestamp":1756728789542,"version":1}
