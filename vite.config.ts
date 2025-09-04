@@ -23,14 +23,12 @@ export default defineConfig(({ mode }) => ({
       "@shared": path.resolve(__dirname, "./shared"),
     },
   },
-  // Removed define block causing ReferenceError in production
-  // define: {
-  //   __DEFINES__: {},
-  //   __HMR_CONFIG_NAME__: JSON.stringify("vite-hmr"),
-  //   __VITE_HMR_PORT__: 8080,
-  //   __BASE__: JSON.stringify("/"),
-  //   __SERVER_HOST__: JSON.stringify("localhost"),
-  // },
+  define: {
+    global: 'globalThis',
+    process: {
+      env: {},
+    },
+  },
 }));
 
 function expressPlugin(): Plugin {
